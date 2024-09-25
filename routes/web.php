@@ -139,6 +139,8 @@ Route::prefix('admin')->middleware(['auth', 'xss', 'role:admin', 'check_subscrip
         Route::get('forms/letter-form', [FormController::class, 'letter_create'])->name('forms.letter.form.create');
         Route::post('forms/letter-form', [FormController::class, 'letter_store'])->name('letters.store');
         Route::get('forms/letter-form/{letter}/edit', [FormController::class, 'letter_edit'])->name('forms.letter.edit');
+        Route::get('letter-form/{id}/preview', [FormController::class, 'preview'])->name('letter.preview');
+
         Route::put('forms/letter-form/{letter}', [FormController::class, 'letter_update'])->name('forms.letter.update');
         Route::get('/letter/{letter}/download-doc', [FormController::class, 'downloadDoc'])->name('letter.download.doc');
         // Route::get('/letters/{letter}/download-signed', [FormController::class, 'downloadSignedLetter'])->name('letters.download_signed');

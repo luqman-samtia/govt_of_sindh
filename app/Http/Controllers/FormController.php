@@ -195,7 +195,7 @@ class FormController extends Controller
             $request->validate([
                 // 'letter_no' => 'required',
                 // 'head_title' => 'required',
-                'fix_address' => 'required',
+                // 'fix_address' => 'required',
                 // 'date' => 'required',
                 'designation' => 'required',
                 'subject' => 'required',
@@ -293,7 +293,6 @@ $letter->signingAuthorities()->whereNotIn('id', $existingAuthorityIds)->delete()
 
             // Collect the IDs of the current forwarded copies in the request (for later deletion comparison)
 $existingCopyIds = [];
-
 // Loop through the forwarded copies from the request
 foreach ($request->input('forwarded_copies', []) as $copy) {
     if (isset($copy['copy_forwarded']) && !empty($copy['copy_forwarded'])) {
@@ -394,6 +393,16 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
     // Generate PDF from a view
     $pdf = PDF::loadView('forms.letter.pdf', compact('letter'));
 
+     // Define the file path where the PDF will be stored
+     $filePath = storage_path('app/public/downloaded_letters/letter_' . $letter->id . '.pdf');
+
+     // Store the PDF file on the server
+     $pdf->save($filePath);
+
+     // Calculate the hash of the generated PDF
+     $pdfHash = hash_file('sha256', $filePath);
+     $letter->pdf_hash = $pdfHash;
+     $letter->save();
     // session()->flash('redirect_url', URL::previous());
     // Return PDF for download
     return $pdf->download('letter-' . $letter->letter_no . '.pdf');
@@ -442,14 +451,20 @@ public function uploadSignedLetter(Request $request, Letter $letter)
         $file = $request->file('signed_letter');
         $filename = 'letter_' . $letter->id . '.pdf';
         $path = 'signed_letters/';
+        $filePath = storage_path('app/public/signed_letters/letter_' . $letter->id . '.pdf');
         $file->move(storage_path('app/public/'.$path ), $filename);
+         // Calculate the hash of the uploaded file
+         $uploadedFileHash = hash_file('sha256', $filePath);
+         if ($uploadedFileHash === $letter->pdf_hash) {
         $letter->signed_letter = $filename; // Store only the filename
         $letter->is_submitted = 1;
         $uploadedLetterPath = route('letters.download_signed', $letter->id); // Adjust this route as necessary
         $letter->qr_code_link = $uploadedLetterPath;
         $letter->save();
-        // $this->generateQRCode($letter);
         return redirect()->route('admin.dashboard')->with(['message' => 'Signed letter uploaded & submitted successfully']);
+        } else {
+            return redirect()->back()->with(['error' => 'Uploaded letter does not match the original letter'], 400);
+        }
     }
 
     return redirect()->back()->with(['error' => 'No file uploaded'], 400);
@@ -491,5 +506,16 @@ public function updateQRCodeLink(Letter $letter)
             public function password(){
                 $password = Hash::make('admin@2545');
                 dd($password);
+            }
+
+            // letter preview
+            public function preview($id){
+                // Retrieve the letter by ID
+                $letter = Letter::findOrFail($id);
+
+                $letter = $letter->load(['designations', 'signingAuthorities', 'forwardedCopies']);
+
+                // Pass the letter data to a preview view
+                return view('forms.letter.preview', compact('letter'));
             }
 }

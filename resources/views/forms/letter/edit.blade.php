@@ -4,8 +4,14 @@
 @endsection
 
 @section('content')
+<!-- Bootstrap CSS -->
+
+
 {{-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> --}}
 <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+<!-- Bootstrap 4 CSS -->
+
+
 
     <div class="container-fluid">
         <div class="d-flex flex-column ">
@@ -74,46 +80,49 @@
                     </button>
                 </div> --}}
                 <div class="col-lg-2 mb-5">
-                    <div class="mb-5 ">
-                        <h4 style="margin-top:10px">To,</h4>
+                    <div>
+                        <h4>To,</h4>
                     </div>
                 </div>
-            <div id="dynamic-fields">
-                {{-- @if(isset($letter) && $letter->toLetters->count() > 0) --}}
-                @foreach($letter->designations as $index => $toLetter)
-
-            <div class="row" id="field-1" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
-                <div class="col-lg-2">
-                    <div class="mb-5">
-                        <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" value="{{ $toLetter->designation }}" name="designation[{{$index}}][designation]" required>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="mb-5">
-                        <input type="text" id="department"  class="form-control form-control-solid" placeholder="Department" value="{{ $toLetter->department }}" name="designation[{{$index}}][department]" required>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="mb-5">
-                        <input type="text" id="address" class="form-control form-control-solid" placeholder="Address" value="{{ $toLetter->address }}" name="designation[{{$index}}][address]" required>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="mb-5">
-                        <input type="text" id="contact" class="form-control form-control-solid" placeholder="Contact" value="{{ $toLetter->contact }}" name="designation[{{$index}}][contact]" >
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="mb-5">
-                     <button type="button" onclick="addRecipient()" id="add-field" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
+                <div class="" style="text-align:right;">
+                    <div class="">
+                     <button type="button" onclick="addRecipient()" id="add-recipient-btn" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
                          <span data-bs-toggle="tooltip" data-bs-placement="top" >
                              <i class="fas fa-plus"></i>
                          </span>
                   </button>
                     </div>
-                 </div>
+                </div>
+            <div id="dynamic-fields">
+                {{-- @if(isset($letter) && $letter->toLetters->count() > 0) --}}
+                @foreach($letter->designations as $index => $toLetter)
+                <div class="row" id="field-{{$index}}" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
+
+                <div class="col-lg-2">
+                    <div class="mb-5">
+                        <input type="text" id="designation-{{$index}}" class="form-control form-control-solid" placeholder="Designation" value="{{ $toLetter->designation }}" name="designation[{{$index}}][designation]" required>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mb-5">
+                        <input type="text" id="department-{{$index}}"  class="form-control form-control-solid" placeholder="Department" value="{{ $toLetter->department }}" name="designation[{{$index}}][department]" required>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mb-5">
+                        <input type="text" id="address-{{$index}}" class="form-control form-control-solid" placeholder="Address" value="{{ $toLetter->address }}" name="designation[{{$index}}][address]" required>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mb-5">
+                        <input type="text" id="contact-{{$index}}" class="form-control form-control-solid" placeholder="Contact" value="{{ $toLetter->contact }}" name="designation[{{$index}}][contact]" >
+                    </div>
+                </div>
+
             </div>
-            @endforeach
+                @endforeach
+
+
             </div>
 
                 {{-- <hr>
@@ -194,18 +203,18 @@
                     A copy is forwarded for similar compliance :-
                </div>
                 <div class="col-md-6" style="text-align: end;">
-                    <button type="button" id="add-fielddd" onclick="ForwardCopy()" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0" name="copy">
-                    <span data-bs-toggle="tooltip" data-bs-placement="top"  >
+                    <button type="button" id="add-fielddd" onclick="ForwardCopy()" class="btn btn btn-icon btn-primary text-white hide-arrow ps-2 pe-0">
+                    <span data-bs-toggle="tooltip">
                         <i class="fas fa-plus"></i>
                     </span>
                     </button>
                 </div>
                 <div id="dynamic-fielddds">
                     @foreach ($letter->forwardedCopies as $index => $copy)
-             <div class="row" id="fielddd-1">
+             <div class="row" id="fielddd-{{$index}}">
                 <div class="col-lg-6">
                        <div class="mb-5">
-                        <input type="text" id="copy_forwarded" class="form-control form-control-solid" placeholder="Copy of Forwarded" value="{{$copy->copy_forwarded}}" name="forwarded_copies[0][copy_forwarded]" required>
+                        <input type="text" id="copy_forwarded-{{$index}}" class="form-control form-control-solid" placeholder="Copy of Forwarded" value="{{$copy->copy_forwarded}}" name="forwarded_copies[{{$index}}][copy_forwarded]" required>
                     </div>
                 </div>
             </div>
@@ -214,15 +223,33 @@
 
                 <hr>
 
-                {{-- <div id="signedLetterUpload" style="display: block;">
-                    <label for="signed_letter">Upload Signed Letter:</label>
-                    <input type="file" name="signed_letter" id="signed_letter" accept=".pdf">
-                </div> --}}
+                           <!-- Bootstrap Modal -->
+<!-- Modal Structure -->
+<div class="modal fade" id="letterPreviewModal" tabindex="-1" role="dialog" aria-labelledby="letterPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="letterPreviewModalLabel">Letter Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="letterPreviewContent" style="overflow: hidden;">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- end letter preview --}}
                 <div class="col-md-12" style="text-align: center;">
                     <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
                     <a  type="button" name="" value=""  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
                     <button  type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
-                    <button  type="button" name="" value=""    class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
+                    <button  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
                     {{-- <a href="{{ route('forms') }}"
                     class="btn btn-secondary btn-active-light-primary">{{ __('messages.common.cancel') }}
                     </a> --}}
@@ -270,6 +297,10 @@
         </div>
     </div>
 
+            {{-- letter preview modal --}}
+
+
+
 @endsection
 
 {{-- @if($letter->is_submitted)
@@ -280,45 +311,106 @@
     </script>
 @endif --}}
 <script>
+    // var fieldCounter =  0;
+    var fieldCounter = {{ count($letter->designations) ? count($letter->designations) - 1 : -1 }};
+    var fieldCounterss = {{ count($letter->forwardedCopies) ? count($letter->forwardedCopies) - 1 : -1 }};
+
+
  CKEDITOR.replace('draft_para');
 
+    // letter preview
+//     function loadLetterPreview(letterId) {
+//     // Correct the URL to the preview route using Laravel's route helper in Blade
+//     var previewUrl = '{{ route('letter.preview', ':id') }}';
+//     previewUrl = previewUrl.replace(':id', letterId);
 
-    function addRecipient(){
-        let fieldCounter = 0;
-        // document.getElementById('add-field').addEventListener('click', function() {
-            fieldCounter++;
-            const newField = `
-                <div class="row" id="field-${fieldCounter}" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
-                    <div class="col-lg-2">
+//     // Fetch the letter content via AJAX
+//     fetch(previewUrl)
+//         .then(response => response.text())
+//         .then(htmlContent => {
+//             // Insert the content into the modal
+//             document.getElementById('letterPreviewContent').innerHTML = htmlContent;
+//             // Show the modal
+//             $('#letterPreviewModal').modal('show');
+//         })
+//         .catch(error => {
+//             console.error('Error fetching letter preview:', error);
+//             // Fallback if there is an error
+//             document.getElementById('letterPreviewContent').innerHTML = '<p>Unable to load the letter preview.</p>';
+//         });
+// }
+
+function loadLetterPreview(letterId) {
+    var previewUrl = '{{ route('letter.preview', ':id') }}';
+    previewUrl = previewUrl.replace(':id', letterId);
+
+    fetch(previewUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(htmlContent => {
+            document.getElementById('letterPreviewContent').innerHTML = htmlContent;
+
+            var modal = new bootstrap.Modal(document.getElementById('letterPreviewModal'));
+            modal.show();
+
+            // Set up the redirect after a timeout (or other event)
+            modal._element.addEventListener('hidden.bs.modal', function () {
+                window.location.href = '{{ route('forms.letter.edit', ':id') }}'.replace(':id', letterId);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching letter preview:', error);
+            document.getElementById('letterPreviewContent').innerHTML = '<p>Unable to load the letter preview.</p>';
+        });
+}
+
+
+
+    // end letter preview
+    //     document.getElementById('add-field').addEventListener('click', (function(counter) {
+        //     return function() {
+            //         addRecipient(counter);
+            //     };
+            // })(fieldCounter);
+            // })
+
+            // Set the initial fieldCounter to the number of existing designations
+
+
+            function addRecipient() {
+        // Increment fieldCounter on each call
+        fieldCounter++;
+
+        const newField = `
+            <div class="row" id="field-${fieldCounter}" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
+                <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" name="designation[${fieldCounter}][designation]" required>
+                        <input type="text" id="designation-${fieldCounter}" class="form-control form-control-solid" placeholder="Designation" name="designation[${fieldCounter}][designation]" required>
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="department"  class="form-control form-control-solid" placeholder="Department" name="designation[${fieldCounter}][department]" required>
+                        <input type="text" id="department-${fieldCounter}" class="form-control form-control-solid" placeholder="Department" name="designation[${fieldCounter}][department]" required>
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="address" class="form-control form-control-solid" placeholder="Address" name="designation[${fieldCounter}][address]" required>
+                        <input type="text" id="address-${fieldCounter}" class="form-control form-control-solid" placeholder="Address" name="designation[${fieldCounter}][address]" required>
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="contact" class="form-control form-control-solid" placeholder="Contact" name="designation[${fieldCounter}][contact]" >
+                        <input type="text" id="contact-${fieldCounter}" class="form-control form-control-solid" placeholder="Contact" name="designation[${fieldCounter}][contact]" >
                     </div>
                 </div>
-                 <div class="col-lg-2">
-                    <div class="mb-5">
-                        <input type="hidden" id="designation" class="form-control form-control-solid">
-                    </div>
-                </div>
-                </div>`;
-            document.getElementById('dynamic-fields').insertAdjacentHTML('beforeend', newField);
-        // });
+            </div>`;
+
+        document.getElementById('dynamic-fields').insertAdjacentHTML('beforeend', newField);
     }
-
     function signing_authority(){
         let fieldCounters = 0;
                     // document.getElementById('add-fieldd').addEventListener('click', function() {
@@ -348,8 +440,7 @@
                     // });
     }
      function ForwardCopy(){
-        let fieldCounterss = 0;
-            // document.getElementById('add-fielddd').addEventListener('click', function() {
+
                 fieldCounterss++;
                 const newFielddd = `
                     <div class="row" id="fieldd-${fieldCounterss}">
@@ -360,11 +451,11 @@
                 </div>
                     </div>`;
                 document.getElementById('dynamic-fielddds').insertAdjacentHTML('beforeend', newFielddd);
-            // });
 
-            if (document.getElementById('signed_letter')) {
+
+        }
+
+        if (document.getElementById('signed_letter')) {
     document.getElementById('signedLetterUpload').style.display = 'block';
-}
-
-     }
+    }
 </script>

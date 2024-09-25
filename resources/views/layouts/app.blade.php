@@ -16,6 +16,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
+
 {{-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>tinymce.init({ selector:'textarea' });</script> --}}
 
