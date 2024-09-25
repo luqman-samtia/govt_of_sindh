@@ -152,7 +152,7 @@
                 <hr>
                 <div class="col-lg-12">
                     <div class="mb-5">
-                        <label for="draft_para" class="form-label required mb-3">Draft Para</label>
+                        <label for="draft_para" class="form-label required mb-3">Draft Section</label>
                         <textarea id="draft_para" cols="70" rows="10" class="form-control form-control-solid ckeditor" placeholder="Draft Para" name="draft_para" required>{{$letter->draft_para}}</textarea>
 
                     </div>

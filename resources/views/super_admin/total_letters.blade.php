@@ -1,8 +1,20 @@
 @extends('layouts.app')
 @section('title')
     {{ __('messages.dashboard') }}
+
+
 @endsection
 @section('content')
+@if(session('message'))
+<h6 class="alert alert-success">
+    {{ session('message') }}
+</h6>
+        @endif
+        @if(session('error'))
+<h6 class="alert alert-danger">
+    {{ session('error') }}
+</h6>
+        @endif
 <div class="container-fluid">
     <div class="d-flex flex-column">
         <div class="row">
@@ -26,7 +38,7 @@
                         </a>
                     </div>
                     <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
-                        <a href="{{route('super.admin.total.letters')}}"
+                        <a href=""
                         class="mb-xl-8 text-decoration-none">
 
                         <div
@@ -93,7 +105,7 @@
                     <div class="card mt-3">
                         <div class="card-body p-5">
                             <div class="card-header border-0 pt-5">
-                                <h3 class="mb-0">{{  __('Show Data Here') }}</h3>
+                                <h3 class="mb-0">{{  __('Total Letters') }}</h3>
                                 <div class="ms-auto">
                                     <div id="rightData" class="date-picker-space">
                                         {{-- <input class="form-control removeFocus" id="super_admin_time_range"> --}}

@@ -154,7 +154,7 @@
                 <hr>
                 <div class="col-lg-12">
                     <div class="mb-5">
-                        <label for="draft_para" class="form-label required mb-3">Draft Para</label>
+                        <label for="draft_para" class="form-label required mb-3">Draft Section</label>
                         <textarea id="draft_para" cols="70" rows="10" class="form-control form-control-solid ckeditor" placeholder="Draft Para" name="draft_para" required></textarea>
 
                     </div>
@@ -244,9 +244,10 @@
     </script>
 @endif --}}
 <script>
+    var fieldCounter = 0;
+    var fieldCounterss = 0;
  CKEDITOR.replace('draft_para');
     function addRecipient(){
-        let fieldCounter = 0;
         // document.getElementById('add-field').addEventListener('click', function() {
             fieldCounter++;
             const newField = `
@@ -312,7 +313,7 @@
                     // });
     }
      function ForwardCopy(){
-        let fieldCounterss = 0;
+
             // document.getElementById('add-fielddd').addEventListener('click', function() {
                 fieldCounterss++;
                 const newFielddd = `

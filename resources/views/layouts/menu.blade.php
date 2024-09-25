@@ -170,6 +170,19 @@
             <span class="aside-menu-title">{{ __('Update Profile') }}</span>
         </a>
     </li>
+    <li class="nav-item {{ Request::is('logout*') ? 'active' : '' }}">
+        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('logout') }}">
+            <span class="dropdown-icon me-4 text-gray-600">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </span>
+            <form id="logout-form" action="{{ route('logout') }}" method="post">
+                @csrf
+            </form>
+            <span
+                onclick="event.preventDefault(); localStorage.clear();  document.getElementById('logout-form').submit();">
+                {{ __('messages.sign_out') }}</span>
+        </a>
+    </li>
 
     {{-- <li class="nav-item {{ Request::is('admin/payment-qr-codes*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page"

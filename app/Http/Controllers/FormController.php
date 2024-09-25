@@ -7,6 +7,7 @@ use App\Models\Letter;
 use App\Models\ToLetter;
 use App\Models\SigningAuthority;
 use App\Models\ForwardCopy;
+use App\Models\User;
 use Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,20 @@ use Hash;
 
 class FormController extends Controller
 {
+    // super admin total letters
+    public function SuperAdminTotalLetter()
+    {
+        $totalLetters = Letter::count();
+        $users_form = Letter::withCount('user')->get();
+        $draft = Letter::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+        return view('super_admin.total_letters',compact('users_form','draft','data'));
+
+    }
+
     // total user letter
 
     public function total_letter(Letter $letter){

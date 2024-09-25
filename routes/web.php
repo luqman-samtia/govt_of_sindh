@@ -355,6 +355,11 @@ Route::prefix('super-admin')->middleware(['auth', 'xss', 'role:super_admin'])->g
         [DashboardController::class, 'SuperAdminDashboardData']
     )->name('super.admin.dashboard');
     Route::get(
+        '/total_letters',
+        [FormController::class, 'SuperAdminTotalLetter']
+    )->name('super.admin.total.letters');
+
+    Route::get(
         'revenue-chart',
         [DashboardController::class, 'getRevenueChartData']
     )->name('super-admin.revenue-chart');

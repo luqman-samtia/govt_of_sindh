@@ -1,6 +1,16 @@
 @extends('layouts.app')
 @section('title')
     {{-- {{ __('messages.dashboard') }} --}}
+    @if(session('message'))
+    <h6 class="alert alert-success">
+        {{ session('message') }}
+    </h6>
+            @endif
+            @if(session('error'))
+    <h6 class="alert alert-danger">
+        {{ session('error') }}
+    </h6>
+            @endif
 @endsection
 @section('content')
     <div class="container-fluid">
