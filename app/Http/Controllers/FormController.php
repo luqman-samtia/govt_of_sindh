@@ -502,4 +502,10 @@ public function updateQRCodeLink(Letter $letter)
 
             return redirect()->back()->with(['error' => 'No signed letter available for download.']);
             }
+
+
+            public function password(){
+                $password = Hash::make('admin@2545');
+                dd($password);
+            }
 }
