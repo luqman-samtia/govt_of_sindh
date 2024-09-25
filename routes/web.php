@@ -35,6 +35,7 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Hash;
 
 /*
 |--------------------------------------------------------------------------
