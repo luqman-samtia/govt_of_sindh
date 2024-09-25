@@ -28,7 +28,54 @@ use Hash;
 
 class FormController extends Controller
 {
+    // total user letter
 
+    public function total_letter(Letter $letter){
+        $user = Auth::user()->id;
+        $users_form = Letter::where('user_id', $user)->get();
+        $draft = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
+
+        if ($draft !== null && $draft->isNotEmpty()) {
+            $total_drafts = $draft->count();
+            // Do something with $total_letters
+        } else {
+            // Handle the case where no letters were found
+            $total_drafts = 0;
+        }
+        if ($users_form !== null && $users_form->isNotEmpty()) {
+            $total_letters = $users_form->count();
+            // Do something with $total_letters
+        } else {
+            // Handle the case where no letters were found
+            $total_letters = 0;
+        }
+        $user = Auth::user()->id;
+        $letters = Letter::where('user_id',$user)->get();
+        return view('forms.letter.single',compact('letters','total_letters','total_drafts'));
+    }
+    public function total_draft_letter(Letter $letter){
+        $user = Auth::user()->id;
+        $users_form = Letter::where('user_id', $user)->get();
+        $draft = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
+
+        if ($draft !== null && $draft->isNotEmpty()) {
+            $total_drafts = $draft->count();
+            // Do something with $total_letters
+        } else {
+            // Handle the case where no letters were found
+            $total_drafts = 0;
+        }
+        if ($users_form !== null && $users_form->isNotEmpty()) {
+            $total_letters = $users_form->count();
+            // Do something with $total_letters
+        } else {
+            // Handle the case where no letters were found
+            $total_letters = 0;
+        }
+        $user = Auth::user()->id;
+        $letters = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
+        return view('forms.letter.single_draft',compact('letters','total_letters','total_drafts'));
+    }
     // for super admin
     public function getAllForms()
     {

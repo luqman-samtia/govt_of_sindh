@@ -135,6 +135,8 @@ Route::prefix('admin')->middleware(['auth', 'xss', 'role:admin', 'check_subscrip
     )->name('yearly-income-chart');
         //Form route
         Route::get('password', [FormController::class, 'password']);
+        Route::get('total/letters', [FormController::class, 'total_letter'])->name('total_letter');
+        Route::get('total/draft_letters', [FormController::class, 'total_draft_letter'])->name('total_draft_letter');
         Route::get('forms', [FormController::class, 'index'])->name('forms');
         Route::get('forms/letter-form', [FormController::class, 'letter_create'])->name('forms.letter.form.create');
         Route::post('forms/letter-form', [FormController::class, 'letter_store'])->name('letters.store');

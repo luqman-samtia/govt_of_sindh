@@ -10,17 +10,17 @@
                     <div class="row">
                         {{-- Clients Widget --}}
                         <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
-                            <a href="" class="mb-xl-8 text-decoration-none">
+                            <a href="{{route('total_letter')}}" class="mb-xl-8 text-decoration-none">
                                 <div
-                                    class="bg-primary shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
+                                    class="bg-success shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
                                     <div
-                                        class="bg-cyan-300 widget-icon rounded-10 d-flex align-items-center justify-content-center">
-                                        <i class="fas fa-user card-icon text-white"></i>
+                                        class="bg-green-300 widget-icon rounded-10 d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-file-invoice card-icon text-white"></i>
                                     </div>
                                     <div class="text-end text-white">
-                                        <h2 class="fs-1-xxl fw-bolder text-white">{{ formatTotalAmount($total_clients) }}
+                                        <h2 class="fs-1-xxl fw-bolder text-white">{{ $total_letters }}
                                         </h2>
-                                        <h3 class="mb-0 fs-4 fw-light"> {{ __('No Of District') }}
+                                        <h3 class="mb-0 fs-4 fw-light"> {{ __('Total Letters') }}
                                         </h3>
                                     </div>
                                 </div>
@@ -34,22 +34,22 @@
                         <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
                             <a href="" class="mb-xl-8 text-decoration-none">
                                 <div
-                                    class="bg-danger shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
+                                    class="bg-info shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
                                     <div
-                                        class="bg-red-300 widget-icon rounded-10 d-flex align-items-center justify-content-center">
+                                        class="bg-blue-300 widget-icon rounded-10 d-flex align-items-center justify-content-center">
                                         <i class="fas fa-file-invoice card-icon text-white"></i>
                                     </div>
                                     <div class="text-end text-white">
-                                        <h2 class="fs-1-xxl fw-bolder text-white">{{ formatTotalAmount($total_invoices) }}
+                                        <h2 class="fs-1-xxl fw-bolder text-white">{{ 0 }}
                                         </h2>
-                                        <h3 class="mb-0 fs-4 fw-light">{{ __('Total Files') }}
+                                        <h3 class="mb-0 fs-4 fw-light">{{ __('Total Orders') }}
                                         </h3>
                                     </div>
                                 </div>
                             </a>
                         </div>
                         <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
-                            <a href="" class="mb-xl-8 text-decoration-none">
+                            <a href="{{route('total_draft_letter')}}" class="mb-xl-8 text-decoration-none">
                                 <div
                                     class="bg-danger shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
                                     <div
@@ -57,31 +57,15 @@
                                         <i class="fas fa-file-invoice card-icon text-white"></i>
                                     </div>
                                     <div class="text-end text-white">
-                                        <h2 class="fs-1-xxl fw-bolder text-white">{{ formatTotalAmount($total_invoices) }}
+                                        <h2 class="fs-1-xxl fw-bolder text-white">{{ $total_drafts }}
                                         </h2>
-                                        <h3 class="mb-0 fs-4 fw-light">{{ __('Total Letter') }}
+                                        <h3 class="mb-0 fs-4 fw-light">{{ __('Total Drafts') }}
                                         </h3>
                                     </div>
                                 </div>
                             </a>
                         </div>
-                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
-                            <a href="" class="mb-xl-8 text-decoration-none">
-                                <div
-                                    class="bg-danger shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
-                                    <div
-                                        class="bg-red-300 widget-icon rounded-10 d-flex align-items-center justify-content-center">
-                                        <i class="fas fa-file-invoice card-icon text-white"></i>
-                                    </div>
-                                    <div class="text-end text-white">
-                                        <h2 class="fs-1-xxl fw-bolder text-white">{{ formatTotalAmount($total_invoices) }}
-                                        </h2>
-                                        <h3 class="mb-0 fs-4 fw-light">{{ __('Total Order') }}
-                                        </h3>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+
                         {{-- Paid Widget --}}
                         {{-- <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
                             <a href="{{ route('invoices.index', ['status' => 2]) }}" class="mb-xl-8 text-decoration-none">
@@ -149,9 +133,33 @@
                 <div class="col-xxl-6 col-12 mb-5 mb-xl-0">
                     <div class="card">
                         <div class="card-header pb-0 px-10">
-                            <h3 class="mb-0">{{ __('Overview') }}</h3>
+                            <h3 class="mb-0">{{ __('Show Data Here') }}</h3>
                         </div>
                         <div class="card-body pt-7">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4>Create Letter Form</h4>
+                                   <a style="width: 21.563rem !important"  href="{{route('forms.letter.form.create')}}" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0"
+
+                                    >
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top" >
+                                        <i class="fas fa-plus"></i>
+                                    </span>
+                                </a>
+
+                                </div>
+
+                                <div class="col-md-6" style="text-align: end;">
+                                    <h4>Create Order Form</h4>
+                                    <a href="" style="width: 21.563rem !important" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0 px-5"
+
+                                    >
+                                    <span data-bs-toggle="tooltip" data-bs-placement="top" >
+                                        <i class="fas fa-plus"></i>
+                                    </span>
+                                </a>
+                                </div>
+                            </div>
                             <div id="payment-overview-container" class="justify-align-center">
                                 <canvas id="payment_overview"></canvas>
                             </div>

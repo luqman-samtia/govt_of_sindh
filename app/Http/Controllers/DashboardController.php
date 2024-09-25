@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Laracasts\Flash\Flash;
 use App\Models\Letter;
+use Auth;
 
 class DashboardController extends AppBaseController
 {
@@ -32,8 +33,25 @@ class DashboardController extends AppBaseController
     public function index(): \Illuminate\View\View
     {
         $dashboardData = $this->dashboardRepository->getAdminDashboardData();
+        $user = Auth::user()->id;
+        $users_form = Letter::where('user_id', $user)->get();
+        $draft = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
 
-        return view('dashboard.index')->with($dashboardData);
+        if ($draft !== null && $draft->isNotEmpty()) {
+            $total_drafts = $draft->count();
+            // Do something with $total_letters
+        } else {
+            // Handle the case where no letters were found
+            $total_drafts = 0;
+        }
+        if ($users_form !== null && $users_form->isNotEmpty()) {
+            $total_letters = $users_form->count();
+            // Do something with $total_letters
+        } else {
+            // Handle the case where no letters were found
+            $total_letters = 0;
+        }
+        return view('dashboard.index',compact('total_letters','total_drafts'))->with($dashboardData);
     }
 
     public function SuperAdminDashboardData(): \Illuminate\View\View

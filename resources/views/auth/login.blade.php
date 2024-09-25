@@ -8,15 +8,21 @@
     @endphp
     <div class="d-flex flex-column flex-column-fluid align-items-center justify-content-center p-4">
         <div class="col-12 text-center">
-            <a href="" class="image mb-7 mb-sm-10 image-medium">
-                <img alt="Logo" src="{{asset($settingValue['app_logo']['value']) }}" class="img-fluid object-contain">
-            </a>
+            {{-- <a href="" class="image mb-7 mb-sm-10 image-medium">
+                <img alt="Logo" src="{{asset('storage/qr-codes/download.jpeg') }}" class="img-fluid object-contain">
+            </a> --}}
         </div>
         <div class="width-540">
             @include('flash::message')
             @include('layouts.errors')
         </div>
         <div class="bg-white rounded-15 shadow-md width-540 px-5 px-sm-7 py-10 mx-auto">
+            <div class="text-center">
+                <h3 class="text-center px-10" style="padding-left:20px;padding-right:20px">ANTI-CORRUPTION ESTABLISHMENT GOVERNMENT OF SINDH</h3>
+            <a href="" class="text-center image mb-7 mb-sm-10 image-medium">
+                <img alt="Logo" class="text-center" src="{{asset('storage/qr-codes/download.jpeg') }}" class="text-center img-fluid object-contain">
+            </a>
+            </div>
             <h1 class="text-center mb-7">{{ __('messages.user.sign_in') }}</h1>
             <form method="POST" action="{{ route('login') }}">
                 @csrf

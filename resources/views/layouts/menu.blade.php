@@ -155,11 +155,19 @@
         </a>
     </li> --}}
     <li class="nav-item {{ Request::is('admin/forms*') ? 'active' : '' }}">
-        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('forms') }}">
+        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="">
             <span class="menu-icon">
                 <i class="far fa-file-alt pe-3"></i>
             </span>
             <span class="aside-menu-title">{{ __('form') }}</span>
+        </a>
+    </li>
+    <li class="nav-item {{ Request::is('profile/edit*') ? 'active' : '' }}">
+        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('profile.setting') }}">
+            <span class="dropdown-icon me-4 text-gray-600">
+                <i class="fa-solid fa-user"></i>
+            </span>
+            <span class="aside-menu-title">{{ __('Update Profile') }}</span>
         </a>
     </li>
 
