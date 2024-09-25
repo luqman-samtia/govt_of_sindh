@@ -78,10 +78,10 @@ class FormController extends Controller
         DB::beginTransaction();
 
         $request->validate([
-            'letter_no' => 'required',
-        'head_title' => 'required',
-        'fix_address' => 'required',
-        'date' => 'required',
+            // 'letter_no' => 'required',
+        // 'head_title' => 'required',
+        // 'fix_address' => 'required',
+        // 'date' => 'required',
         'designation' => 'required',
         // 'department' => 'required',
         'dear' => 'nullable',
@@ -90,7 +90,11 @@ class FormController extends Controller
         'sa_name' => 'nullable',
         'sa_designation' => 'nullable',
         'sa_department' => 'nullable',
-        'signed_letter' => 'nullable|file|mimes:pdf|max:10240'
+        'signed_letter' => 'nullable|file|mimes:pdf|max:10240',
+        'designation.*.designation' => 'required|string',
+        'designation.*.department' => 'nullable|string',
+        'designation.*.address' => 'nullable|string',
+        'designation.*.contact' => 'nullable|string',
         // 'copy_forwarded' => 'required',
         // 'forwarded_copy' => 'boolean',
         ]);
@@ -134,27 +138,6 @@ class FormController extends Controller
 
 
 
-         // Generate QR Code
-          // Check if the letter is signed or not
-    // if ($letter->signed_letter === null) {
-    //     // If not signed, generate QR code for the regular letter download
-    //     $route = route('Form.download.pdf', $letter->id);
-    // } else {
-    //     // If signed letter exists, generate QR code for the signed letter
-    //     $route = route('letters.download_signed', $letter->id);
-    // }
-
-    // // Define the QR code file path
-    // $qrCodePath = 'qr-codes/' . $letter->id . '.png';
-
-    // // Generate the QR code
-    // QrCode::format('png')
-    //     ->size(200)
-    //     ->generate($route, storage_path('app/public/' . $qrCodePath));
-
-    // // Save the QR code path to the letter in the database
-    // $letter->qr_code = $qrCodePath;
-    // $letter->save();
 
         //  // Store multiple  designation
         //
@@ -187,7 +170,7 @@ class FormController extends Controller
         }
         DB::commit();
         $message = $isSubmitted ? 'Letter submitted successfully!' : 'Letter saved as draft.';
-        return redirect()->route('forms')->with('message', $message);
+        return redirect()->route('forms.letter.edit',$letter->id)->with('message', $message);
 
     }
     public function letter_edit(Letter $letter){
@@ -210,10 +193,10 @@ class FormController extends Controller
 
         try {
             $request->validate([
-                'letter_no' => 'required',
-                'head_title' => 'required',
+                // 'letter_no' => 'required',
+                // 'head_title' => 'required',
                 'fix_address' => 'required',
-                'date' => 'required',
+                // 'date' => 'required',
                 'designation' => 'required',
                 'subject' => 'required',
                 'draft_para' => 'required',
@@ -224,10 +207,10 @@ class FormController extends Controller
             ]);
             $isSubmitted = $request->input('action') === 'submit' ? 1 : 0;
             $letter->update([
-                'letter_no' => $request->input('letter_no'),
-                'head_title' => $request->input('head_title'),
+                // 'letter_no' => $request->input('letter_no'),
+                // 'head_title' => $request->input('head_title'),
                 'fix_address' => $request->input('fix_address'),
-                'date' => Carbon::parse($request->input('date')),
+                // 'date' => Carbon::parse($request->input('date')),
                 'subject' => $request->input('subject'),
                 'dear' => $request->input('dear'),
                 'draft_para' => $request->input('draft_para'),
@@ -341,7 +324,7 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 
             DB::commit();
             $message = $isSubmitted ? 'Letter submitted & Updated successfully!' : 'Letter saved as draft & Updated.';
-            return redirect()->route('forms')->with('message', $message);
+            return redirect()->back()->with('message', $message);
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Error updating letter: ' . $e->getMessage());
@@ -466,7 +449,7 @@ public function uploadSignedLetter(Request $request, Letter $letter)
         $letter->qr_code_link = $uploadedLetterPath;
         $letter->save();
         // $this->generateQRCode($letter);
-        return redirect()->route('forms')->with(['message' => 'Signed letter uploaded successfully']);
+        return redirect()->route('admin.dashboard')->with(['message' => 'Signed letter uploaded & submitted successfully']);
     }
 
     return redirect()->back()->with(['error' => 'No file uploaded'], 400);

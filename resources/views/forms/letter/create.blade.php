@@ -10,6 +10,16 @@
     <div class="container-fluid">
         <div class="d-flex flex-column ">
             @include('flash::message')
+            @if(session('message'))
+            <h6 class="alert alert-success">
+                {{ session('message') }}
+            </h6>
+                    @endif
+                    @if(session('error'))
+            <h6 class="alert alert-danger">
+                {{ session('error') }}
+            </h6>
+                    @endif
             @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -21,92 +31,126 @@
 @endif
             <form action="{{ route('letters.store') }}" method="POST">
                 @csrf
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="mb-5">
-                        <label for="letter_no" class="form-label required mb-3">Letter No</label>
-                        <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$newLetterNo}}" placeholder="Letter No" name="letter_no" required>
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-4">
+                        <div class="mb-5">
+                            {{-- <label for="letter_no" class="form-label"></label> --}}
+                            {{-- <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$newLetterNo}}" placeholder="Letter No" name="letter_no" readonly> --}}
+                            <img src="{{asset('storage/qr-codes/download4.jpeg')}}" class="form-control form-control-solid" alt="GOVT OF SINDH" width="" style="width: 150px;background:none;border:none">
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-4">
+                        <div class="mb-5" style="text-align:left;justify-content:center;">
+                            {{-- <label for="letter_no" class="form-label mt-3"></label> --}}
+                            {{-- <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$newLetterNo}}" placeholder="Letter No" name="letter_no" readonly> --}}
+                            <h4 class="form-control form-control-solid" style="background:none;border:none">ANTI-CORRUPTION ESTABLISHMENT SINDH</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-4">
+                        <div class="mb-5">
+                            {{-- <label for="letter_no" class="form-label required mb-3">Letter No</label> --}}
+                            <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$newLetterNo}}" placeholder="Letter No" name="letter_no" readonly>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-4">
+                        <div class="mb-5">
+                            {{-- <label for="date" class="form-label required mb-3">Date</label> --}}
+                            <input type="text" id="date" value="{{date(Auth::user()->date)}}"  class="form-control form-control-solid" placeholder="Date" name="date" readonly>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
+            <div class="row">
+
+
+                <div class="col-lg-6" style="display: none;">
                     <div class="mb-5">
-                        <label for="head_title" class="form-label required mb-3">Head Title</label>
+                        {{-- <label for="head_title" class="form-label required mb-3">Head Title</label> --}}
                         <input type="text" id="head_title" value="{{Auth::user()->district}}" class="form-control form-control-solid" placeholder="Head Title" name="head_title" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" style="display:none;">
                     <div class="mb-5">
-                        <label for="fix_address" class="form-label required mb-3">Address</label>
+                        {{-- <label for="fix_address" class="form-label required mb-3">Address</label> --}}
                         <input type="text" id="fix_address" value="{{Auth::user()->address}}" class="form-control form-control-solid" placeholder="Address" name="fix_address" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="mb-5">
-                        <label for="date" class="form-label required mb-3">Date</label>
-                        <input type="text" id="date" value="{{date(Auth::user()->date)}}"  class="form-control form-control-solid" placeholder="Date" name="date" required>
-                    </div>
-                </div>
-                <hr>
-                <h4>To,</h4>
 
-                <div class="col-md-12" style="text-align: end;">
+                {{-- <hr> --}}
+
+
+                {{-- <div class="col-md-12" style="text-align: end;">
                     <button type="button" onclick="addRecipient()" id="add-field" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
                     <span data-bs-toggle="tooltip" data-bs-placement="top" >
                         <i class="fas fa-plus"></i>
                     </span>
                     </button>
+                </div> --}}
+                <div class="col-lg-2 mb-5">
+                    <div class="mb-5 ">
+                        <h4 style="margin-top:10px">To,</h4>
+                    </div>
                 </div>
         <div id="dynamic-fields">
-            <div class="row" id="field-1" style="display:flex;flex-direction:column;justify-content:center;align-items:center;">
-                <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="designation" class="form-label required mb-2">Designation</label>
+            <div class="row" id="field-1" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
+
+                <div class="col-lg-2">
+                    <div class="mb-5">
                         <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" name="designation[0][designation]" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="department" class="form-label required mb-2">Department</label>
+                <div class="col-lg-2">
+                    <div class="mb-5">
                         <input type="text" id="department"  class="form-control form-control-solid" placeholder="Department" name="designation[0][department]" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="address" class="form-label required mb-2">Address</label>
+                <div class="col-lg-2">
+                    <div class="mb-5">
                         <input type="text" id="address" class="form-control form-control-solid" placeholder="Address" name="designation[0][address]" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-2">
                     <div class="mb-5">
-                        <label for="contact" class="form-label mb-2">Phone</label>
                         <input type="text" id="contact" class="form-control form-control-solid" placeholder="Contact" name="designation[0][contact]" >
                     </div>
                 </div>
+                <div class="col-lg-2">
+                   <div class="mb-5">
+                    <button type="button" onclick="addRecipient()" id="add-field" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" >
+                            <i class="fas fa-plus"></i>
+                        </span>
+                 </button>
+                   </div>
+                </div>
+
             </div>
             </div>
 
-                <hr>
-                <h4>Subject:</h4>
-                <div class="col-lg-12">
-                    <div class="mb-5">
-                        <label for="subject" class="form-label required mb-3">Subject</label>
-                        <input type="text" id="subject" class="form-control form-control-solid" placeholder="Subject" name="subject" required>
+                {{-- <hr>
+                <h4>Subject:</h4> --}}
+                <div class="row" style="display: flex:flex-direction:row;">
+                    <div class="col-lg-10 mt-5">
+                        <div class="mb-5 text-center">
+                            {{-- <label for="subject" class="form-label required mb-3">Subject</label> --}}
+                            <input type="text" id="subject" class="form-control form-control-solid" placeholder="Subject" name="subject" required>
+                        </div>
                     </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="mb-5">
-                        <label for="dear" class="form-label  mb-3">Dear</label>
-                        <select name="dear" class="form-control form-control-solid" id="dear">
-                            <option value="">Select option</option>
-                            <option value="Respected Mam.">Respected Mam</option>
-                            <option value="Respected Sir.">Respected Sir</option>
-                            <option value="Mr.">Mr.</option>
-                            <option value="Mrs.">Mrs.</option>
-                            <option value="Ms.">Ms.</option>
+                    <div class="col-lg-3">
+                        <div class="mb-5">
+                            {{-- <label for="dear" class="form-label  mb-3">Dear</label> --}}
+                            <select name="dear" class="form-control form-control-solid" id="dear">
+                                <option value="">Select option</option>
+                                <option value="Respected Mam.">Respected Mam</option>
+                                <option value="Respected Sir.">Respected Sir</option>
+                                <option value="Mr.">Mr.</option>
+                                <option value="Mrs.">Mrs.</option>
+                                <option value="Ms.">Ms.</option>
 
-                        </select>
+                            </select>
+                        </div>
                     </div>
                 </div>
+
                 <hr>
                 <div class="col-lg-12">
                     <div class="mb-5">
@@ -116,30 +160,30 @@
                     </div>
                 </div>
                 <hr>
-                 <div class="col-md-12" style="text-align: end;">
+                 {{-- <div class="col-md-12" style="text-align: end;">
                     <button type="button" onclick="signing_authority()" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0" id="add-fieldd">
                 <span data-bs-toggle="tooltip" data-bs-placement="top" >
                     <i class="fas fa-plus"></i>
                 </span>
             </button>
-                </div>
+                </div> --}}
                 <div id="dynamic-fieldds">
                     <div class="row" id="fieldd-1">
                         <div class="col-lg-4">
                             <div class="mb-5">
-                                <label for="s_a_name" class="form-label  mb-3">Signing Authority Name</label>
+                                {{-- <label for="s_a_name" class="form-label  mb-3">Signing Authority Name</label> --}}
                                 <input type="text" id="s_a_name" class="form-control form-control-solid" placeholder="S A Name" name="signing_authorities[0][sa_name]" >
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="mb-5">
-                                <label for="s_a_designation" class="form-label  mb-3">Signing Authority Designation</label>
+                                {{-- <label for="s_a_designation" class="form-label  mb-3">Signing Authority Designation</label> --}}
                                 <input type="text" id="s_a_designation" class="form-control form-control-solid" placeholder="S A Designation" name="signing_authorities[0][sa_designation]" >
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="mb-5">
-                                <label for="s_a_department" class="form-label  mb-3">Department</label>
+                                {{-- <label for="s_a_department" class="form-label  mb-3">Department</label> --}}
                                 <input type="text" id="s_a_department" class="form-control form-control-solid" placeholder="Department" name="signing_authorities[0][sa_department]" >
                             </div>
                         </div>
@@ -153,16 +197,10 @@
 
                  {{-- add more button --}}
 
-                <div class="col-md-6">
-                    <input type="checkbox" name="forwarded_copy" id="forwarded_copy" required> A copy is forwarded for similar compliance :-
+                <div class="col-md-6 mb-5">
+                     A copy is forwarded for similar compliance :-
                 </div>
-                <div class="col-md-6" style="text-align: end;">
-                    <button id="add-fielddd" onclick="ForwardCopy()" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
-                    <span data-bs-toggle="tooltip" data-bs-placement="top" >
-                        <i class="fas fa-plus"></i>
-                    </span>
-                    </button>
-                </div>
+
                 <div id="dynamic-fielddds">
              <div class="row" id="fielddd-1">
                 <div class="col-lg-6">
@@ -170,15 +208,24 @@
                         <input type="text" id="copy_forwarded" class="form-control form-control-solid" placeholder="Copy of Forwarded" name="forwarded_copies[0][copy_forwarded]" required>
                     </div>
                 </div>
+                <div class="col-md-6" style="text-align: end;">
+                    <button type="button" id="add-fielddd" onclick="ForwardCopy()" class="btn btn btn-icon btn-primary text-white hide-arrow ps-2 pe-0">
+                    <span >
+                        <i class="fas fa-plus"></i>
+                    </span>
+                    </button>
+                </div>
             </div>
         </div>
 
                 <hr>
                 <div class="col-md-12" style="text-align: center;">
                     <button  type="submit" name="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save As Draft</button>
-                    <button  type="submit" name="submit"     class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save & Submit</button>
-                    <a href="{{ route('forms') }}"
-                    class="btn btn-secondary btn-active-light-primary">{{ __('messages.common.cancel') }}</a>
+                    <button  type="reset" name="reset"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Reset</button>
+                    {{-- <button  type="submit" name="submit"     class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save & Submit</button> --}}
+                    {{-- <a href="{{ route('forms') }}"
+                    class="btn btn-secondary btn-active-light-primary">{{ __('messages.common.cancel') }}
+                </a> --}}
                 </div>
             </div>
 
@@ -203,29 +250,32 @@
         // document.getElementById('add-field').addEventListener('click', function() {
             fieldCounter++;
             const newField = `
-                <div class="row" id="field-${fieldCounter}" style="display:flex;flex-direction:column;justify-content:center;align-items:center;">
-                    <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="designation" class="form-label required mb-2">Designation</label>
-                        <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" name="designation[${fieldCounter}][designation]" required>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="department" class="form-label required mb-2">Department</label>
-                        <input type="text" id="department"  class="form-control form-control-solid" placeholder="Department" name="designation[${fieldCounter}][department]" required>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="address" class="form-label required mb-2">Address</label>
-                        <input type="text" id="address" class="form-control form-control-solid" placeholder="Address" name="designation[${fieldCounter}][address]" required>
-                    </div>
-                </div>
-                <div class="col-lg-6">
+                <div class="row" id="field-${fieldCounter}" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
+
+
+                <div class="col-lg-2">
                     <div class="mb-5">
-                        <label for="contact" class="form-label mb-2">Phone</label>
-                        <input type="text" id="contact" class="form-control form-control-solid" placeholder="Contact" name="designation[${fieldCounter}][contact]" >
+                        <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" name="designation[0][designation]" required>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mb-5">
+                        <input type="text" id="department"  class="form-control form-control-solid" placeholder="Department" name="designation[0][department]" required>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mb-5">
+                        <input type="text" id="address" class="form-control form-control-solid" placeholder="Address" name="designation[0][address]" required>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mb-5">
+                        <input type="text" id="contact" class="form-control form-control-solid" placeholder="Contact" name="designation[0][contact]" >
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mb-5">
+                        <input type="hidden" id="designation" class="form-control form-control-solid">
                     </div>
                 </div>
                 </div>`;

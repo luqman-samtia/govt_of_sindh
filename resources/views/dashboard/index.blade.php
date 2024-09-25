@@ -9,7 +9,7 @@
                 <div class="col-12">
                     <div class="row">
                         {{-- Clients Widget --}}
-                        <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
+                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
                             <a href="" class="mb-xl-8 text-decoration-none">
                                 <div
                                     class="bg-primary shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
@@ -26,68 +26,12 @@
                                 </div>
                             </a>
                         </div>
-                        {{-- Total Invoices Amount Widget --}}
-                        {{-- <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
-                            <a href="{{ route('currency.reports') }}" class="mb-xl-8 text-decoration-none">
-                                <div
-                                    class="bg-success shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-center my-3">
-                                    <div class="text-white mt-3 text-center">
-                                        <h2 class="fs-1-xxl fw-bolder text-white">
-                                            {{ __('messages.admin_dashboard.total_amount') }}
-                                        </h2>
-                                        <span class="text-white">{{ __('messages.common.click_here') }}</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div> --}}
-                        {{-- Recieved Amount Widget --}}
-                        {{-- <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
-                            <a href="{{ route('currency.reports') }}" class="mb-xl-8 text-decoration-none">
-                                <div
-                                    class="bg-info shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-center my-3">
-                                    <div class="text-white mt-3 text-center">
-                                        <h2 class="fs-1-xxl fw-bolder text-white">
-                                            {{ __('messages.admin_dashboard.total_paid') }}
-                                        </h2>
-                                        <span class="text-white">{{ __('messages.common.click_here') }}</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div> --}}
-                        {{-- Partially Paid Widget --}}
-                        {{-- <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
-                            <a href="{{ route('currency.reports') }}" class="mb-xl-8 text-decoration-none">
-                                <div
-                                    class="bg-yellow-300 shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-center my-3">
-                                    <div class="text-white mt-3 text-center">
-                                        <h2 class="fs-1-xxl fw-bolder text-white">
-                                            {{ __('messages.admin_dashboard.total_due') }}
-                                        </h2>
-                                        <span class="text-white">{{ __('messages.common.click_here') }}</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div> --}}
-                        {{-- Products Widget --}}
-                        {{-- <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
-                            <a href="{{ route('products.index') }}" class="mb-xl-8 text-decoration-none">
-                                <div
-                                    class="bg-secondary shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
-                                    <div
-                                        class="bg-gray-200 widget-icon rounded-10 d-flex align-items-center justify-content-center">
-                                        <i class="fas fa-cube card-icon text-dark"></i>
-                                    </div>
-                                    <div class="text-end text-dark">
-                                        <h2 class="fs-1-xxl fw-bolder text-dark">{{ formatTotalAmount($total_products) }}
-                                        </h2>
-                                        <h3 class="mb-0 fs-4 fw-light">{{ __('messages.admin_dashboard.total_products') }}
-                                        </h3>
-                                    </div>
-                                </div>
-                            </a>
-                        </div> --}}
+
+
+
+
                         {{-- Total Invoices Widget --}}
-                        <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
+                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
                             <a href="" class="mb-xl-8 text-decoration-none">
                                 <div
                                     class="bg-danger shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
@@ -99,6 +43,40 @@
                                         <h2 class="fs-1-xxl fw-bolder text-white">{{ formatTotalAmount($total_invoices) }}
                                         </h2>
                                         <h3 class="mb-0 fs-4 fw-light">{{ __('Total Files') }}
+                                        </h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
+                            <a href="" class="mb-xl-8 text-decoration-none">
+                                <div
+                                    class="bg-danger shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
+                                    <div
+                                        class="bg-red-300 widget-icon rounded-10 d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-file-invoice card-icon text-white"></i>
+                                    </div>
+                                    <div class="text-end text-white">
+                                        <h2 class="fs-1-xxl fw-bolder text-white">{{ formatTotalAmount($total_invoices) }}
+                                        </h2>
+                                        <h3 class="mb-0 fs-4 fw-light">{{ __('Total Letter') }}
+                                        </h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
+                            <a href="" class="mb-xl-8 text-decoration-none">
+                                <div
+                                    class="bg-danger shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
+                                    <div
+                                        class="bg-red-300 widget-icon rounded-10 d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-file-invoice card-icon text-white"></i>
+                                    </div>
+                                    <div class="text-end text-white">
+                                        <h2 class="fs-1-xxl fw-bolder text-white">{{ formatTotalAmount($total_invoices) }}
+                                        </h2>
+                                        <h3 class="mb-0 fs-4 fw-light">{{ __('Total Order') }}
                                         </h3>
                                     </div>
                                 </div>

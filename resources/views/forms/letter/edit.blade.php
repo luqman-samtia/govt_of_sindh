@@ -20,7 +20,7 @@
                 {{ session('error') }}
             </h6>
                     @endif
-                    @if ($errors->any())
+     @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
         @foreach ($errors->all() as $error)
@@ -33,77 +33,93 @@
                 @csrf
                 @method('PUT')
 
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="mb-5">
-                        <label for="letter_no" class="form-label required mb-3">Letter No</label>
-                        <input type="text" id="letter_no" value="{{$letter->letter_no}}" class="form-control form-control-solid" placeholder="Letter No" name="letter_no" required>
+                <div class="row">
+                    <div class="col-lg-2 col-md-2 col-sm-4">
+                        <div class="mb-5">
+                            {{-- <label for="letter_no" class="form-label"></label> --}}
+                            {{-- <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$newLetterNo}}" placeholder="Letter No" name="letter_no" readonly> --}}
+                            <img src="{{asset('storage/qr-codes/download4.jpeg')}}" class="form-control form-control-solid" alt="GOVT OF SINDH" width="" style="width: 150px;background:none;border:none">
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-5 col-sm-4">
+                        <div class="mb-5" style="text-align:left;justify-content:center;">
+                            {{-- <label for="letter_no" class="form-label mt-3"></label> --}}
+                            {{-- <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$newLetterNo}}" placeholder="Letter No" name="letter_no" readonly> --}}
+                            <h4 class="form-control form-control-solid" style="background:none;border:none">ANTI-CORRUPTION ESTABLISHMENT SINDH</h4>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-4">
+                        <div class="mb-5">
+                            {{-- <label for="letter_no" class="form-label required mb-3">Letter No</label> --}}
+                            <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$letter->letter_no}}" placeholder="Letter No" name="letter_no" readonly>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-sm-4">
+                        <div class="mb-5">
+                            {{-- <label for="date" class="form-label required mb-3">Date</label> --}}
+                            <input type="text" id="date" value="{{date(Auth::user()->date)}}"  class="form-control form-control-solid" placeholder="Date" name="date" readonly>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="mb-5">
-                        <label for="head_title" class="form-label required mb-3">Head Title</label>
-                        <input type="text" id="head_title" value="{{$letter->head_title}}" class="form-control form-control-solid" placeholder="Head Title" name="head_title" required>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="mb-5">
-                        <label for="fix_address" class="form-label required mb-3">Address</label>
-                        <input type="text" id="fix_address" value="{{$letter->fix_address}}" class="form-control form-control-solid" placeholder="Address" name="fix_address" required>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="mb-5">
-                        <label for="date" class="form-label required mb-3">Date</label>
-                        <input type="text" id="date" value="{{$letter->date}}"  class="form-control form-control-solid" placeholder="Date" name="date" required>
-                    </div>
-                </div>
-                <hr>
-                <h4>To,</h4>
 
-                <div class="col-md-12" style="text-align: end;">
+            <div class="row">
+                {{-- <hr>
+                <h4>To,</h4> --}}
+
+                {{-- <div class="col-md-12" style="text-align: end;">
                     <button type="button" onclick="addRecipient()" id="add-field" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0" name="designation">
                     <span data-bs-toggle="tooltip" data-bs-placement="top"  >
                         <i class="fas fa-plus"></i>
                     </span>
                     </button>
+                </div> --}}
+                <div class="col-lg-2 mb-5">
+                    <div class="mb-5 ">
+                        <h4 style="margin-top:10px">To,</h4>
+                    </div>
                 </div>
             <div id="dynamic-fields">
                 {{-- @if(isset($letter) && $letter->toLetters->count() > 0) --}}
                 @foreach($letter->designations as $index => $toLetter)
 
-            <div class="row" id="field-1" style="display:flex;flex-direction:column;justify-content:center;align-items:center;">
-                <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="designation" class="form-label required mb-2">Designation</label>
+            <div class="row" id="field-1" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
+                <div class="col-lg-2">
+                    <div class="mb-5">
                         <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" value="{{ $toLetter->designation }}" name="designation[{{$index}}][designation]" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="department" class="form-label required mb-2">Department</label>
+                <div class="col-lg-2">
+                    <div class="mb-5">
                         <input type="text" id="department"  class="form-control form-control-solid" placeholder="Department" value="{{ $toLetter->department }}" name="designation[{{$index}}][department]" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="address" class="form-label required mb-2">Address</label>
+                <div class="col-lg-2">
+                    <div class="mb-5">
                         <input type="text" id="address" class="form-control form-control-solid" placeholder="Address" value="{{ $toLetter->address }}" name="designation[{{$index}}][address]" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-2">
                     <div class="mb-5">
-                        <label for="contact" class="form-label mb-2">Phone</label>
                         <input type="text" id="contact" class="form-control form-control-solid" placeholder="Contact" value="{{ $toLetter->contact }}" name="designation[{{$index}}][contact]" >
                     </div>
                 </div>
+                <div class="col-lg-2">
+                    <div class="mb-5">
+                     <button type="button" onclick="addRecipient()" id="add-field" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
+                         <span data-bs-toggle="tooltip" data-bs-placement="top" >
+                             <i class="fas fa-plus"></i>
+                         </span>
+                  </button>
+                    </div>
+                 </div>
             </div>
             @endforeach
             </div>
 
-                <hr>
-                <h4>Subject:</h4>
-                <div class="col-lg-12">
+                {{-- <hr>
+                <h4>Subject:</h4> --}}
+               <div class="row" style="display:flex:flex-direction:row">
+                <div class="col-lg-10 mt-5">
                     <div class="mb-5">
                         <label for="subject" class="form-label required mb-3">Subject</label>
                         <input type="text" id="subject" class="form-control form-control-solid" placeholder="Subject" value="{{$letter->subject}}" name="subject" required>
@@ -123,6 +139,7 @@
                         </select>
                     </div>
                 </div>
+               </div>
                 <hr>
                 <div class="col-lg-12">
                     <div class="mb-5">
@@ -132,13 +149,13 @@
                     </div>
                 </div>
                 <hr>
-                 <div class="col-md-12" style="text-align: end;">
+                 {{-- <div class="col-md-12" style="text-align: end;">
                     <button type="button" onclick="signing_authority()" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0" id="add-fieldd" name="signing">
                 <span data-bs-toggle="tooltip" data-bs-placement="top"  >
                     <i class="fas fa-plus"></i>
                 </span>
             </button>
-                </div>
+                </div> --}}
                 <div id="dynamic-fieldds">
                     @foreach ($letter->signingAuthorities as $index => $signing_authority)
 
@@ -146,19 +163,19 @@
                     <div class="row" id="fieldd-1">
                         <div class="col-lg-4">
                             <div class="mb-5">
-                                <label for="s_a_name" class="form-label  mb-3">Signing Authority Name</label>
+                                {{-- <label for="s_a_name" class="form-label  mb-3">Signing Authority Name</label> --}}
                                 <input type="text" id="s_a_name" class="form-control form-control-solid" placeholder="S A Name" value="{{$signing_authority->name}}" name="signing_authorities[{{$index}}][sa_name]" >
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="mb-5">
-                                <label for="s_a_designation" class="form-label  mb-3">Signing Authority Designation</label>
+                                {{-- <label for="s_a_designation" class="form-label  mb-3">Signing Authority Designation</label> --}}
                                 <input type="text" id="s_a_designation" class="form-control form-control-solid" placeholder="S A Designation" value="{{$signing_authority->designation}}" name="signing_authorities[{{$index}}][sa_designation]" >
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="mb-5">
-                                <label for="s_a_department" class="form-label  mb-3">Department</label>
+                                {{-- <label for="s_a_department" class="form-label  mb-3">Department</label> --}}
                                 <input type="text" id="s_a_department" class="form-control form-control-solid" placeholder="Department" value="{{$signing_authority->department}}" name="signing_authorities[{{$index}}][sa_department]" >
                             </div>
                         </div>
@@ -173,11 +190,11 @@
 
                  {{-- add more button --}}
 
-                <div class="col-md-6">
-                    <input type="checkbox" name="forwarded_copy" id="forwarded_copy" > A copy is forwarded for similar compliance :-
-                </div>
+                 <div class="col-md-6 mb-5">
+                    A copy is forwarded for similar compliance :-
+               </div>
                 <div class="col-md-6" style="text-align: end;">
-                    <button id="add-fielddd" onclick="ForwardCopy()" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0" name="copy">
+                    <button type="button" id="add-fielddd" onclick="ForwardCopy()" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0" name="copy">
                     <span data-bs-toggle="tooltip" data-bs-placement="top"  >
                         <i class="fas fa-plus"></i>
                     </span>
@@ -202,13 +219,40 @@
                     <input type="file" name="signed_letter" id="signed_letter" accept=".pdf">
                 </div> --}}
                 <div class="col-md-12" style="text-align: center;">
-                    <button  type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save As Draft</button>
-                    <button  type="submit" name="action" value="submit"    class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save & Submit</button>
-                    <a href="{{ route('forms') }}"
-                    class="btn btn-secondary btn-active-light-primary">{{ __('messages.common.cancel') }}</a>
+                    <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
+                    <a  type="button" name="" value=""  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
+                    <button  type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
+                    <button  type="button" name="" value=""    class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
+                    {{-- <a href="{{ route('forms') }}"
+                    class="btn btn-secondary btn-active-light-primary">{{ __('messages.common.cancel') }}
+                    </a> --}}
                 </div>
             </div>
-
+            <script>
+                function downloadPdf(url) {
+                              var xhr = new XMLHttpRequest();
+                              xhr.open('GET', url, true);
+                              xhr.responseType = 'blob';
+                              xhr.onload = function() {
+                                  if (xhr.status === 200) {
+                                      var blob = new Blob([xhr.response], {type: 'application/pdf'});
+                                      var link = document.createElement('a');
+                                      link.href = window.URL.createObjectURL(blob);
+                                      link.download = 'letter-' + '{{ $letter->letter_no }}' + '.pdf';
+                                      link.click();
+                                    //   fetch('/forms/letter-form/{{$letter->id}}/edit')
+                                    //   .then(response => response.text())
+                                    //   .then(formUrl => {
+                                    //       window.location.href = formUrl;
+                                    //   });
+                                    //   window.location.href = '{{ URL::previous() }}'; // Redirect back to previous page
+                                    //   window.location.href = "{{ route('forms.letter.edit',$letter->id) }}";
+                                    window.location.href = "{{ route('forms.letter.edit', $letter->id) }}";
+                                  }
+                              };
+                              xhr.send();
+                          }
+            </script>
         </form>
         <hr>
         <form action="{{ route('letter.upload', $letter->id) }}" method="POST" enctype="multipart/form-data" style="margin-top: 10px;">
@@ -237,34 +281,37 @@
 @endif --}}
 <script>
  CKEDITOR.replace('draft_para');
+
+
     function addRecipient(){
         let fieldCounter = 0;
         // document.getElementById('add-field').addEventListener('click', function() {
             fieldCounter++;
             const newField = `
-                <div class="row" id="field-${fieldCounter}" style="display:flex;flex-direction:column;justify-content:center;align-items:center;">
-                    <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="designation" class="form-label required mb-2">Designation</label>
+                <div class="row" id="field-${fieldCounter}" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
+                    <div class="col-lg-2">
+                    <div class="mb-5">
                         <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" name="designation[${fieldCounter}][designation]" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="department" class="form-label required mb-2">Department</label>
+                <div class="col-lg-2">
+                    <div class="mb-5">
                         <input type="text" id="department"  class="form-control form-control-solid" placeholder="Department" name="designation[${fieldCounter}][department]" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="mb-1">
-                        <label for="address" class="form-label required mb-2">Address</label>
+                <div class="col-lg-2">
+                    <div class="mb-5">
                         <input type="text" id="address" class="form-control form-control-solid" placeholder="Address" name="designation[${fieldCounter}][address]" required>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-2">
                     <div class="mb-5">
-                        <label for="contact" class="form-label mb-2">Phone</label>
                         <input type="text" id="contact" class="form-control form-control-solid" placeholder="Contact" name="designation[${fieldCounter}][contact]" >
+                    </div>
+                </div>
+                 <div class="col-lg-2">
+                    <div class="mb-5">
+                        <input type="hidden" id="designation" class="form-control form-control-solid">
                     </div>
                 </div>
                 </div>`;
