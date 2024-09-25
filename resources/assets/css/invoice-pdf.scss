@@ -1,0 +1,694 @@
+// New York PDF CSS
+.invoice-header {
+    text-align: left;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+.border-top {
+    border-top: 1px solid #83b130 !important;
+}
+.border-bottom {
+    border-bottom: 1px solid #83b130 !important;
+}
+
+.border-bottom-gray {
+    border-bottom: 1px solid #c0c0c0 !important;
+}
+
+.border-0 {
+    border: 0px solid white !important;
+}
+.product-table,
+.total-table {
+    margin: 0;
+    tr {
+        th,
+        td {
+            border: 0px solid white !important;
+            padding: 6px 0 !important;
+        }
+    }
+}
+.text-end {
+    text-align: right !important;
+}
+.companylogo {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+.invoice-header-inner {
+    text-align: right;
+}
+
+.invoice-header-inner h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.details-section {
+    margin-bottom: 3rem;
+}
+
+.invoice-header p {
+    color: #555;
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.text-color {
+    color: #999999;
+}
+
+.invoice-date {
+    padding: 15px 0;
+    border-top: 1px solid #c0c0c0;
+    border-right: 1px solid #c0c0c0;
+    border-bottom: 1px solid #c0c0c0;
+}
+
+.billedto {
+    padding: 15px 20px;
+    border-top: 1px solid #c0c0c0;
+    border-right: 1px solid #c0c0c0;
+    border-bottom: 1px solid #c0c0c0;
+}
+
+.from {
+    padding: 15px 20px;
+    border-top: 1px solid #c0c0c0;
+    border-left: 1px solid #c0c0c0;
+    border-bottom: 1px solid #c0c0c0;
+}
+
+.notes-terms {
+    margin-top: 2rem;
+    padding: 0 15px;
+}
+
+.regards {
+    margin-top: 2rem;
+    padding: 0 15px;
+}
+
+// Default PDF CSS styles
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Lato", DejaVu Sans, sans-serif;
+    padding: 30px;
+    font-size: 14px;
+}
+
+.object-contain {
+    object-fit: contain;
+}
+
+.font-color-gray {
+    color: #7a7a7a;
+}
+
+.main-heading {
+    font-size: 34px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.header-right {
+    text-align: right;
+    vertical-align: top;
+}
+
+.logo,
+.company-name {
+    margin-bottom: 8px;
+    margin-left: 18px;
+}
+
+.font-weight-bold {
+    font-weight: bold;
+}
+
+.address {
+    margin-top: 60px;
+}
+
+.address tr:first-child td {
+    padding-bottom: 10px;
+}
+
+.d-items-table {
+    width: 100%;
+    border: 0;
+    border-collapse: collapse;
+    margin-top: 40px;
+}
+
+.d-items-table thead {
+    background: #2f353a;
+    color: #fff;
+}
+
+.d-items-table td,
+.d-items-table th {
+    padding: 8px;
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+    vertical-align: top;
+}
+
+.d-invoice-footer {
+    margin-top: 15px;
+    width: 80%;
+    float: right;
+    text-align: right;
+}
+
+.items-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+}
+
+.items-table td,
+.items-table th {
+    padding: 8px;
+    font-size: 14px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.invoice-footer {
+    margin-top: 15px;
+    width: 100%;
+    text-align: right;
+}
+
+.number-align {
+    text-align: right !important;
+}
+
+.invoice-currency-symbol {
+    font-family: "DejaVu Sans";
+}
+
+.vertical-align-top {
+    vertical-align: text-top;
+}
+
+.tu {
+    text-transform: uppercase;
+}
+
+.l-col-66 {
+    width: 100%;
+}
+
+.thank {
+    font-size: 45px;
+    line-height: 1.2em;
+    text-align: center;
+    font-style: italic;
+    padding-right: 25px;
+}
+
+.to-font-size {
+    font-size: 15px;
+}
+
+.from-font-size {
+    font-size: 15px;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: unset !important;
+}
+
+.right-align {
+    text-align: right !important;
+}
+
+.border-b {
+    border-bottom: 1px solid #000000;
+}
+.border-t {
+    border-top: 1px solid #000000;
+}
+.bg-black {
+    background-color: #000000;
+}
+.bg-gray {
+    background-color: #eaebec;
+}
+.bg-gray-100 {
+    background-color: #f2f2f2;
+}
+.bg-danger {
+    background-color: #d71920;
+}
+.bg-purple {
+    background-color: #b57ebf;
+}
+.text-purple {
+    color: #b57ebf;
+}
+.border-b-gray {
+    border-bottom: 1px solid #bbbdbf;
+}
+.ps-5rem {
+    padding-left: 5rem;
+}
+.header-section {
+    position: relative;
+    overflow: hidden;
+    &::after {
+        position: absolute;
+        content: "";
+        width: 116%;
+        height: 100%;
+        background-color: white;
+        top: 0;
+        left: -53px;
+        transform: skew(35deg);
+        z-index: 0;
+    }
+    table {
+        position: relative;
+        z-index: 2;
+    }
+    .invoice-text {
+        position: relative;
+        &::after {
+            position: absolute;
+            content: "";
+            width: 29%;
+            height: 100%;
+            background-color: white;
+            top: 0;
+            left: 95%;
+            transform: skew(36deg);
+        }
+    }
+}
+.table-striped {
+    thead {
+        background-color: #f8f9fa;
+    }
+    tbody tr:nth-child(even) {
+        background-color: #f8f9fa;
+    }
+}
+.bg-light {
+    background-color: #f8f9fa;
+}
+
+//istanbulTemplate
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+.istanbul-template {
+    font-family: "Inter", sans-serif;
+    strong {
+        font-weight: bold;
+    }
+    .top-line {
+        height: 30px;
+        width: 100%;
+        background-color: #fb3f01;
+        position: relative;
+        overflow: hidden;
+        &::after {
+            position: absolute;
+            content: "";
+            width: 58%;
+            height: 100%;
+            background-color: #0e1c45;
+            top: 0;
+            right: -15px;
+            transform: skew(35deg);
+            z-index: 0;
+        }
+    }
+    .invoice-header {
+        .heading-text {
+            position: relative;
+            z-index: 2;
+            width: 60%;
+        }
+        .text-after {
+            position: absolute;
+            width: 100%;
+            height: 100px;
+            background-color: #0e1c45;
+            top: 0px;
+            left: 110px;
+            transform: skew(35deg);
+            z-index: 0;
+        }
+        .text-before {
+            position: absolute;
+            width: 120px;
+            height: 40px;
+            background-color: #fb3f01;
+            top: 0px;
+            left: 54px;
+            transform: skew(35deg);
+        }
+    }
+    .address {
+        margin-top: 0px;
+        overflow: hidden;
+        position: relative;
+    }
+    .address-after {
+        margin-top: 0px;
+        position: relative;
+        width: 45px;
+        height: 65px;
+        background-color: #fb3f01;
+        top: 0px;
+        left: 100%;
+        transform: skew(35deg);
+        z-index: 0;
+    }
+    .invoice-table {
+        border-bottom: 0.5px solid #c6c6c6;
+        thead {
+            background-color: #fb3f01;
+            color: white;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #ededed;
+        }
+    }
+    .bottom-line {
+        height: 30px;
+        width: 100%;
+        background-color: #fb3f01;
+        position: relative;
+        overflow: hidden;
+        &::after {
+            position: absolute;
+            content: "";
+            width: 62%;
+            height: 100%;
+            background-color: #0e1c45;
+            top: 0;
+            left: -15px;
+            transform: skew(35deg);
+            z-index: 0;
+        }
+    }
+}
+.font-gray-900 {
+    color: #1a1c21 !important;
+}
+.font-gray-600 {
+    color: #5e6470 !important;
+}
+.font-orange {
+    color: #fb3f01;
+}
+.border-top-gray {
+    border-top: 1px solid #c6c6c6;
+}
+.z-10 {
+    z-index: 10;
+}
+.px-10 {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+// mumbaiTemplate
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
+.h-25px {
+    height: 20px;
+}
+.h-125px {
+    height: 100px;
+}
+.mumbai-template {
+    font-family: "Open Sans", sans-serif;
+    .top-border {
+        width: 100%;
+        height: 10px;
+        background-color: #3f478b;
+    }
+    .bottom-border {
+        width: 100%;
+        height: 10px;
+        background-color: #3f478b;
+    }
+    .heading-text {
+        background-color: #3f478b;
+    }
+    .invoice-table {
+        font-family: "Inter", sans-serif;
+        border-bottom: 0.5px solid #c6c6c6;
+        thead {
+            background-color: #3f478b;
+            color: white;
+            th {
+                &:first-child {
+                    border-top-left-radius: 6px;
+                    border-bottom-left-radius: 6px;
+                }
+                &:last-child {
+                    border-top-right-radius: 6px;
+                    border-bottom-right-radius: 6px;
+                }
+            }
+        }
+        tbody tr:nth-child(even) {
+            background-color: #ededed;
+        }
+    }
+    .total-amount {
+        background-color: #3f478b;
+        color: white;
+        border-radius: 6px;
+        td {
+            &:first-child {
+                border-top-left-radius: 6px;
+                border-bottom-left-radius: 6px;
+            }
+            &:last-child {
+                border-top-right-radius: 6px;
+                border-bottom-right-radius: 6px;
+            }
+        }
+    }
+}
+.text-indigo {
+    color: #3f478b;
+}
+
+//  hongKongTemplate
+.hongkong-template {
+    font-family: "Open Sans", sans-serif;
+    strong {
+        font-weight: bold;
+    }
+
+    .invoice-header {
+        .heading-text {
+            position: relative;
+            &::after {
+                position: absolute;
+                content: "";
+                width: 2px;
+                height: 110px;
+                background-color: #272228;
+                right: -6px;
+                top: 14px;
+            }
+            h1 {
+                background-color: #f18a1b;
+                padding: 5px 15px;
+                color: white;
+                position: relative;
+                &::before {
+                    position: absolute;
+                    content: "";
+                    width: 95%;
+                    height: 2px;
+                    background-color: #272228;
+                    top: -6px;
+                    left: 35px;
+                }
+            }
+        }
+        .h1-after {
+            position: relative;
+            width: 95%;
+            height: 2px;
+            background-color: #272228;
+            bottom: -3px;
+            left: 35px;
+        }
+    }
+
+    .invoice-table {
+        border-bottom: 0.5px solid #c6c6c6;
+        thead {
+            background-color: #f18a1b;
+            color: white;
+        }
+    }
+}
+.text-yellow {
+    color: #f18a1b;
+}
+
+.tokyo-template {
+    font-family: "Open Sans", sans-serif;
+    strong {
+        font-weight: bold;
+    }
+    .heading-text {
+        h1 {
+            font-size: 36px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            @media (max-width: 424px) {
+                font-size: 24px;
+            }
+        }
+    }
+    .invoice-table {
+        thead {
+            text-transform: uppercase;
+            background-color: #363b45;
+            color: white;
+            tr {
+                th {
+                    padding: 10px;
+                }
+            }
+        }
+        tbody {
+            tr {
+                td {
+                    border-bottom: 0.5px solid #bbbdbf;
+                    padding: 10px;
+                    &:nth-child(1) {
+                        width: 5%;
+                    }
+                    &:nth-child(2) {
+                        width: 60%;
+                    }
+                    &:nth-child(1),
+                    &:nth-child(4),
+                    &:nth-child(6) {
+                        background-color: #eaebec;
+                    }
+                }
+            }
+        }
+    }
+    .total-amount {
+        border-top: 1px solid #363b45;
+    }
+}
+.font-dark-gray {
+    color: #363b45;
+}
+
+//parisTemaplate
+.paris-template {
+    font-family: "Open Sans", sans-serif;
+    .heading-table {
+        position: relative !important;
+        z-index: 2;
+    }
+    .top-border {
+        position: relative !important;
+        width: 120%;
+        height: 20px;
+        background-color: #373b46;
+        margin-top: -20px;
+        left: -10%;
+        z-index: -1;
+    }
+
+    .heading-text {
+        padding: 0;
+        h1 {
+            background-color: #9dc23b;
+            padding: 40px 20px;
+            font-size: 36px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            display: inline-block;
+            @media (max-width: 496px) {
+                padding: 40px 12px;
+                font-size: 24px;
+            }
+            @media (max-width: 424px) {
+                font-size: 24px;
+            }
+        }
+    }
+    .invoice-table {
+        border-bottom: 0.5px solid #c6c6c6;
+        thead {
+            background-color: #9dc23b;
+            color: white;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #ededed;
+        }
+    }
+    .total-amount {
+        background-color: #9dc23b;
+        color: white;
+    }
+    .qr-code-table {
+        position: relative;
+        z-index: 9 !important;
+    }
+    .bottom-border {
+        width: 120%;
+        height: 30px;
+        background-color: #000000;
+        margin-top: -31px;
+        left: -10%;
+        bottom: 0px;
+    }
+    .qr-code {
+        width: 100px !important;
+        height: 120px !important;
+        min-height: 120px;
+        padding: 15px 70px 45px 40px;
+        background-color: #9dc23b;
+        display: inline-block;
+        border-top-right-radius: 70px;
+        position: relative;
+        z-index: 2 !important;
+        @media (max-width: 375px) {
+            padding: 20px 45px 20px 25px;
+            background-color: #9dc23b;
+            border-top-right-radius: 50px;
+        }
+        .after-content {
+            position: absolute;
+            width: 60px;
+            height: 40px;
+            background-color: #748e3b;
+            // margin-top: -80px;
+            right: -20px;
+            bottom: 31px;
+            // left: 25%;
+            // bottom: -10px;
+            transform: skew(56deg);
+        }
+    }
+}
+.text-green {
+    color: #9dc23b;
+}

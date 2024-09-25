@@ -1,0 +1,19 @@
+.iti__country-list {
+    position: absolute;
+    z-index: 2;
+    list-style: none;
+    text-align: left;
+    padding: 0;
+    margin: 0 0 0 -1px;
+    box-shadow: 1px 1px 4px rgb(0 0 0 / 20%);
+    background-color: #060917!important;
+    border: 1px solid #6C757D!important;
+    white-space: nowrap;
+    max-height: 200px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.country-code .iti--separate-dial-code .iti__flag-container .iti__selected-flag {
+    background-color: black !important;
+}

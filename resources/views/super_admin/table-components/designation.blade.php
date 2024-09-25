@@ -1,0 +1,1 @@
+<div>{{ $row->designation }}</div>

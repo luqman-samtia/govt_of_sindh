@@ -1,0 +1,44 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.2.1",
+        "alpinejs": "^2.7.3",
+        "autoprefixer": "^10.1.0",
+        "axios": "^1.7.7",
+        "handlebars": "^4.7.7",
+        "izitoast": "^1.4.0",
+        "jsrender": "^1.0.5",
+        "laravel-mix": "^6.0.6",
+        "lodash": "^4.17.19",
+        "postcss": "^8.2.1",
+        "postcss-import": "^16.1.0",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.36.0",
+        "sass-loader": "^12.1.0",
+        "tailwindcss": "^2.0.2"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^6.1.1",
+        "@hotwired/turbo": "^7.1.0",
+        "@simonwep/pickr": "^1.7.4",
+        "alpinejs": "^3.10.2",
+        "bootstrap": "^5.3.3",
+        "chart.js": "^3.6.2",
+        "daterangepicker": "^3.1.0",
+        "flatpickr": "^4.6.13",
+        "intl-tel-input": "^17.0.13",
+        "js-datepicker": "^5.18.0",
+        "moment": "^2.29.1",
+        "tinymce": "^7.3.0",
+        "toastr": "^2.1.4"
+    }
+}
