@@ -43,6 +43,22 @@ class FormController extends Controller
         return view('super_admin.total_letters',compact('letters','users_form','draft','data'));
 
     }
+    public function SuperAdminTotalDraftLetter()
+    {
+        $totalLetters = Letter::count();
+        $users_form = Letter::withCount('user')->get();
+        // $letters = Letter::where('is_submitted',0)->get();
+        $letters = Letter::with('user')
+            ->where('is_submitted', 0)
+            ->get();
+        // $draft = Letter::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+        return view('super_admin.total_draft',compact('letters','users_form','data'));
+
+    }
 
     // total user letter
 

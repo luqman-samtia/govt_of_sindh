@@ -3,17 +3,17 @@
     {{ __('messages.dashboard') }}
 @endsection
 @section('content')
-@if(session('message'))
-<h6 class="alert alert-success">
-    {{ session('message') }}
-</h6>
-        @endif
-        @if(session('error'))
-<h6 class="alert alert-danger">
-    {{ session('error') }}
-</h6>
-        @endif
 <div class="container-fluid">
+    @if(session('message'))
+    <span class="alert alert-success">
+        {{ session('message') }}
+    </span>
+            @endif
+            @if(session('error'))
+    <span class="alert alert-danger">
+        {{ session('error') }}
+    </span>
+            @endif
     <div class="d-flex flex-column">
         <div class="row">
             <div class="col-12 mb-4">
@@ -80,7 +80,7 @@
                         </a>
                     </div>
                     <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
-                        <a href=""
+                        <a href="{{route('super.admin.total.draft.letters')}}"
                            class="mb-xl-8 text-decoration-none">
 
                             <div

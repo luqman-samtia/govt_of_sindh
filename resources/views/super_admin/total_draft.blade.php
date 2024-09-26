@@ -5,7 +5,9 @@
 
 @endsection
 @section('content')
-@if(session('message'))
+
+<div class="container-fluid">
+    @if(session('message'))
 <h6 class="alert alert-success">
     {{ session('message') }}
 </h6>
@@ -15,7 +17,6 @@
     {{ session('error') }}
 </h6>
         @endif
-<div class="container-fluid">
     <div class="d-flex flex-column">
         <div class="row">
             <div class="col-12 mb-4">
@@ -38,7 +39,7 @@
                         </a>
                     </div>
                     <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
-                        <a href=""
+                        <a href="{{route('super.admin.total.letters')}}"
                         class="mb-xl-8 text-decoration-none">
 
                         <div
@@ -92,7 +93,7 @@
                                     <i class="fas fa-file-invoice card-icon text-white"></i>
                                 </div>
                                 <div class="text-end text-white">
-                                    <h2 class="fs-1-xxl fw-bolder text-white">{{count($draft)}}</h2>
+                                    <h2 class="fs-1-xxl fw-bolder text-white">{{count($letters)}}</h2>
                                     <h3 class="mb-0 fs-4 fw-light">{{ __('Total Drafts') }}</h3>
                                 </div>
                             </div>
@@ -105,7 +106,7 @@
                     <div class="card mt-3">
                         <div class="card-body p-5">
                             <div class="card-header border-0 pt-5">
-                                <h3 class="mb-0">{{  __('Total Letters') }}</h3>
+                                <h3 class="mb-0">{{  __('Total Drafts') }}</h3>
                                 <div class="ms-auto">
                                     <div id="rightData" class="date-picker-space">
                                         {{-- <input class="form-control removeFocus" id="super_admin_time_range"> --}}
@@ -206,7 +207,7 @@
 
 
                             @else
-                            <span class="badge bg-light-danger fs-7"> Saved
+                            <span class="badge bg-light-danger fs-7"> Issued
                             @endif
                             </span>
                          </td>

@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Hash;
 use Laracasts\Flash\Flash;
 use Stancl\Tenancy\Database\TenantScope;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use App\Models\Letter;
+
 
 class UserController extends AppBaseController
 {
@@ -44,7 +46,18 @@ class UserController extends AppBaseController
 
     public function index(): \Illuminate\View\View
     {
-        return view('users.index');
+        $totalLetters = Letter::count();
+        $users_form = Letter::withCount('user')->get();
+        // $letters = Letter::where('is_submitted',0)->get();
+        $letters = Letter::with('user')
+            ->where('is_submitted', 0)
+            ->get();
+        // $draft = Letter::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+        return view('users.index',compact('letters','data','users_form'));
     }
 
     public function create(): \Illuminate\View\View
