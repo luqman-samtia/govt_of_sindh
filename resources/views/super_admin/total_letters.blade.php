@@ -5,7 +5,9 @@
 
 @endsection
 @section('content')
-@if(session('message'))
+
+<div class="container-fluid">
+    @if(session('message'))
 <h6 class="alert alert-success">
     {{ session('message') }}
 </h6>
@@ -15,7 +17,6 @@
     {{ session('error') }}
 </h6>
         @endif
-<div class="container-fluid">
     <div class="d-flex flex-column">
         <div class="row">
             <div class="col-12 mb-4">
