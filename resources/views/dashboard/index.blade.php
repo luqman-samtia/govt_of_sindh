@@ -1,19 +1,20 @@
 @extends('layouts.app')
 @section('title')
     {{-- {{ __('messages.dashboard') }} --}}
-    @if(session('message'))
-    <h6 class="alert alert-success">
-        {{ session('message') }}
-    </h6>
-            @endif
-            @if(session('error'))
-    <h6 class="alert alert-danger">
-        {{ session('error') }}
-    </h6>
-            @endif
-@endsection
-@section('content')
+    @endsection
+    @section('content')
+
     <div class="container-fluid">
+        @if(session('message'))
+        <h6 class="alert alert-success">
+            {{ session('message') }}
+        </h6>
+                @endif
+                @if(session('error'))
+        <h6 class="alert alert-danger">
+            {{ session('error') }}
+        </h6>
+                @endif
         <div class="d-flex flex-column">
             <div class="row">
                 <div class="col-12">

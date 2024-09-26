@@ -3,6 +3,16 @@
     {{ __('messages.dashboard') }}
 @endsection
 @section('content')
+@if(session('message'))
+<h6 class="alert alert-success">
+    {{ session('message') }}
+</h6>
+        @endif
+        @if(session('error'))
+<h6 class="alert alert-danger">
+    {{ session('error') }}
+</h6>
+        @endif
 <div class="container-fluid">
     <div class="d-flex flex-column">
         <div class="row">

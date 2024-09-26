@@ -34,12 +34,13 @@ class FormController extends Controller
     {
         $totalLetters = Letter::count();
         $users_form = Letter::withCount('user')->get();
+        $letters = Letter::with('user')->get();
         $draft = Letter::where('is_submitted',0)->get();
         $query = User::whereHas('roles', function ($q) {
             $q->where('name', Role::ROLE_ADMIN);
         })->with('roles')->select('users.*');
         $data['users'] = $query->count();
-        return view('super_admin.total_letters',compact('users_form','draft','data'));
+        return view('super_admin.total_letters',compact('letters','users_form','draft','data'));
 
     }
 
@@ -130,7 +131,7 @@ class FormController extends Controller
     $newLetterNo = $prefix . $nextNumber;
         if (!$user->address || !$user->date || !$user->tel) {
             // Redirect to profile update page if profile is incomplete
-            return redirect()->route('forms')->with('error', 'Please complete your profile before creating a letter.');
+            return redirect()->route('admin.dashboard')->with('error', 'Please complete your profile before creating a letter.');
         }
         return view('forms.letter.create',compact('newLetterNo'));
     }

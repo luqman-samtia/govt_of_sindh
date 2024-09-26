@@ -247,6 +247,10 @@
     var fieldCounter = 0;
     var fieldCounterss = 0;
  CKEDITOR.replace('draft_para');
+
+
+
+
     function addRecipient(){
         // document.getElementById('add-field').addEventListener('click', function() {
             fieldCounter++;
@@ -256,22 +260,22 @@
 
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" name="designation[0][designation]" required>
+                        <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" name="designation[${fieldCounter}][designation]" required>
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="department"  class="form-control form-control-solid" placeholder="Department" name="designation[0][department]" required>
+                        <input type="text" id="department"  class="form-control form-control-solid" placeholder="Department" name="designation[${fieldCounter}][department]" required>
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="address" class="form-control form-control-solid" placeholder="Address" name="designation[0][address]" required>
+                        <input type="text" id="address" class="form-control form-control-solid" placeholder="Address" name="designation[${fieldCounter}][address]" required>
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="contact" class="form-control form-control-solid" placeholder="Contact" name="designation[0][contact]" >
+                        <input type="text" id="contact" class="form-control form-control-solid" placeholder="Contact" name="designation[${fieldCounter}][contact]" >
                     </div>
                 </div>
                 <div class="col-lg-2">
@@ -317,7 +321,7 @@
             // document.getElementById('add-fielddd').addEventListener('click', function() {
                 fieldCounterss++;
                 const newFielddd = `
-                    <div class="row" id="fieldd-${fieldCounterss}">
+                    <div class="row" id="fielddd-${fieldCounterss}">
                         <div class="col-lg-6">
                        <div class="mb-5">
                         <input type="text" id="copy_forwarded" class="form-control form-control-solid" placeholder="Copy of Forwarded" name="forwarded_copies[${fieldCounterss}][copy_forwarded]" required>
