@@ -218,7 +218,7 @@
 
 
 
-                               <a href="{{ route('letters.download_signed', $letter->id) }}" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Uploaded file Download" title="Uploaded File Download" data-bs-toggle="tooltip"> <span class="badge bg-light-primary fs-7 px-2">signed</span></a>
+                               {{-- <a href="{{ route('letters.download_signed', $letter->id) }}" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Uploaded file Download" title="Uploaded File Download" data-bs-toggle="tooltip"> <span class="badge bg-light-primary fs-7 px-2">signed</span></a> --}}
                                {{-- <a href="{{route('letter.download.doc', $letter->id)}}" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Doc File Download" title="Doc File Download" data-bs-toggle="tooltip"><span class="badge bg-light-info fs-7 px-2"> doc</span></a> --}}
                                <!--<a href="{{ route('forms.letter.edit', $letter) }}" class="btn px-2 text-primary fs-3 py-2" title="Edit" data-bs-toggle="tooltip" data-bs-original-title="Edit">-->
                                <!--   <svg class="svg-inline--fa fa-pen-to-square" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen-to-square" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">-->
