@@ -18,7 +18,11 @@
         </div>
         <div class="col-md-12 text-center error-page-404">
             <h2>Opps! Your File missing...</h2>
-            <p class="not-found-subtitle">{{session($message)}}</p>
+            @if(isset($error))
+            <p class="not-found-subtitle">{{$error}}</p>
+            @elseif (isset($message))
+            <p class="not-found-subtitle">{{$message}}</p>
+            @endif
             <a class="btn btn-primary back-btn mt-3" href="{{ route('login') }}">Login and Check</a>
         </div>
     </div>
