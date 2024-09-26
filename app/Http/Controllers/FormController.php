@@ -578,14 +578,14 @@ public function updateQRCodeLink(Letter $letter)
                 if (file_exists($filePath)) {
                     return response()->download($filePath);
                 } else {
-                    return redirect()->route('file.not.exist')->with($error);
+                    return view('errors.filenotfound')->with($error);
 
                 }
             }
 
             $message = "The File you are looking for doesn't exist because the downloaded file not uploaded yet.";
 
-            return redirect()->route('file.not.exist')->with($message);
+            return view('errors.filenotfound')->with($message);
             }
 
 
