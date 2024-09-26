@@ -578,7 +578,7 @@ public function updateQRCodeLink(Letter $letter)
                 if (file_exists($filePath)) {
                     return response()->download($filePath);
                 } else {
-                    return view('errors.filenotfound',compact('message'));
+                    return view('errors.filenotfound',compact('error'));
 
                 }
             }
