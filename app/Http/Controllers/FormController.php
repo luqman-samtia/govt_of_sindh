@@ -429,7 +429,10 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
        $letter->save();
 
        // Now that the letter is saved, generate the route for the signed letter
+       $filePath = storage_path('app/public/signed_letters/letter_' . $letter->id . '.pdf');
+
        $route = route('letters.download_signed', $letter->id);
+
 
        // Define the QR code file path
        $qrCodePath = 'qr-codes/' . $letter->id . '.png';
@@ -472,6 +475,23 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 
 
 
+}
+
+
+// check download letter qr route
+public function checkDownloadRoute(Letter $letter)
+{
+    // Define the path where the signed letter is stored
+    $filePath = storage_path('app/public/signed_letters/letter_' . $letter->id . '.pdf');
+
+    // Check if the signed letter file exists in storage
+    if (file_exists($filePath)) {
+        // File exists, generate the route for downloading the signed letter
+        return redirect()->route('letters.download_signed', $letter->id);
+    } else {
+        // File does not exist, redirect to download the original letter PDF
+        return redirect()->route('Form.download.pdf', $letter->id);
+    }
 }
 
 public function downloadDoc(Letter $letter)
@@ -558,11 +578,12 @@ public function updateQRCodeLink(Letter $letter)
                 if (file_exists($filePath)) {
                     return response()->download($filePath);
                 } else {
-                    return redirect()->back()->with(['error' => 'File not found.']);
+                    return redirect()->route('file.not.exist')->with(['error' => "The File you are looking for doesn't exists / isn't available / was loading
+                incorrectly."]);
                 }
             }
 
-            return redirect()->back()->with(['error' => 'No signed letter available for download.']);
+            return redirect()->route('file.not.exist')->with(['error' => "The File you are looking for doesn't exist because the downloaded file not uploaded yet."]);
             }
 
 
@@ -580,5 +601,9 @@ public function updateQRCodeLink(Letter $letter)
 
                 // Pass the letter data to a preview view
                 return view('forms.letter.preview', compact('letter'));
+            }
+
+            public function fileNotFound(){
+                return view('errors.filenotfound');
             }
 }
