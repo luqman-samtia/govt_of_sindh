@@ -182,7 +182,7 @@
                             <div class="d-flex align-items-center">
                                <a href="#">
                                   <div class="image image-circle image-mini me-3">
-                                     <img src="{{getLogInUser()->profile_image}}" alt="user" class="user-img">
+                                     <img src="{{$letter->user->profile_image}}" alt="user" class="user-img">
                                   </div>
                                </a>
                                <div class="d-flex flex-column">
