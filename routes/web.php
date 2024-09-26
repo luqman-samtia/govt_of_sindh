@@ -47,7 +47,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('file/not_found',[FormController::class,'fileNotFound'])->name('file.not.exist');
+
 Route::middleware(['xss'])->group(function () {
     Route::get('/', function () {
         return redirect()->route('login');
