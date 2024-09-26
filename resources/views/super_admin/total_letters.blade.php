@@ -181,11 +181,11 @@
                       <tr wire:loading.class.delay="" class="" wire:key="row-0-4Of9aF3orQYiqBL2xp3j">
                          <td class="" wire:key="cell-0-0-4Of9aF3orQYiqBL2xp3j">
                             <div class="d-flex align-items-center">
-                               <a href="#">
+                               {{-- <a href="#">
                                   <div class="image image-circle image-mini me-3">
                                      <img src="{{$letter->user->profile_image}}" alt="user" class="user-img">
                                   </div>
-                               </a>
+                               </a> --}}
                                <div class="d-flex flex-column">
                                   <a href="" class="mb-1 text-decoration-none fs-6">
                                     {{ $letter->user->full_name }}
