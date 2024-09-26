@@ -574,16 +574,18 @@ public function updateQRCodeLink(Letter $letter)
 // Check if the letter has a signed letter file
             if ($letter->signed_letter) {
                 $filePath = storage_path('app/public/signed_letters/' . $letter->signed_letter);
-
+                $error = "The File you are looking for doesn't exists / isn't available / was loading incorrectly.";
                 if (file_exists($filePath)) {
                     return response()->download($filePath);
                 } else {
-                    return redirect()->route('file.not.exist')->with(['error' => "The File you are looking for doesn't exists / isn't available / was loading
-                incorrectly."]);
+                    return redirect()->route('file.not.exist')->with($error);
+
                 }
             }
 
-            return redirect()->route('file.not.exist')->with(['error' => "The File you are looking for doesn't exist because the downloaded file not uploaded yet."]);
+            $message = "The File you are looking for doesn't exist because the downloaded file not uploaded yet.";
+
+            return redirect()->route('file.not.exist')->with($message);
             }
 
 
