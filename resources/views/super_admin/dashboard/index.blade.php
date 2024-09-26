@@ -103,7 +103,7 @@
                     <div class="card mt-3">
                         <div class="card-body p-5">
                             <div class="card-header border-0 pt-5">
-                                <h3 class="mb-0">{{  __('Show Data Here') }}</h3>
+                                <h3 class="mb-0">{{  __('') }}</h3>
                                 <div class="ms-auto">
                                     <div id="rightData" class="date-picker-space">
                                         {{-- <input class="form-control removeFocus" id="super_admin_time_range"> --}}

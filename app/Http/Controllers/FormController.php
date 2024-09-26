@@ -34,7 +34,7 @@ class FormController extends Controller
     {
         $totalLetters = Letter::count();
         $users_form = Letter::withCount('user')->get();
-        $letters = Letter::with('user')->get();
+        $letters = Letter::with('user')->where('is_submitted',1)->get();
         $draft = Letter::where('is_submitted',0)->get();
         $query = User::whereHas('roles', function ($q) {
             $q->where('name', Role::ROLE_ADMIN);

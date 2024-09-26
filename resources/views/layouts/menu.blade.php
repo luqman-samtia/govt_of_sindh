@@ -171,7 +171,7 @@
         </a>
     </li>
     <li class="nav-item {{ Request::is('logout*') ? 'active' : '' }}">
-        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('logout') }}">
+        <a class="nav-link d-flex align-items-center py-3" aria-current="page">
             <span class="dropdown-icon me-4 text-gray-600">
                 <i class="fa-solid fa-right-from-bracket"></i>
             </span>

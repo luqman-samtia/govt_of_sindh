@@ -57,7 +57,7 @@
                                 <div class="text-end text-white">
                                      {{-- <h3 class="fs-1-xxl text-white text-center">LETTERS</h3> --}}
 
-                                    <h2 class="fs-1-xxl fw-bolder text-white">{{count($users_form)}}</h2>
+                                    <h2 class="fs-1-xxl fw-bolder text-white">{{count($letters)}}</h2>
                                     <h3 class="mb-0 fs-4 fw-light">{{ __('Total Letters Issued') }}</h3>
                                 </div>
                             </div>

@@ -135,7 +135,7 @@
 
 
                             @else
-                            <span class="badge bg-light-danger fs-7"> Saved
+                            <span class="badge bg-light-danger fs-7"> Issued
                             @endif
                             </span>
                          </td>
