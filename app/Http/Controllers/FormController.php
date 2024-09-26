@@ -397,7 +397,7 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
     {
         $user = Auth::user();
         if ($letter->is_submitted==1) {
-            return redirect()->route('forms')->with('error', 'Submitted letters cannot be deleted.');
+            return redirect()->back()->with('error', 'Submitted letters cannot be deleted.');
         }
 
         DB::beginTransaction();
@@ -410,10 +410,10 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 
             DB::commit();
             if($user->hasRole(Role::ROLE_ADMIN)){
-                return redirect()->route('forms')->with('message', 'Letter deleted successfully');
+                return redirect()->back()->with('message', 'Letter deleted successfully');
 
             }else{
-                return redirect()->route('users.forms')->with('message', 'Letter deleted successfully');
+                return redirect()->back()->with('message', 'Letter deleted successfully');
             }
         } catch (\Exception $e) {
             DB::rollBack();
