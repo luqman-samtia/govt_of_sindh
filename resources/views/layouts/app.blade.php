@@ -7,10 +7,10 @@
         $settingValue = getSuperAdminSettingValue();
     @endphp
     @role('super_admin')
-    <title>GOVT FORM</title>
+    <title>ACE Sindh</title>
     <link rel="icon" href="{{ asset($settingValue['favicon_icon']['value']) }}" type="image/png">
     @else
-        <title>@yield('title') | GOVT FORM</title>
+        <title>@yield('title') | ACE Sindh</title>
         <link rel="icon" href="{{ getFaviconUrl() }}" type="image/png">
         @endrole
         <meta name="csrf-token" content="{{ csrf_token() }}">

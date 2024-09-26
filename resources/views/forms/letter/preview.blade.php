@@ -96,13 +96,13 @@
 
     <table>
         <tr>
-            <td>
+            <td style="width:100px !important;">
                 <p style="font-weight: 500;">To,</p>
             </td>
             <td>
                 <p style="font-weight: 700;margin-top: 60px;">
                     @foreach($letter->designations as $toLetter)
-                    <p style="margin-top: 20px;margin-right:0px;font-weight: 700">
+                    <p style="margin-top: 10px;margin-right:-40px;font-weight: 700">
                         {{$toLetter->designation}},<br>
                         {{$toLetter->department}},<br>
                         {{$toLetter->address}},<br>
@@ -121,9 +121,9 @@
             <!-- <td>
                 <h3 style="text-decoration: underline;">SUBJECT: REQUEST FOR CURRENT STATUS OF PENDING FIRs/ENQUIRIES & CASES AGAINST REGULAR/CONTRACTOR/DAILY BASIS</h3>
             </td> -->
-           <td><p style="font-weight: 700;">Subject:</p></td>
+           <td style="width:100px !important;"><p style="font-weight: 700; ">Subject:</p></td>
            <td>
-            <p style="margin-left: 35px;font-weight: 700;text-decoration: underline;">
+            <p style="font-weight: 700;text-decoration: underline;">
                 {{strtoupper($letter->subject)}}
              </p>
            </td>
@@ -134,7 +134,7 @@
     {{-- <div style="">page-break-inside:avoid; page-break-before: avoid;--}}
 
                 <div class="" style="margin: 0 auto; text-align: justify;text-indent:7em;" >
-                    <p style="text-indent:5em;" >{!! $letter->draft_para !!}</p>
+                    <p style="text-indent:7em;" >{!! $letter->draft_para !!}</p>
                 </div>
 
 

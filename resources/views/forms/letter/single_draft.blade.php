@@ -139,11 +139,11 @@
                                       <tr wire:loading.class.delay="" class="" wire:key="row-0-4Of9aF3orQYiqBL2xp3j">
                                          <td class="" wire:key="cell-0-0-4Of9aF3orQYiqBL2xp3j">
                                             <div class="d-flex align-items-center">
-                                               <a href="#">
+                                               {{-- <a href="#">
                                                   <div class="image image-circle image-mini me-3">
                                                      <img src="{{getLogInUser()->profile_image}}" alt="user" class="user-img">
                                                   </div>
-                                               </a>
+                                               </a> --}}
                                                <div class="d-flex flex-column">
                                                   <a href="" class="mb-1 text-decoration-none fs-6">
                                                     {{ getLogInUser()->full_name }}
@@ -165,14 +165,14 @@
 
 
                                             @else
-                                            <span class="badge bg-light-danger fs-7"> Saved
+                                            <span class="badge bg-light-danger fs-7"> Issued
                                             @endif
                                             </span>
                                          </td>
                                          {{-- @if($letter->is_submitted==0) --}}
                                          <td class="" wire:key="cell-0-9-4Of9aF3orQYiqBL2xp3j">
                                             <div class="width-90px text-center d-flex justify-content-center align-content-center">
-                                               <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn"> <span class="badge bg-light-success fs-7 px-2">pdf</span></a>
+                                               <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn"> <span class="badge bg-light-success fs-7 px-2">unsigned</span></a>
 
 
 

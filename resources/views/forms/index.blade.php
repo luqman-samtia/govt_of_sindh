@@ -108,11 +108,11 @@
                       <tr wire:loading.class.delay="" class="" wire:key="row-0-4Of9aF3orQYiqBL2xp3j">
                          <td class="" wire:key="cell-0-0-4Of9aF3orQYiqBL2xp3j">
                             <div class="d-flex align-items-center">
-                               <a href="#">
+                               {{-- <a href="#">
                                   <div class="image image-circle image-mini me-3">
                                      <img src="{{getLogInUser()->profile_image}}" alt="user" class="user-img">
                                   </div>
-                               </a>
+                               </a> --}}
                                <div class="d-flex flex-column">
                                   <a href="" class="mb-1 text-decoration-none fs-6">
                                     {{ getLogInUser()->full_name }}
@@ -134,18 +134,18 @@
 
 
                             @else
-                            <span class="badge bg-light-danger fs-7"> Saved
+                            <span class="badge bg-light-danger fs-7"> Issued
                             @endif
                             </span>
                          </td>
                          {{-- @if($letter->is_submitted==0) --}}
                          <td class="" wire:key="cell-0-9-4Of9aF3orQYiqBL2xp3j">
                             <div class="width-90px text-center d-flex justify-content-center align-content-center">
-                               <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn"> <span class="badge bg-light-success fs-7 px-2">pdf</span></a>
+                               <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn"> <span class="badge bg-light-success fs-7 px-2">unsigned</span></a>
 
 
 
-                               <a href="{{ route('letters.download_signed', $letter->id) }}" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Uploaded file Download" title="Uploaded File Download" data-bs-toggle="tooltip"> <span class="badge bg-light-primary fs-7 px-2">uploaded</span></a>
+                               <a href="{{ route('letters.download_signed', $letter->id) }}" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Uploaded file Download" title="Uploaded File Download" data-bs-toggle="tooltip"> <span class="badge bg-light-primary fs-7 px-2">signed</span></a>
                                {{-- <a href="{{route('letter.download.doc', $letter->id)}}" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Doc File Download" title="Doc File Download" data-bs-toggle="tooltip"><span class="badge bg-light-info fs-7 px-2"> doc</span></a> --}}
                                <a href="{{ route('forms.letter.edit', $letter) }}" class="btn px-2 text-primary fs-3 py-2" title="Edit" data-bs-toggle="tooltip" data-bs-original-title="Edit">
                                   <svg class="svg-inline--fa fa-pen-to-square" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen-to-square" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
