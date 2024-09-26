@@ -127,7 +127,7 @@ Route::prefix('admin')->middleware(['auth', 'xss', 'role:admin', 'check_subscrip
         '/dashboard',
         [DashboardController::class, 'index']
     )->name('admin.dashboard');
-    Route::get('letters/download-signed/{letter}', [FormController::class, 'checkDownloadRoute'])->name('letters.download_signed');
+    Route::get('letters/download-signed/{letter}', [FormController::class, 'checkDownloadRoute'])->name('check.letters.download_signed');
     Route::get('payment-overview', [DashboardController::class, 'paymentOverview'])->name('payment-overview');
     Route::get('invoices-overview', [DashboardController::class, 'invoiceOverview'])->name('invoices-overview');
     Route::get(
