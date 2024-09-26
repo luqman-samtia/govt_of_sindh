@@ -46,7 +46,7 @@ class FormController extends Controller
     public function SuperAdminTotalDraftLetter()
     {
         $totalLetters = Letter::count();
-        $users_form = Letter::withCount('user')->get();
+        $users_form = Letter::withCount('user')->where('is_submitted',1)->get();
         // $letters = Letter::where('is_submitted',0)->get();
         $letters = Letter::with('user')
             ->where('is_submitted', 0)
