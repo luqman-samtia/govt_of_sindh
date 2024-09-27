@@ -13,10 +13,15 @@
 <li
     class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('*/dashboard*', '*/currency-reports*') ? 'd-none' : '' }}">
     @role('admin')
+
         {{-- <a class="nav-link p-0 {{ Request::is('*/currency-reports*') ? 'active' : '' }}"
             href="{{ route('currency.reports') }}">{{ __('messages.currency_reports') }}
         </a> --}}
+        {{-- <h3>ANTI-CORRUPTION ESTABLISHMENT
+            GOVERNMENT OF SINDH</h3> --}}
     @endrole
+    <h3 style="text-align:center;margin:0px auto;">ANTI-CORRUPTION ESTABLISHMENT
+        GOVERNMENT OF SINDH</h3>
     {{-- @role('client')
         <a class="nav-link p-0 {{ Request::is('*/currency-reports*') ? 'active' : '' }}"
             href="{{ route('client.currency.reports') }}">{{ __('messages.currency_reports') }}

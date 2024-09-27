@@ -3,7 +3,7 @@
     $notificationCount = count($notifications);
     $styleCss = 'style';
 @endphp
-<header class='d-flex align-items-center justify-content-between flex-grow-1 header px-3 px-xl-0'>
+<header class='d-flex align-items-center justify-content-between flex-grow-1 header px-3 px-xl-0' >
     <button type="button" class="btn px-0 aside-menu-container__aside-menubar d-block d-xl-none sidebar-btn">
         <i class="fa-solid fa-bars fs-1"></i>
     </button>
@@ -12,6 +12,7 @@
         <div class="container-fluid pe-0">
             @role('admin')
                 <div class="d-sm-flex d-none align-items-stretch dropdown me-2">
+
                     {{-- <button class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0"
                         type="button" data-bs-auto-close="outside" data-bs-toggle="dropdown" aria-expanded="false"
                         id="quickLinksID">
@@ -23,6 +24,7 @@
                         class="shortcut-menu dropdown-menu px-3 py-3" data-popper-reference-hidden="false"
                         data-popper-escaped="false" data-popper-placement="bottom-start"
                         style="position: absolute; inset: 0px auto auto 0px; transform: translate(0px, 44px);">
+
                         {{-- <a class="py-0 fs-4 dropdown-item" href="{{ route('invoices.index') }}">
                             <a class="nav-link px-4" href="{{ route('invoices.index') }}">
                                 <span class="dropdown-icon me-4">
@@ -96,7 +98,9 @@
                             </a>
                         </a> --}}
                     </div>
+
                 </div>
+
             @endrole
             <div class="navbar-collapse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
