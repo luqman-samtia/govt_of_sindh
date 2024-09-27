@@ -1,4 +1,4 @@
-<div class="aside-menu-container" id="sidebar">
+<div class="aside-menu-container" id="sidebar" >
     <div class="aside-menu-container__aside-logo flex-column-auto">
         @php
             $settingValue = getSuperAdminSettingValue();

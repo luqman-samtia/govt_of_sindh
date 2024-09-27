@@ -117,12 +117,12 @@
             }
         </style>
 </head>
-<body class="main-body">
+<body class="main-body" style="background: #48B7A3;">
 <div class="d-flex flex-column flex-root">
-    <div class="d-flex flex-row flex-column-fluid">
+    <div class="d-flex flex-row flex-column-fluid" >
         @include('layouts.sidebar')
-        <div class="wrapper d-flex flex-column flex-row-fluid custom-overflow-x-hidden">
-            <div class='container-fluid d-flex align-items-stretch justify-content-between px-0'>
+        <div class="wrapper d-flex flex-column flex-row-fluid custom-overflow-x-hidden" >
+            <div class='container-fluid d-flex align-items-stretch justify-content-between px-0' style="background: #48B7A3;">
                 @include('layouts.header')
             </div>
             <div class='content d-flex flex-column flex-column-fluid pt-7'>
