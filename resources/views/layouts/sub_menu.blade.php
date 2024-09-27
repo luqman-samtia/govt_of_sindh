@@ -4,6 +4,9 @@
         <a class="nav-link p-0 {{ Request::is('*/dashboard*') ? 'active' : '' }}"
             href="{{ route('admin.dashboard') }}">{{ __('messages.dashboard') }}
         </a>
+        {{-- <a class="nav-link p-0 {{ Request::is('*/letters*') ? 'active' : '' }}"
+            href="{{ route('total_letter') }}">{{ __('Total Letters') }}
+        </a> --}}
     @endrole
     @hasrole('client')
         <a class="nav-link p-0 {{ Request::is('*/dashboard*') ? 'active' : '' }}"
@@ -19,9 +22,12 @@
         </a> --}}
         {{-- <h3>ANTI-CORRUPTION ESTABLISHMENT
             GOVERNMENT OF SINDH</h3> --}}
+            {{-- <div>
+                <h3 style="text-align:center;margin:0px auto;">ANTI-CORRUPTION ESTABLISHMENT
+                    GOVERNMENT OF SINDH</h3>
+
+            </div> --}}
     @endrole
-    <h3 style="text-align:center;margin:0px auto;">ANTI-CORRUPTION ESTABLISHMENT
-        GOVERNMENT OF SINDH</h3>
     {{-- @role('client')
         <a class="nav-link p-0 {{ Request::is('*/currency-reports*') ? 'active' : '' }}"
             href="{{ route('client.currency.reports') }}">{{ __('messages.currency_reports') }}
@@ -53,6 +59,11 @@
             href="{{ route('super.admin.enquiry.index') }}">{{ __('messages.enquiries') }}</a>
     </li>
 
+    {{-- <div>
+        <h3 style="text-align:center;margin:0px auto;">ANTI-CORRUPTION ESTABLISHMENT
+            GOVERNMENT OF SINDH</h3>
+
+    </div> --}}
     {{-- Super Admin Landing CMS Section One Sub Menu --}}
     <li
         class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('super-admin/section-one*', 'super-admin/section-two*', 'super-admin/section-three*', 'super-admin/faqs*', 'super-admin/admin-testimonial*', 'super-admin/cookie-warning*') ? 'd-none' : '' }}">
@@ -122,12 +133,18 @@
 
 @role('admin')
 
-    <li class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('admin/transactions*') ? 'd-none' : '' }}">
-        <a class="nav-link p-0 {{ Request::is('admin/transactions*') ? 'active' : '' }}"
-            href="{{ route('transactions.index') }}">{{ __('messages.transactions') }}</a>
+    <li class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('admin/total/letters*') ? 'd-none' : '' }}">
+        <a class="nav-link p-0 {{ Request::is('admin/total/letters*') ? 'active' : '' }}"
+            href="{{ route('total_letter') }}">{{ __('Total Letter') }}</a>
     </li>
+
+    <li class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 mx-5 {{ !Request::is('admin/total/draft_letters*') ? 'd-none' : '' }}">
+        <a class="nav-link p-0 {{ Request::is('admin/total/draft_letters*') ? 'active' : '' }}"
+            href="{{ route('total_draft_letter') }}">{{ __('Total Draft') }}</a>
+    </li>
+
 @else
-    <li class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('client/transactions*') ? 'd-none' : '' }}">
+    <li class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 mx-5 {{ !Request::is('client/transactions*') ? 'd-none' : '' }}">
         <a class="nav-link p-0 {{ Request::is('client/transactions*') ? 'active' : '' }}"
             href="{{ route('client.transactions.index') }}">{{ __('messages.transactions') }}</a>
     </li>
@@ -143,7 +160,11 @@
             href="{{ route('client.quotes.index') }}">{{ __('messages.quotes') }}</a>
     @endrole
 </li>
+<div>
+    <h3 style="text-align:center;margin:0px auto;">ANTI-CORRUPTION ESTABLISHMENT
+        GOVERNMENT OF SINDH</h3>
 
+</div>
 <li class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('*/invoices*') ? 'd-none' : '' }}">
     @role('admin')
         <a class="nav-link p-0 {{ Request::is('*/invoices*') ? 'active' : '' }}"
@@ -210,6 +231,8 @@
 
 
 @role('super_admin')
+
+
     {{-- Super Admin Subscription Sub Menu --}}
     {{-- <li
         class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('super-admin/subscription-plans*', 'super-admin/transactions*') ? 'd-none' : '' }}">
