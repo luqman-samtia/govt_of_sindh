@@ -76,6 +76,23 @@
                                 </div>
                             </a>
                         </div>
+                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
+                            <a href="{{route('admin.dashboard')}}" class="mb-xl-8 text-decoration-none">
+                                <div
+                                    class="bg-primary shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
+                                    <div
+                                        class="bg-cyan-300 widget-icon rounded-10 d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-file-invoice card-icon text-white"></i>
+                                    </div>
+                                    <div class="text-center text-white">
+                                        <h2 class="fs-1-xxl fw-bolder text-white">
+                                        </h2>
+                                        <h3 class="mb-0 fs-4 fw-light">{{ __('Create Letter | Order') }}
+                                        </h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
 
                         {{-- Paid Widget --}}
                         {{-- <div class="col-xxl-3 col-xl-4 col-sm-6 widget">

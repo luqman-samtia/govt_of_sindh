@@ -166,6 +166,9 @@
                             </div>
                          </th>
                          <th scope="col" class="" style="width:9%;text-align:center;" wire:key="header-col-9-4Of9aF3orQYiqBL2xp3j">
+                            Download
+                         </th>
+                         <th scope="col" class="" style="width:9%;text-align:center;" wire:key="header-col-9-4Of9aF3orQYiqBL2xp3j">
                             Action
                          </th>
                       </tr>
@@ -214,9 +217,20 @@
                          {{-- @if($letter->is_submitted==0) --}}
                          <td class="" wire:key="cell-0-9-4Of9aF3orQYiqBL2xp3j">
                             <div class="width-90px text-center d-flex justify-content-center align-content-center">
-                               <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn"> <span class="badge bg-light-success fs-7 px-2">unsigned</span></a>
+                               {{-- <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn"> <span class="badge bg-light-success fs-7 px-2">unsigned</span></a> --}}
 
+                               <div class="dropdown">
+                                <button id="dropdown-toggle" class="btn btn-sm px-2 text-primary fs-3 py-2 dropdown-toggle"
+                                        type="button" id="downloadDropdown" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                    <span class="badge bg-light-success fs-7 px-2">unsigned</span>
 
+                                </button>
+                                <ul id="dropdown-menu" class="dropdown-menu" aria-labelledby="downloadDropdown">
+                                    <li><a class="dropdown-item badge bg-light-success fs-7 px-2" href="#" onclick="downloadFile('{{ $letter->id }}', 'pdf')">PDF</a></li>
+                                    <li><a class="dropdown-item badge bg-light-success fs-7 px-2" href="#" onclick="downloadFile('{{ $letter->id }}', 'doc')">DOC</a></li>
+                                </ul>
+                            </div>
 
                                {{-- <a href="{{ route('letters.download_signed', $letter->id) }}" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Uploaded file Download" title="Uploaded File Download" data-bs-toggle="tooltip"> <span class="badge bg-light-primary fs-7 px-2">signed</span></a> --}}
                                {{-- <a href="{{route('letter.download.doc', $letter->id)}}" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Doc File Download" title="Doc File Download" data-bs-toggle="tooltip"><span class="badge bg-light-info fs-7 px-2"> doc</span></a> --}}
@@ -226,6 +240,8 @@
                                <!--   </svg>-->
                                   <!-- <i class="fa-solid fa-pen-to-square"></i> Font Awesome fontawesome.com -->
                                <!--</a>-->
+                            </td>
+                               <td>
                                <form action="{{ route('forms.letter.destroy', $letter) }}" method="POST">
                                 @csrf
                                 @method('DELETE')

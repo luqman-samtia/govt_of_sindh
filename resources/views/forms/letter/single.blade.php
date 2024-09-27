@@ -4,7 +4,18 @@
 @endsection
 @section('content')
     <div class="container-fluid">
+
         <div class="d-flex flex-column">
+            @if(session('message'))
+            <h6 class="alert alert-success">
+                {{ session('message') }}
+            </h6>
+                    @endif
+                    @if(session('error'))
+            <h6 class="alert alert-danger">
+                {{ session('error') }}
+            </h6>
+                    @endif
             <div class="row">
                 <div class="col-12">
                     <div class="row">
@@ -62,7 +73,23 @@
                                 </div>
                             </a>
                         </div>
-
+                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
+                            <a href="{{route('admin.dashboard')}}" class="mb-xl-8 text-decoration-none">
+                                <div
+                                    class="bg-primary shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
+                                    <div
+                                        class="bg-cyan-300 widget-icon rounded-10 d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-file-invoice card-icon text-white"></i>
+                                    </div>
+                                    <div class="text-center text-white">
+                                        <h2 class="fs-1-xxl fw-bolder text-white">
+                                        </h2>
+                                        <h3 class="mb-0 fs-4 fw-light">{{ __('Create Letter | Order') }}
+                                        </h3>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
 
                     </div>
                 </div>
@@ -124,7 +151,7 @@
                                             </div>
                                          </th>
                                          <th scope="col" class="" style="width:9%;text-align:center;" wire:key="header-col-9-4Of9aF3orQYiqBL2xp3j">
-                                            Action
+                                            Download
                                          </th>
                                       </tr>
                                    </thead>
@@ -172,8 +199,37 @@
                                          {{-- @if($letter->is_submitted==0) --}}
                                          <td class="" wire:key="cell-0-9-4Of9aF3orQYiqBL2xp3j">
                                             <div class="width-90px text-center d-flex justify-content-center align-content-center">
-                                               <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn"> <span class="badge bg-light-success fs-7 px-2">unsigned</span></a>
+                                               {{-- <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn"> <span class="badge bg-light-success fs-7 px-2">unsigned</span></a> --}}
 
+                                               {{-- <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn"> <span class="badge bg-light-success fs-7 px-2">unsigned</span></a> --}}
+                                              @if ($letter->is_submitted==0)
+                                              <div class="dropdown">
+                                                <button id="dropdown-toggle" class="btn btn-sm px-2 text-primary fs-3 py-2 dropdown-toggle"
+                                                        type="button" id="downloadDropdown" data-bs-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                    <span class="badge bg-light-success fs-7 px-2">unsigned</span>
+
+                                                </button>
+                                                <ul id="dropdown-menu" class="dropdown-menu" aria-labelledby="downloadDropdown">
+                                                    <li><a class="dropdown-item badge bg-light-success fs-7 px-2" href="#" onclick="downloadFile('{{ $letter->id }}', 'pdf')">PDF</a></li>
+                                                    <li><a class="dropdown-item badge bg-light-success fs-7 px-2" href="#" onclick="downloadFile('{{ $letter->id }}', 'doc')">DOC</a></li>
+                                                </ul>
+                                            </div>
+
+                                                  @else
+                                                  <div class="dropdown">
+                                                    <button id="dropdown-toggle" class="btn btn-sm px-2 text-primary fs-3 py-2 dropdown-toggle"
+                                                            type="button" id="downloadDropdown" data-bs-toggle="dropdown"
+                                                            aria-expanded="false">
+                                                        <span class="badge bg-light-danger fs-7 px-2">signed</span>
+
+                                                    </button>
+                                                    <ul id="dropdown-menu" class="dropdown-menu" aria-labelledby="downloadDropdown">
+                                                        <li><a class="dropdown-item badge bg-light-danger fs-7 px-2" href="#" onclick="signedFile('{{ $letter->id }}', 'pdf')">PDF</a></li>
+                                                        <li><a class="dropdown-item badge bg-light-danger fs-7 px-2" href="#" onclick="signedFile('{{ $letter->id }}', 'doc')">DOC</a></li>
+                                                    </ul>
+                                                </div>
+                                              @endif
 
 
                                                {{-- <a href="{{ route('letters.download_signed', $letter->id) }}" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Uploaded file Download" title="Uploaded File Download" data-bs-toggle="tooltip"> <span class="badge bg-light-primary fs-7 px-2">uploaded</span></a> --}}
@@ -199,6 +255,8 @@
                                          {{-- @endif --}}
                                       </tr>
                                       <script>
+
+
                                         function downloadPdf(url) {
                                               var xhr = new XMLHttpRequest();
                                               xhr.open('GET', url, true);
@@ -221,6 +279,35 @@
                                               };
                                               xhr.send();
                                           }
+
+                                          function downloadFile(letterId, fileType) {
+                                                let url = '';
+
+                                                if (fileType === 'pdf') {
+                                                    // Set the URL for the PDF route
+                                                    url = "{{ route('Form.download.pdf', ':id') }}".replace(':id', letterId);
+                                                } else if (fileType === 'doc') {
+                                                    // Set the URL for the DOC route
+                                                    url = "{{ route('Form.download.pdf', ':id') }}".replace(':id', letterId);
+                                                }
+
+                                                // Redirect to the appropriate URL for the download
+                                                window.location.href = url;
+                                            }
+                                          function signedFile(letterId, fileType) {
+                                                let url = '';
+
+                                                if (fileType === 'pdf') {
+                                                    // Set the URL for the PDF route
+                                                    url = "{{ route('letters.download_signed', ':id') }}".replace(':id', letterId);
+                                                } else if (fileType === 'doc') {
+                                                    // Set the URL for the DOC route
+                                                    url = "{{ route('letters.download_signed', ':id') }}".replace(':id', letterId);
+                                                }
+
+                                                // Redirect to the appropriate URL for the download
+                                                window.location.href = url;
+                                            }
                                       </script>
 
                                       @endforeach
@@ -228,27 +315,12 @@
                                    </tbody>
                                 </table>
                              </div>
-
-
-
                             <div id="payment-overview-container" class="justify-align-center">
-
-
-
-
-
-
-
-
-
                                 <canvas id="payment_overview"></canvas>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
     </div>

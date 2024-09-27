@@ -105,6 +105,16 @@
         @routes
         <script src="{{ mix('assets/js/pages.js') }}"></script>
         @yield('phone_js')
+        <style>
+            #dropdown-toggle:after{
+                display: none;
+            }
+            #dropdown-menu{
+                min-width: 6rem !important;
+                font-size: 3rem;
+                padding: 2px;
+            }
+        </style>
 </head>
 <body class="main-body">
 <div class="d-flex flex-column flex-root">

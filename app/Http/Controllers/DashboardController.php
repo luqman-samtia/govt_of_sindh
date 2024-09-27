@@ -56,7 +56,7 @@ class DashboardController extends AppBaseController
 
     public function SuperAdminDashboardData(): \Illuminate\View\View
     {
-        $users_form = Letter::withCount('user')->get();
+        $users_form = Letter::withCount('user')->where('is_submitted',1)->get();
         $draft = Letter::where('is_submitted',0)->get();
         $query = User::whereHas('roles', function ($q) {
             $q->where('name', Role::ROLE_ADMIN);

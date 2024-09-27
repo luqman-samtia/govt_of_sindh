@@ -34,7 +34,7 @@ class FormController extends Controller
     {
         $totalLetters = Letter::count();
         $users_form = Letter::withCount('user')->get();
-        $letters = Letter::with('user')->where('is_submitted',1)->get();
+        $letters = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
         $draft = Letter::where('is_submitted',0)->get();
         $query = User::whereHas('roles', function ($q) {
             $q->where('name', Role::ROLE_ADMIN);
@@ -50,6 +50,7 @@ class FormController extends Controller
         // $letters = Letter::where('is_submitted',0)->get();
         $letters = Letter::with('user')
             ->where('is_submitted', 0)
+            ->orderBy('id', 'desc')
             ->get();
         // $draft = Letter::where('is_submitted',0)->get();
         $query = User::whereHas('roles', function ($q) {
@@ -82,7 +83,7 @@ class FormController extends Controller
             $total_letters = 0;
         }
         $user = Auth::user()->id;
-        $letters = Letter::where('user_id',$user)->get();
+        $letters = Letter::where('user_id',$user)->orderBy('id', 'desc')->get();
         return view('forms.letter.single',compact('letters','total_letters','total_drafts'));
     }
     public function total_draft_letter(Letter $letter){
@@ -105,7 +106,7 @@ class FormController extends Controller
             $total_letters = 0;
         }
         $user = Auth::user()->id;
-        $letters = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
+        $letters = Letter::where(['user_id'=>$user,'is_submitted'=>0])->orderBy('id', 'desc')->get();
         return view('forms.letter.single_draft',compact('letters','total_letters','total_drafts'));
     }
     // for super admin
