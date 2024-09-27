@@ -68,9 +68,10 @@
                     <input class="form-control form-control-solid"
                            type="password"  placeholder="{{__('messages.client.password')}}" name="password"
                            autocomplete="off"
+                           id="password"
                            aria-label="Password" data-toggle="password" required>
-                    <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600" >
-                            <i class="bi bi-eye-slash-fill" id=""></i>
+                    <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600" id="togglePassword2" >
+                            <i class="bi bi-eye-slash-fill" id="toggleIcon2"></i>
                     </span>
                 </div>
             </div>
@@ -167,6 +168,21 @@
 document.getElementById('togglePassword').addEventListener('click', function () {
     var passwordInput = document.getElementById('password_confirmation');
     var icon = document.getElementById('toggleIcon');
+
+    // Toggle password visibility
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('bi-eye-slash-fill');
+        icon.classList.add('bi-eye-fill');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('bi-eye-fill');
+        icon.classList.add('bi-eye-slash-fill');
+    }
+});
+document.getElementById('togglePassword2').addEventListener('click', function () {
+    var passwordInput = document.getElementById('password');
+    var icon = document.getElementById('toggleIcon2');
 
     // Toggle password visibility
     if (passwordInput.type === 'password') {
