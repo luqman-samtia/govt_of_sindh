@@ -167,7 +167,7 @@
                             <div class="row">
                                 <div class="col-md-6 col-lg-6 col-xl-6">
                                     <h4>Create Letter Form</h4>
-                                   <a style="width: 21.563rem !important"  href="{{route('forms.letter.form.create')}}" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0"
+                                   <a style="width: 9.563rem !important"  href="{{route('forms.letter.form.create')}}" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0"
 
                                     >
                                     <span data-bs-toggle="tooltip" data-bs-placement="top" >
@@ -179,7 +179,7 @@
 
                                 <div class="col-md-6 col-lg-6 col-xl-6" style="text-align: end;">
                                     <h4>Create Order Form</h4>
-                                    <a href="" style="width: 21.563rem !important" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0 px-5"
+                                    <a href="" style="width: 9.563rem !important" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0 px-5"
 
                                     >
                                     <span data-bs-toggle="tooltip" data-bs-placement="top" >
