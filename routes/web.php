@@ -355,6 +355,8 @@ Route::prefix('super-admin')->middleware(['auth', 'xss', 'role:super_admin'])->g
         '/dashboard',
         [DashboardController::class, 'SuperAdminDashboardData']
     )->name('super.admin.dashboard');
+    Route::get('/letters/search', [FormController::class, 'letter_search'])->name('letters.search');
+
     Route::get(
         '/total_letters',
         [FormController::class, 'SuperAdminTotalLetter']

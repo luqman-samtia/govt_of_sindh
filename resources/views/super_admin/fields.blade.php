@@ -61,59 +61,28 @@
     <div class="col-lg-6">
         <div class="mb-5">
             <label class="form-label required mb-3" for="designation">Designation:</label>
-            <select class="form-control form-control-solid" name="designation" id="designation" required>
-                <option value="">Select Designation</option>
-                <option value="Chairman">Chairman</option>
-                <option value="Director">Director</option>
-                <option value="Deputy Director">Deputy Director</option>
-                <option value="Assistant Director">Assistant Director</option>
-                <option value="Circle Officer">Circle Officer</option>
-                <option value="Inspector">Inspector</option>
-                <option value="Sub-inspector">Sub-inspector</option>
-                <!-- Add more options as needed -->
-            </select>
+                <input type="text" id="designation" class="form-control form-control-solid" placeholder="Enter Designation" name="designation" required>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="mb-5">
+            <label for="zone" class="form-label required mb-3">Place Of Posting:</label>
+            <input type="text" id="zone" class="form-control form-control-solid" placeholder="Enter Place Of Posting" name="zone" required>
 
         </div>
     </div>
     <div class="col-lg-6">
         <div class="mb-5">
-            <label for="zone" class="form-label required mb-3">Zone:</label>
-            <select class="form-control form-control-solid" name="zone" id="zone" required onchange="updateDistricts()">
-                <option value="">Select Zone</option>
-                <option value="HYDERABAD ZONE">HYDERABAD ZONE</option>
-                <option value="JAMSHORO ZONE">JAMSHORO ZONE</option>
-                <option value="LARKANA ZONE">LARKANA ZONE</option>
-                <option value="MIRPURKHAS ZONE">MIRPURKHAS ZONE</option>
-                <option value="SBA ZONE">SBA ZONE</option>
-                <option value="SUKKUR ZONE">SUKKUR ZONE</option>
-                <option value="SOUTH ZONE">SOUTH ZONE</option>
-                <option value="WEST ZONE">WEST ZONE</option>
-                <option value="EAST ZONE">EAST ZONE</option>
-            </select>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="mb-5">
             <label for="district" class="form-label required mb-3">District:</label>
-            <select class="form-control form-control-solid" name="district" id="district" required>
-                <option value="">Select District</option>
-            </select>
+            <input type="text" id="district" class="form-control form-control-solid" placeholder="Enter District" name="district" required>
+
         </div>
     </div>
     <div class="col-lg-6">
         <div class="mb-5">
             <label class="form-label required mb-3" for="grade">Grade:</label>
-            <select class="form-control form-control-solid" name="grade" id="grade" required>
-                <option value="">Select Grade</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <!-- Add more options as needed -->
-            </select>
+            <input type="text" id="grade" class="form-control form-control-solid" placeholder="Enter Grade" name="grade" required>
+
 
         </div>
     </div>

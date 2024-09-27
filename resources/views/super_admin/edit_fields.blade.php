@@ -62,60 +62,26 @@
     <div class="col-lg-6">
         <div class="class="mb-5">
             <label class="form-label required mb-3" for="designation">Designation:</label>
-            <select class="form-control form-control-solid" name="designation" id="designation" required>
-                <option value="">Select Designation</option>
-                <option value="Chairman" {{ $superAdmin->designation == 'Chairman' ? 'selected' : '' }}>Chairman</option>
-                <option value="Director"{{ $superAdmin->designation == 'Director' ? 'selected' : '' }}>Director</option>
-                <option value="Deputy Director"{{ $superAdmin->designation == 'Deputy Director' ? 'selected' : '' }}>Deputy Director</option>
-                <option value="Assistant Director"{{ $superAdmin->designation == 'Assistant Director' ? 'selected' : '' }}>Assistant Director</option>
-                <option value="Circle Officer"{{ $superAdmin->designation == 'Circle Officer' ? 'selected' : '' }}>Circle Officer</option>
-                <option value="Inspector"{{ $superAdmin->designation == 'Inspector' ? 'selected' : '' }}>Inspector</option>
-                <option value="Sub-inspector"{{ $superAdmin->designation == 'Sub-inspector' ? 'selected' : '' }}>Sub-inspector</option>
-                <!-- Add more options as needed -->
-            </select>
+            <input type="text" id="designation" class="form-control form-control-solid" value="{{$superAdmin->designation}}" placeholder="Enter Designation" name="designation" required>
 
         </div>
     </div>
     <div class="col-lg-6">
         <div class="mb-5">
-            <label for="zone" class="form-label required mb-3">Zone:</label>
-            <select class="form-control form-control-solid" name="zone" id="zone" required onchange="updateDistricts()" >
-                <option value="">Select Zone</option>
-                <option value="HYDERABAD ZONE" {{ $superAdmin->zone == 'HYDERABAD ZONE' ? 'selected' : '' }}>HYDERABAD ZONE</option>
-                <option value="JAMSHORO ZONE" {{ $superAdmin->zone == 'JAMSHORO ZONE' ? 'selected' : '' }}>JAMSHORO ZONE</option>
-                <option value="LARKANA ZONE" {{ $superAdmin->zone == 'LARKANA ZONE' ? 'selected' : '' }}>LARKANA ZONE</option>
-                <option value="MIRPURKHAS ZONE" {{ $superAdmin->zone == 'MIRPURKHAS ZONE' ? 'selected' : '' }}>MIRPURKHAS ZONE</option>
-                <option value="SBA ZONE" {{ $superAdmin->zone == 'SBA ZONE' ? 'selected' : '' }}>SBA ZONE</option>
-                <option value="SUKKUR ZONE" {{ $superAdmin->zone == 'SUKKUR ZONE' ? 'selected' : '' }}>SUKKUR ZONE</option>
-                <option value="SOUTH ZONE" {{ $superAdmin->zone == 'SOUTH ZONE' ? 'selected' : '' }}>SOUTH ZONE</option>
-                <option value="WEST ZONE" {{ $superAdmin->zone == 'WEST ZONE' ? 'selected' : '' }}>WEST ZONE</option>
-                <option value="EAST ZONE" {{ $superAdmin->zone == 'EAST ZONE' ? 'selected' : '' }}>EAST ZONE</option>
-            </select>
+            <label for="zone" class="form-label required mb-3">Place Of Posting:</label>
+            <input type="text" id="zone" class="form-control form-control-solid" value="{{$superAdmin->zone}}" placeholder="Enter Place Of Posting" name="zone" required>
         </div>
     </div>
     <div class="col-lg-6">
         <div class="mb-5">
             <label for="district" class="form-label required mb-3">District:</label>
-            <select class="form-control form-control-solid" name="district" id="district" required>
-                <!-- District options will be populated by JavaScript based on the selected zone -->
-            </select>
+            <input type="text" id="district" class="form-control form-control-solid" value="{{$superAdmin->district}}" placeholder="Enter District" name="district" required>
         </div>
     </div>
     <div class="col-lg-6">
         <div class="class="mb-5">
             <label class="form-label required mb-3" for="grade">Grade:</label>
-            <select class="form-control form-control-solid" name="grade" id="grade" required>
-                <option value="">Select Grade</option>
-                <option value="16" {{$superAdmin->grade=='16' ? 'selected': ''}}>16</option>
-                <option value="17" {{$superAdmin->grade=='17' ? 'selected': ''}}>17</option>
-                <option value="18" {{$superAdmin->grade=='18' ? 'selected': ''}}>18</option>
-                <option value="19" {{$superAdmin->grade=='19' ? 'selected': ''}}>19</option>
-                <option value="20" {{$superAdmin->grade=='20' ? 'selected': ''}}>20</option>
-                <option value="21" {{$superAdmin->grade=='21' ? 'selected': ''}}>21</option>
-                <option value="22" {{$superAdmin->grade=='22' ? 'selected': ''}}>22</option>
-                <!-- Add more options as needed -->
-            </select>
-
+            <input type="text" id="grade" class="form-control form-control-solid" value="{{$superAdmin->grade}}" placeholder="Enter District" name="grade" required>
         </div>
     </div>
     <div class="mb-3" io-image-input="true">

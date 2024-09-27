@@ -6,6 +6,7 @@
 @endsection
 @section('content')
 
+
 <div class="container-fluid">
     @if(session('message'))
 <h6 class="alert alert-success">
@@ -118,8 +119,34 @@
 
                                  {{-- table --}}
 
-            <div class="table-responsive mt-5">
-                <table class="table table-striped">
+                                 {{-- start search and filter --}}
+                                 <div class="d-sm-flex justify-content-between align-items-center mb-sm-7 mb-4">
+                                    <div class="d-sm-flex">
+                                              <div class="mb-3 mb-sm-0">
+                                                <form class="d-flex position-relative align-items-center">
+                                                    <div class="position-relative d-flex width-320">
+                                                        <span class="position-absolute d-flex align-items-center top-0 bottom-0 left-0 text-gray-600 ms-3">
+                                                            <svg class="svg-inline--fa fa-magnifying-glass" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="magnifying-glass" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M500.3 443.7l-119.7-119.7c27.22-40.41 40.65-90.9 33.46-144.7C401.8 87.79 326.8 13.32 235.2 1.723C99.01-15.51-15.51 99.01 1.724 235.2c11.6 91.64 86.08 166.7 177.6 178.9c53.8 7.189 104.3-6.236 144.7-33.46l119.7 119.7c15.62 15.62 40.95 15.62 56.57 0C515.9 484.7 515.9 459.3 500.3 443.7zM79.1 208c0-70.58 57.42-128 128-128s128 57.42 128 128c0 70.58-57.42 128-128 128S79.1 278.6 79.1 208z"></path></svg><!-- <i class="fa-solid fa-magnifying-glass"></i> Font Awesome fontawesome.com -->
+                                                        </span>
+                                                        <input id="searchInput" class="form-control ps-8" type="search" placeholder="Search" aria-label="Search">
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                    </div>
+
+                                    {{-- <div class="d-sm-flex d-block justify-content-end">
+                            <a type="button" class="btn btn-primary" href="http://public_html.test/super-admin/users/create">
+                                Add User
+                            </a>
+                            <a type="button" class="btn btn-primary mx-5" href="http://public_html.test/super-admin/super-admins/create">
+                                Add Super Admin
+                            </a>
+                            </div> --}}
+                    </div>
+                    {{-- End Search and filter  --}}
+            <div class="table-responsive mt-5" id="lettersTable" >
+                <table class="table table-striped" >
                    <thead class="">
                       <tr>
                          <th scope="col" class="text-center" wire:key="header-col-0-4Of9aF3orQYiqBL2xp3j">
@@ -173,7 +200,7 @@
                          </th>
                       </tr>
                    </thead>
-                   <tbody class="">
+                   <tbody class="" >
                     @if ($letters->isEmpty())
                     <tr>
                         <td colspan="6" class="text-center">No data available</td>
@@ -234,7 +261,7 @@
 
 
                                {{-- <a href="{{route('letter.download.doc', $letter->id)}}" class="btn btn-sm px-2 text-primary fs-3 py-2" data-bs-original-title="Doc File Download" title="Doc File Download" data-bs-toggle="tooltip"><span class="badge bg-light-info fs-7 px-2"> doc</span></a> --}}
-                               <!--<a href="{{ route('forms.letter.edit', $letter) }}" class="btn px-2 text-primary fs-3 py-2" title="Edit" data-bs-toggle="tooltip" data-bs-original-title="Edit">-->
+                               <!--<a href="" class="btn px-2 text-primary fs-3 py-2" title="Edit" data-bs-toggle="tooltip" data-bs-original-title="Edit">-->
                                <!--   <svg class="svg-inline--fa fa-pen-to-square" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen-to-square" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">-->
                                <!--      <path fill="currentColor" d="M490.3 40.4C512.2 62.27 512.2 97.73 490.3 119.6L460.3 149.7L362.3 51.72L392.4 21.66C414.3-.2135 449.7-.2135 471.6 21.66L490.3 40.4zM172.4 241.7L339.7 74.34L437.7 172.3L270.3 339.6C264.2 345.8 256.7 350.4 248.4 353.2L159.6 382.8C150.1 385.6 141.5 383.4 135 376.1C128.6 370.5 126.4 361 129.2 352.4L158.8 263.6C161.6 255.3 166.2 247.8 172.4 241.7V241.7zM192 63.1C209.7 63.1 224 78.33 224 95.1C224 113.7 209.7 127.1 192 127.1H96C78.33 127.1 64 142.3 64 159.1V416C64 433.7 78.33 448 96 448H352C369.7 448 384 433.7 384 416V319.1C384 302.3 398.3 287.1 416 287.1C433.7 287.1 448 302.3 448 319.1V416C448 469 405 512 352 512H96C42.98 512 0 469 0 416V159.1C0 106.1 42.98 63.1 96 63.1H192z"></path>-->
                                <!--   </svg>-->
@@ -257,6 +284,10 @@
                          {{-- @endif --}}
                       </tr>
                       <script>
+
+                          //   search code
+
+
                         function downloadPdf(url) {
                               var xhr = new XMLHttpRequest();
                               xhr.open('GET', url, true);
@@ -293,7 +324,9 @@
                                                 // Redirect to the appropriate URL for the download
                                                 window.location.href = url;
                                             }
-                      </script>
+
+
+                    </script>
 
                       @endforeach
                       @endif
@@ -318,6 +351,11 @@
         </div>
     </div>
 </div>
+
     {{-- {{ Form::hidden('currency',  getCurrencySymbol(),['id' => 'currency']) }} --}}
     {{-- {{ Form::hidden('currency_position',  superAdminCurrencyPosition(),['id' => 'currency_position']) }} --}}
 @endsection
+
+
+
+

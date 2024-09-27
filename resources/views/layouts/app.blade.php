@@ -42,6 +42,7 @@
                 data-turbo-eval="false"></script>
         <script src="{{ asset('assets/js/third-party.js') }}"></script>
         <script src="{{ asset('messages.js') }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script data-turbo-eval="false">
             let defaultCountryCodeValue = "{{ getDefaultCountryFromSetting(getLogInUser()->tenant_id) }}"
             let decimalsSeparator = "{{ getSettingValue('decimal_separator') }}"

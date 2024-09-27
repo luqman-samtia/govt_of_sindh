@@ -43,6 +43,10 @@ class FormController extends Controller
         return view('super_admin.total_letters',compact('letters','users_form','draft','data'));
 
     }
+    // search Letters
+
+
+
     public function SuperAdminTotalDraftLetter()
     {
         $totalLetters = Letter::count();
