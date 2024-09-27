@@ -22,7 +22,7 @@
                 <div class="col-12">
                     <div class="row">
                         {{-- Clients Widget --}}
-                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
+                        <div class="col-xxl-3 col-xl-3 col-sm-6 col-md-3 col-md-3 widget">
                             <a href="{{route('total_letter')}}" class="mb-xl-8 text-decoration-none">
                                 <div
                                     class="bg-success shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
@@ -41,7 +41,7 @@
                         </div>
 
                         {{-- Total Invoices Widget --}}
-                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
+                        <div class="col-xxl-3 col-xl-3 col-sm-6 col-md-3 col-md-3 widget">
                             <a href="" class="mb-xl-8 text-decoration-none">
                                 <div
                                     class="bg-info shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
@@ -58,7 +58,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
+                        <div class="col-xxl-3 col-xl-3 col-sm-6 col-md-3 col-md-3 widget">
                             <a href="" class="mb-xl-8 text-decoration-none">
                                 <div
                                     class="bg-danger shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">
@@ -75,7 +75,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-xxl-3 col-xl-4 col-sm-6 col-md-3 widget">
+                        <div class="col-xxl-3 col-xl-3 col-sm-6 col-md-3 col-md-3 widget">
                             <a href="{{route('admin.dashboard')}}" class="mb-xl-8 text-decoration-none">
                                 <div
                                     class="bg-primary shadow-md rounded-10 p-xxl-10 px-7 py-10 d-flex align-items-center justify-content-between my-3">

@@ -161,7 +161,7 @@
     @endrole
 </li>
 <div>
-    <h3 style="text-align:center;margin:0px auto;">ANTI-CORRUPTION ESTABLISHMENT
+    <h3 style="text-align:center;margin:0px auto;color:#48B7A3;">ANTI-CORRUPTION ESTABLISHMENT
         GOVERNMENT OF SINDH</h3>
 
 </div>
