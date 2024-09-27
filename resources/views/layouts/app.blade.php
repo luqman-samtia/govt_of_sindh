@@ -8,6 +8,7 @@
     @endphp
     @role('super_admin')
     <title>ACE Sindh</title>
+
     <link rel="icon" href="{{ asset($settingValue['favicon_icon']['value']) }}" type="image/png">
     @else
         <title>@yield('title') | ACE Sindh</title>
@@ -16,11 +17,21 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
 
 {{-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script>tinymce.init({ selector:'textarea' });</script> --}}
 
         <!-- General CSS Files -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+ <!-- Include jQuery -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+ <!-- Include Toastr JS -->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+{{-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> --}}
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/third-party.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ mix('assets/css/page.css') }}">
         @if(!Auth::user()->dark_mode)
@@ -35,6 +46,8 @@
         @endif
         @livewireStyles
         @livewireScripts
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="https://cdn.jsdelivr.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"
                 data-turbolinks-eval="false" data-turbo-eval="false"></script>
         <script src="https://js.stripe.com/v3/"></script>
@@ -115,6 +128,14 @@
                 font-size: 3rem;
                 padding: 2px;
             }
+            .toast-success {
+            background-color: #48B7A3 !important;
+            /* color: white !important; */
+        }
+        .toast-error {
+            background-color: #dc3545 !important;
+            color: white !important;
+        }
         </style>
 </head>
 <body class="main-body" style="background: #48B7A3;">
@@ -139,5 +160,41 @@
 </div>
 @include('profile.changePassword')
 @include('profile.changeLanguage')
+<script>
+    $(document).ready(function() {
+    $('[autofocus]').removeAttr('autofocus');
+
+
+    $('#togglePassword').on('click', function() {
+        // Get the password input and icon elements
+        let passwordInput = $('#password');
+        let icon = $('#toggleIcon');
+
+        // Check if the password input type is "password"
+        if (passwordInput.attr('type') === 'password') {
+            // Change the input type to text, showing the password
+            passwordInput.attr('type', 'text');
+            // Change the icon to an open eye (assuming you have a bi-eye-fill icon)
+            icon.removeClass('bi-eye-slash-fill').addClass('bi-eye-fill');
+        } else {
+            // Change the input type back to password, hiding the password
+            passwordInput.attr('type', 'password');
+            // Change the icon back to a closed eye (eye slash icon)
+            icon.removeClass('bi-eye-fill').addClass('bi-eye-slash-fill');
+        }
+    });
+});
+
+document.querySelectorAll('[autofocus]').forEach(function(element) {
+    element.removeAttribute('autofocus');
+});
+$('input').blur();
+
+
+
+
+
+
+</script>
 </body>
 </html>

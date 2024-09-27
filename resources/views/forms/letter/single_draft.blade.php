@@ -3,6 +3,9 @@
     {{-- {{ __('messages.dashboard') }} --}}
 @endsection
 @section('content')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <div class="container-fluid">
         <div class="d-flex flex-column">
             @if(session('message'))
@@ -162,6 +165,11 @@
                                     <tr>
                                         <td colspan="6" class="text-center">No data available</td>
                                     </tr>
+
+                                <script>
+                                    toastr.error("No records found for the given search criteria.");
+                                </script>
+
                                     @else
 
                                     @foreach ($letters as $letter)
@@ -283,6 +291,14 @@
                                                 // Redirect to the appropriate URL for the download
                                                 window.location.href = url;
                                             }
+
+                                            @if(Session::has('success'))
+                                            toastr.success("{{ Session::get('success') }}");
+                                        @endif
+
+                                        @if(Session::has('error'))
+                                            toastr.error("{{ Session::get('error') }}");
+                                        @endif
                                       </script>
 
                                       @endforeach

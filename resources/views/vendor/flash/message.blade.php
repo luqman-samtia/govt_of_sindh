@@ -16,5 +16,25 @@
         </div>
     @endif
 @endforeach
+<script>
+    $(document).ready(function() {
+        // Toastr options (Optional)
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "timeOut": "5000",
+        };
 
-{{ session()->forget('flash_notification') }}
+        // Check for success message
+        @if (session('message'))
+            toastr.success("{{ session('message') }}");
+        @endif
+
+        // Check for error message
+        @if (session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+    });
+</script>
+{{-- {{ session()->forget('flash_notification') }} --}}

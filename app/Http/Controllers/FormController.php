@@ -270,7 +270,7 @@ class FormController extends Controller
     public function letter_update(Request $request, Letter $letter)
     {
         if ($letter->is_submitted==1) {
-            return redirect()->route('forms')->with('error', 'Submitted letters cannot be updated.');
+            return redirect()->route('admin.dashboard')->with('error', 'Submitted letters cannot be updated.');
         }
 
         DB::beginTransaction();

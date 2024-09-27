@@ -66,11 +66,11 @@
                 {{ Form::label('password',__('messages.client.password').':' ,['class' => 'form-label mb-3 required']) }}
                 <div class="position-relative">
                     <input class="form-control form-control-solid"
-                           type="password" placeholder="{{__('messages.client.password')}}" name="password"
+                           type="password"  placeholder="{{__('messages.client.password')}}" name="password"
                            autocomplete="off"
                            aria-label="Password" data-toggle="password" required>
-                    <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600">
-                            <i class="bi bi-eye-slash-fill"></i>
+                    <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600" >
+                            <i class="bi bi-eye-slash-fill" id=""></i>
                     </span>
                 </div>
             </div>
@@ -79,19 +79,23 @@
     <div class="col-md-6 mb-5">
         <div class="fv-row">
             <div>
-                {{ Form::label('password_confirmation',__('messages.client.confirm_password').':' ,['class' => 'form-label mb-3 required']) }}
+                {{ Form::label('password_confirmation', __('messages.client.confirm_password') . ':', ['class' => 'form-label mb-3 required']) }}
                 <div class="position-relative">
                     <input class="form-control form-control-solid"
                            type="password"
-                           placeholder="{{__('messages.client.confirm_password')}}" name="password_confirmation"
-                           autocomplete="off" aria-label="Password" data-toggle="password" required>
-                    <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600">
-                           <i class="bi bi-eye-slash-fill"></i>
+                           id="password_confirmation"
+                           placeholder="{{ __('messages.client.confirm_password') }}"
+                           name="password_confirmation"
+                           autocomplete="off" aria-label="Password"
+                           required>
+                    <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600" id="togglePassword">
+                        <i class="bi bi-eye-slash-fill" id="toggleIcon"></i>
                     </span>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="mb-5" io-image-input="true">
         <label for="exampleInputImage" class="form-label">{{ __('messages.client.profile') }}:</label>
         <div class="d-block">
@@ -154,4 +158,27 @@
             });
         }
     }
+
+//     $(document).ready(function() {
+//     $('[autofocus]').removeAttr('autofocus');
+// });
+
+
+document.getElementById('togglePassword').addEventListener('click', function () {
+    var passwordInput = document.getElementById('password_confirmation');
+    var icon = document.getElementById('toggleIcon');
+
+    // Toggle password visibility
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('bi-eye-slash-fill');
+        icon.classList.add('bi-eye-fill');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('bi-eye-fill');
+        icon.classList.add('bi-eye-slash-fill');
+    }
+});
+
+
 </script>

@@ -7,8 +7,6 @@
 <!-- Bootstrap CSS -->
 
 
-{{-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> --}}
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 <!-- Bootstrap 4 CSS -->
 
 
@@ -16,7 +14,7 @@
     <div class="container-fluid">
         <div class="d-flex flex-column ">
             @include('flash::message')
-            @if(session('message'))
+            {{-- @if(session('message'))
             <h6 class="alert alert-success">
                 {{ session('message') }}
             </h6>
@@ -25,7 +23,7 @@
             <h6 class="alert alert-danger">
                 {{ session('error') }}
             </h6>
-                    @endif
+                    @endif --}}
      @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -84,7 +82,7 @@
                         <h4>To,</h4>
                     </div>
                 </div>
-                <div class="" style="text-align:right;">
+                <div style="text-align:right;">
                     <div class="">
                      <button type="button" onclick="addRecipient()" id="add-recipient-btn" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
                          <span data-bs-toggle="tooltip" data-bs-placement="top" >
@@ -458,4 +456,15 @@ function loadLetterPreview(letterId) {
         if (document.getElementById('signed_letter')) {
     document.getElementById('signedLetterUpload').style.display = 'block';
     }
+
+    // Check for success message
+    @if (session('message'))
+            toastr.success("{{ session('message') }}");
+        @endif
+
+        // Check for error message
+        @if (session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+
 </script>
