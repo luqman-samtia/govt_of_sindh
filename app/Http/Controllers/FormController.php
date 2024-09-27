@@ -69,7 +69,7 @@ class FormController extends Controller
 
     public function total_letter(Letter $letter){
         $user = Auth::user()->id;
-        $users_form = Letter::where('user_id', $user)->get();
+        $users_form = Letter::where(['user_id'=>$user,'is_submitted'=>1])->get();
         $draft = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
 
         if ($draft !== null && $draft->isNotEmpty()) {
@@ -87,7 +87,7 @@ class FormController extends Controller
             $total_letters = 0;
         }
         $user = Auth::user()->id;
-        $letters = Letter::where('user_id',$user)->orderBy('id', 'desc')->get();
+        $letters = Letter::where(['user_id'=>$user,'is_submitted'=>1])->orderBy('id', 'desc')->get();
         return view('forms.letter.single',compact('letters','total_letters','total_drafts'));
     }
     public function total_draft_letter(Letter $letter){

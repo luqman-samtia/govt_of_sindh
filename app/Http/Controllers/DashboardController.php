@@ -34,7 +34,7 @@ class DashboardController extends AppBaseController
     {
         $dashboardData = $this->dashboardRepository->getAdminDashboardData();
         $user = Auth::user()->id;
-        $users_form = Letter::where('user_id', $user)->get();
+        $users_form = Letter::where(['user_id'=>$user,'is_submitted'=>1])->get();
         $draft = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
 
         if ($draft !== null && $draft->isNotEmpty()) {
