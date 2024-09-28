@@ -589,6 +589,105 @@ public function updateQRCodeLink(Letter $letter)
     $letter->save();
 }
 
+public function letter_search(Request $request)
+{
+    $totalLetters = Letter::count();
+        $users_form = Letter::withCount('user')->get();
+        // $letters = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $draft = Letter::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+    $query_search = $request->input('query');
+    $designation_search = $request->input('designation');
+    $district_search = $request->input('district');
+
+    $letters = Letter::where('is_submitted', 1)
+        ->where(function($query) use ($query_search, $designation_search, $district_search) {
+            if ($query_search) {
+                $query->where('letter_no', 'LIKE', "%{$query_search}%")
+                    ->orWhereHas('user', function($q) use ($query_search) {
+                        $q->where('first_name', 'LIKE', "%{$query_search}%");
+                    });
+            }
+            if ($designation_search) {
+                $query->whereHas('designations', function($q) use ($designation_search) {
+                    $q->where('designation', 'LIKE', "%{$designation_search}%");
+                });
+            }
+            if ($district_search) {
+                $query->whereHas('user', function($q) use ($district_search) {
+                    $q->where('district', 'LIKE', "%{$district_search}%");
+                });
+            }
+        })
+        ->get();
+
+                    //  if ($request->ajax()) {
+                    //     return response()->json([
+                    //         'html' => view('super_admin.total_letters', compact('letters','data','users_form','totalLetters','draft'))->render() // Render only the table
+                    //     ]);
+                    // }
+                    if ($request->ajax()) {
+
+                        return view('super_admin.render_table_search', compact('letters'))->render();
+
+                    }
+
+
+    return view('super_admin.total_letters', compact('letters','data','users_form','totalLetters','draft'));
+}
+public function draft_search(Request $request)
+{
+    $totalLetters = Letter::count();
+        $users_form = Letter::withCount('user')->get();
+        // $letters = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $draft = Letter::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+    $query_search = $request->input('query');
+    $designation_search = $request->input('designation');
+    $district_search = $request->input('district');
+
+    $letters = Letter::with(['user', 'designations'])  // Eager load 'user' and 'designations'
+    ->where('is_submitted', 0)
+    ->where(function($query) use ($query_search, $designation_search, $district_search) {
+        if ($query_search) {
+            $query->where('letter_no', 'LIKE', "%{$query_search}%")
+                ->orWhereHas('user', function($q) use ($query_search) {
+                    $q->where('first_name', 'LIKE', "%{$query_search}%");
+                });
+        }
+        if ($designation_search) {
+            $query->whereHas('designations', function($q) use ($designation_search) {
+                $q->where('designation', 'LIKE', "%{$designation_search}%");
+            });
+        }
+        if ($district_search) {
+            $query->whereHas('user', function($q) use ($district_search) {
+                $q->where('district', 'LIKE', "%{$district_search}%");
+            });
+        }
+    })
+    ->get();
+
+                    //  if ($request->ajax()) {
+                    //     return response()->json([
+                    //         'html' => view('super_admin.total_letters', compact('letters','data','users_form','totalLetters','draft'))->render() // Render only the table
+                    //     ]);
+                    // }
+                    if ($request->ajax()) {
+
+                        return view('super_admin.render_draft_search', compact('letters'))->render();
+
+                    }
+
+
+    return view('super_admin.total_draft', compact('letters','data','users_form','totalLetters','draft'));
+}
 
     public function downloadSignedLetter(Letter $letter)
     {

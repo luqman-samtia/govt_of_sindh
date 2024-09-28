@@ -132,6 +132,14 @@
             background-color: #48B7A3 !important;
             color: white !important;
         }
+            .toast-message {
+            background-color: #48B7A3 !important;
+            color: white !important;
+        }
+            .toast-close-button {
+            /* background-color: #48B7A3 !important; */
+            color: white !important;
+        }
         .toast-error {
             background-color: #dc3545 !important;
             color: white !important;
@@ -140,6 +148,15 @@
         /* background-color: #4caf50; Change this to your desired color */
         color: white !important; /* Change text color if needed */
     }
+        .form-control:focus{
+            overflow: hidden !important;
+        }
+        #draftsTable div.loading {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+}
         </style>
 </head>
 <body class="main-body" style="background: #48B7A3;">

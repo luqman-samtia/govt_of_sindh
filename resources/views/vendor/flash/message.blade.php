@@ -1,3 +1,4 @@
+
 @foreach (session('flash_notification', collect())->toArray() as $message)
     @if ($message['overlay'])
         @include('flash::modal', [
@@ -36,5 +37,8 @@
             toastr.error("{{ session('error') }}");
         @endif
     });
+
+
+
 </script>
 {{-- {{ session()->forget('flash_notification') }} --}}

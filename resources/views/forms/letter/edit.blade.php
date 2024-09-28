@@ -98,7 +98,7 @@
 
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="designation-{{$index}}" class="form-control form-control-solid" placeholder="Designation" value="{{ $toLetter->designation }}" name="designation[{{$index}}][designation]" required>
+                        <input type="text" id="designation-{{$index}}" class="form-control form-control-solid" placeholder="Designation" value="{{ $toLetter->designation }}" name="designation[{{$index}}][designation]" required autofocus="off"  autocomplete="off">
                     </div>
                 </div>
                 <div class="col-lg-2">
@@ -246,7 +246,7 @@
                 <div class="col-md-12" style="text-align: center;">
                     <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
                     <a  type="button" name="" value=""  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
-                    <button  type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
+                    <button type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
                     <button  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
                     {{-- <a href="{{ route('forms') }}"
                     class="btn btn-secondary btn-active-light-primary">{{ __('messages.common.cancel') }}
@@ -382,7 +382,7 @@ function loadLetterPreview(letterId) {
             function addRecipient() {
         // Increment fieldCounter on each call
         fieldCounter++;
-
+        event.preventDefault();
         const newField = `
             <div class="row" id="field-${fieldCounter}" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
                 <div class="col-lg-2">
@@ -408,6 +408,8 @@ function loadLetterPreview(letterId) {
             </div>`;
 
         document.getElementById('dynamic-fields').insertAdjacentHTML('beforeend', newField);
+
+
     }
     function signing_authority(){
         let fieldCounters = 0;
@@ -466,5 +468,23 @@ function loadLetterPreview(letterId) {
         @if (session('error'))
             toastr.error("{{ session('error') }}");
         @endif
+
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+        var scrollpos = sessionStorage.getItem('scrollpos');
+        if (scrollpos) {
+            window.scrollTo(0, scrollpos);
+            sessionStorage.removeItem('scrollpos');
+        }
+    });
+
+    window.addEventListener("beforeunload", function (e) {
+        sessionStorage.setItem('scrollpos', window.scrollY);
+    });
+
+    window.onload = function() {
+    // Remove auto-focus on the first input by setting the focus elsewhere
+    document.activeElement.blur();
+};
 
 </script>
