@@ -75,7 +75,7 @@
                     </span>
                     </button>
                 </div> --}}
-                <div class="col-lg-2 mb-5">
+                <div class="col-lg-2">
                     <div>
                         <h4>To,</h4>
                     </div>
@@ -124,9 +124,9 @@
                 {{-- <hr>
                 <h4>Subject:</h4> --}}
                <div class="row" style="display:flex:flex-direction:row">
-                <div class="col-lg-10 mt-5">
+                <div class="col-lg-10 ">
                     <div class="mb-5">
-                        <label for="subject" class="form-label required mb-3">Subject</label>
+                        {{-- <label for="subject" class="form-label required mb-3">Subject</label> --}}
                         <input type="text" id="subject" class="form-control form-control-solid" placeholder="Subject" value="{{$letter->subject}}" name="subject" required>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                 <hr>
                 <div class="col-lg-12">
                     <div class="mb-5">
-                        <label for="draft_para" class="form-label required mb-3">Draft Section</label>
+                        {{-- <label for="draft_para" class="form-label required mb-3">Draft Section</label> --}}
                         <textarea id="draft_para" cols="70" rows="10" class="form-control form-control-solid ckeditor" placeholder="Draft Para" name="draft_para" required>{{$letter->draft_para}}</textarea>
 
                     </div>
