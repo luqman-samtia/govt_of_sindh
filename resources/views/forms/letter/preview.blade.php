@@ -147,7 +147,11 @@
             <td class="right" style="text-align: center;line-height: 2px;">
                 @foreach ($letter->signingAuthorities as $Authority)
                 <p style="margin-top: 20px;">
-                    <p><strong>{{$Authority->designation}}</strong></p>
+                    @if (isset($Authority->name))
+                    <p><strong>{{$Authority->name}}</strong></p>
+
+                    @endif
+                    <p>{{$Authority->designation}}</p>
                     <p>For {{ $Authority->department}}</p>
                     <p>0301-2255945</p>
                 </p>
