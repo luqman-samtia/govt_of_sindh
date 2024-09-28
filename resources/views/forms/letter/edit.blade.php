@@ -37,28 +37,26 @@
                 @csrf
                 @method('PUT')
 
-                <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-4">
+                <div class="row " style="display:flex;flex-direction:row;align-items:center; justify-content:right;">
+                    {{-- <div class="col-lg-2 col-md-2 col-sm-4">
                         <div class="mb-5">
-                            {{-- <label for="letter_no" class="form-label"></label> --}}
-                            {{-- <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$newLetterNo}}" placeholder="Letter No" name="letter_no" readonly> --}}
+
                             <img src="{{asset('storage/qr-codes/download4.jpeg')}}" class="form-control form-control-solid" alt="GOVT OF SINDH" width="" style="width: 150px;background:none;border:none">
                         </div>
-                    </div>
-                    <div class="col-lg-5 col-md-5 col-sm-4">
+                    </div> --}}
+                    {{-- <div class="col-lg-5 col-md-5 col-sm-4">
                         <div class="mb-5" style="text-align:left;justify-content:center;">
-                            {{-- <label for="letter_no" class="form-label mt-3"></label> --}}
-                            {{-- <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$newLetterNo}}" placeholder="Letter No" name="letter_no" readonly> --}}
+
                             <h4 class="form-control form-control-solid" style="background:none;border:none">ANTI-CORRUPTION ESTABLISHMENT SINDH</h4>
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-lg-3 col-md-3 col-sm-4">
                         <div class="mb-5">
                             {{-- <label for="letter_no" class="form-label required mb-3">Letter No</label> --}}
                             <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$letter->letter_no}}" placeholder="Letter No" name="letter_no" readonly>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-2 col-sm-4">
+                    <div class="col-lg-3 col-md-3 col-sm-4">
                         <div class="mb-5">
                             {{-- <label for="date" class="form-label required mb-3">Date</label> --}}
                             <input type="text" id="date" value="{{date(Auth::user()->date)}}"  class="form-control form-control-solid" placeholder="Date" name="date" readonly>
@@ -132,7 +130,7 @@
                         <input type="text" id="subject" class="form-control form-control-solid" placeholder="Subject" value="{{$letter->subject}}" name="subject" required>
                     </div>
                 </div>
-                <div class="col-lg-3">
+                {{-- <div class="col-lg-3">
                     <div class="mb-5">
                         <label for="dear" class="form-label  mb-3">Dear</label>
                         <select name="dear" class="form-control form-control-solid" id="dear">
@@ -145,7 +143,7 @@
 
                         </select>
                     </div>
-                </div>
+                </div> --}}
                </div>
                 <hr>
                 <div class="col-lg-12">
@@ -282,15 +280,23 @@
         <hr>
         <form action="{{ route('letter.upload', $letter->id) }}" method="POST" enctype="multipart/form-data" style="margin-top: 10px;">
             @csrf
-        <div class="col-lg-12">
-            <div class="mb-5">
-                <label for="signed_letter" class="form-label  mb-3">Upload Signed Letter:</label>
+
+        <div class="col-md-12 col-lg-12">
+
+            <label style="color:white;" for="signed_letter" class="form-label  mb-3">NOTE: Download the letter, have it signed, then scan and upload it as a PDF. Ensure the file number matches the letter number for a successful upload.</label>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center">
+        <div class="col-lg-4">
+            <div class="">
+
                 <input type="file" id="signed_letter" name="signed_letter" class="form-control form-control-solid" accept=".pdf">
             </div>
 
         </div>
-        <button type="submit" class="btn btn-primary text-center">Upload Signed Letter</button>
-
+        {{-- <div class="col-md-3"> --}}
+            <button style="width:150px; margin-left:5px;" type="submit" class="btn btn-primary text-center">Submit Letter</button>
+        {{-- </div> --}}
+    </div>
     </form>
         </div>
     </div>
