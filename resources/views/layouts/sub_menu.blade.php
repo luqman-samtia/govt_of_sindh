@@ -36,7 +36,7 @@
 </li>
 @role('super_admin')
     {{-- Super Admin Dashboard Sub Menu --}}
-    <li
+    {{-- <li
         class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('super-admin/dashboard*') ? 'd-none' : '' }}">
         <a class="nav-link p-0 {{ Request::is('super-admin/dashboard*') ? 'active' : '' }}"
             href="{{ route('super.admin.dashboard') }}">{{ __('messages.dashboard') }}</a>
@@ -57,7 +57,7 @@
         class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('super-admin/enquiries*') ? 'd-none' : '' }}">
         <a class="nav-link p-0 {{ Request::is('super-admin/enquiries*') ? 'active' : '' }}"
             href="{{ route('super.admin.enquiry.index') }}">{{ __('messages.enquiries') }}</a>
-    </li>
+    </li> --}}
 
     {{-- <div>
         <h3 style="text-align:center;margin:0px auto;">ANTI-CORRUPTION ESTABLISHMENT
@@ -160,7 +160,9 @@
             href="{{ route('client.quotes.index') }}">{{ __('messages.quotes') }}</a>
     @endrole
 </li>
-<div>
+<div class="d-flex align-items-center justify-content-center">
+    <img alt="Logo" class="" width="70" src="{{asset('storage/qr-codes/download.jpeg') }}" class="text-center img-fluid object-contain">
+
     <h3 style="text-align:center;margin:0px auto;color:#48B7A3;">ANTI-CORRUPTION ESTABLISHMENT
         GOVERNMENT OF SINDH</h3>
 

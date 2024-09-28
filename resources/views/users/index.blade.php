@@ -11,7 +11,7 @@
              <div class="row">
             <div class="col-12 mb-4">
                 <div class="row">
-                    <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
+                    <div class="col-xxl-3 col-xl-3 col-md-3 col-sm-6 widget">
                         <a href="{{ route('users.index') }}"
                            class="mb-xl-8 text-decoration-none">
 
@@ -28,7 +28,7 @@
                             </div>
                         </a>
                     </div>
-                    <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
+                    <div class="col-xxl-3 col-xl-3 col-md-3 col-sm-6 widget">
                         <a href="{{route('super.admin.total.letters')}}"
                         class="mb-xl-8 text-decoration-none">
 
@@ -53,7 +53,7 @@
                             </div>
                         </a>
                     </div>
-                    <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
+                    <div class="col-xxl-3 col-xl-3 col-md-3 col-sm-6 widget">
                         <a href=""
                            class="mb-xl-8 text-decoration-none">
 
@@ -72,7 +72,7 @@
                             </div>
                         </a>
                     </div>
-                    <div class="col-xxl-3 col-xl-4 col-sm-6 widget">
+                    <div class="col-xxl-3 col-xl-3 col-md-3 col-sm-6 widget">
                         <a href="{{route('super.admin.total.draft.letters')}}"
                            class="mb-xl-8 text-decoration-none">
 

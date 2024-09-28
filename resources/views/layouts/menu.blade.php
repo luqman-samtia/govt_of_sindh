@@ -8,31 +8,52 @@
         </a>
     </li>
 
-    <li class="nav-item {{ Request::is('super-admin/super-admins*') ? 'active' : '' }}">
+    {{-- <li class="nav-item {{ Request::is('super-admin/super-admins*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('super-admins.index') }}">
             <span class="menu-icon">
                 <i class="fas fa-user pe-3"></i>
             </span>
             <span class="aside-menu-title">{{ __('messages.super_admins') }}</span>
         </a>
+    </li> --}}
+    <li class="nav-item {{ Request::is('profile/edit*') ? 'active' : '' }}">
+        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('profile.setting') }}">
+            <span class="dropdown-icon me-4 text-gray-600">
+                <i class="fa-solid fa-user"></i>
+            </span>
+            <span class="aside-menu-title">{{ __('Update Profile') }}</span>
+        </a>
+    </li>
+    <li class="nav-item {{ Request::is('logout*') ? 'active' : '' }}">
+        <a class="nav-link d-flex align-items-center py-3" aria-current="page">
+            <span class="dropdown-icon me-4 text-gray-600">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </span>
+            <form id="logout-form" action="{{ route('logout') }}" method="post">
+                @csrf
+            </form>
+            <span
+                onclick="event.preventDefault(); localStorage.clear();  document.getElementById('logout-form').submit();">
+                {{ __('messages.sign_out') }}</span>
+        </a>
     </li>
 
-    <li class="nav-item {{ Request::is('super-admin/users*') ? 'active' : '' }}">
+    {{-- <li class="nav-item {{ Request::is('super-admin/users*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('users.index') }}">
             <span class="menu-icon">
                 <i class="fas fa-users pe-3"></i>
             </span>
             <span class="aside-menu-title">{{ __('messages.users') }}</span>
         </a>
-    </li>
-    <li class="nav-item {{ Request::is('super-admin/forms*') ? 'active' : '' }}">
+    </li> --}}
+    {{-- <li class="nav-item {{ Request::is('super-admin/forms*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('users.forms') }}">
             <span class="menu-icon">
                 <i class="far fa-file-alt pe-3"></i>
             </span>
             <span class="aside-menu-title">{{ __('Users Forms') }}</span>
         </a>
-    </li>
+    </li> --}}
 
     {{-- <li class="nav-item {{ Request::is('super-admin/subscription-plan*', 'super-admin/transactions*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page"
