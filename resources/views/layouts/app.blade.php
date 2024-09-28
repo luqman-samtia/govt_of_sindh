@@ -157,9 +157,22 @@
     font-weight: bold;
     color: #555;
 }
+body{
+    background-image: url('{{ asset('storage/qr-codes/govt_sindh.jpg') }}');
+    background-repeat: no-repeat;  /* avoid repeating the image */
+    background-size: cover;
+    background-position: center;
+    /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); Soft shadow */
+    /* opacity: 0.9;              Slight transparency */
+    /* filter: brightness(110%); */
+    /* width: 100%; */
+    /* height: auto; */
+    background-attachment: fixed;
+}
+
         </style>
 </head>
-<body class="main-body" style="background: #48B7A3;">
+<body class="main-body">
 <div class="d-flex flex-column flex-root">
     <div class="d-flex flex-row flex-column-fluid" >
         @include('layouts.sidebar')
