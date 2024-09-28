@@ -158,18 +158,26 @@
     color: #555;
 }
 body{
-    background-image: url('{{ asset('storage/qr-codes/govt_sindh.jpg') }}');
-    background-repeat: no-repeat;  /* avoid repeating the image */
-    background-size: cover;
-    background-position: center;
+    /* background-image: url('{{ asset('storage/qr-codes/bg03.JPG') }}'); */
+    /* background: linear-gradient(to bottom, #ffffff 0%, #00cc99 82%); */
+    /* background: linear-gradient(to right, #ffffff 8%, #00cc99 100%); */
+    background: linear-gradient(to right, #ffffff 8%, #48b7a3 100%);
+    /* background-repeat: no-repeat;  /* avoid repeating the image */
+    /* background-size: cover; */
+    /* background-position: center; */ */
     /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); Soft shadow */
     /* opacity: 0.9;              Slight transparency */
     /* filter: brightness(110%); */
-    /* width: 100%; */
-    /* height: auto; */
-    background-attachment: fixed;
-}
+    /* width: 100%;
+    height: auto; */
+    /* max-width:1000px; */
+    /* background-attachment: fixed; */
 
+}
+#gos_bg_color{
+    background-color: #48B7A3 !important;
+    border:none;
+}
         </style>
 </head>
 <body class="main-body">

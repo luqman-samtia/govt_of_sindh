@@ -2,9 +2,9 @@
     <li class="nav-item {{ Request::is('super-admin/dashboard*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('super.admin.dashboard') }}">
             <span class="menu-icon">
-                <i class="fa-solid fa-chart-pie pe-3"></i>
+                <i  style="color:black !important;" class="fa-solid fa-chart-pie pe-3"></i>
             </span>
-            <span class="aside-menu-title">{{ __('messages.dashboard') }}</span>
+            <span  style="color:black !important;" class="aside-menu-title">{{ __('messages.dashboard') }}</span>
         </a>
     </li>
 
@@ -17,22 +17,22 @@
         </a>
     </li> --}}
     <li class="nav-item {{ Request::is('profile/edit*') ? 'active' : '' }}">
-        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('profile.setting') }}">
-            <span class="dropdown-icon me-4 text-gray-600">
-                <i class="fa-solid fa-user"></i>
+        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('profile.setting') }}" >
+            <span class="dropdown-icon me-4 ">
+                <i  style="color:black !important;" class="fa-solid fa-user"></i>
             </span>
-            <span class="aside-menu-title">{{ __('Update Profile') }}</span>
+            <span  style="color:black !important;" class="aside-menu-title">{{ __('Update Profile') }}</span>
         </a>
     </li>
     <li class="nav-item {{ Request::is('logout*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page">
-            <span class="dropdown-icon me-4 text-gray-600">
-                <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="dropdown-icon me-4 ">
+                <i  style="color:black !important;" class="fa-solid fa-right-from-bracket"></i>
             </span>
             <form id="logout-form" action="{{ route('logout') }}" method="post">
                 @csrf
             </form>
-            <span
+            <span  style="color:black !important;"
                 onclick="event.preventDefault(); localStorage.clear();  document.getElementById('logout-form').submit();">
                 {{ __('messages.sign_out') }}</span>
         </a>

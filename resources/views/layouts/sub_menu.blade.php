@@ -161,9 +161,9 @@
     @endrole
 </li>
 <div class="d-flex align-items-center justify-content-center">
-    <img alt="Logo" class="" width="70" src="{{asset('storage/qr-codes/download.jpeg') }}" class="text-center img-fluid object-contain">
+    <img alt="Logo" class="" width="40" src="{{asset('storage/qr-codes/gos_logo.PNG') }}" class="text-center img-fluid object-contain">
 
-    <h3 style="text-align:center;margin:0px auto;color:#48B7A3;">ANTI-CORRUPTION ESTABLISHMENT
+    <h3 style="text-align:center;margin-left:5px;color:#48B7A3;">ANTI-CORRUPTION ESTABLISHMENT
         GOVERNMENT OF SINDH</h3>
 
 </div>

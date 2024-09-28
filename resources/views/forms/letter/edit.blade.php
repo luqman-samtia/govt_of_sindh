@@ -82,7 +82,7 @@
                 </div>
                 <div style="text-align:right;">
                     <div class="">
-                     <button type="button" onclick="addRecipient()" id="add-recipient-btn" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
+                     <button id="gos_bg_color" type="button" onclick="addRecipient()" id="add-recipient-btn" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
                          <span data-bs-toggle="tooltip" data-bs-placement="top" >
                              <i class="fas fa-plus"></i>
                          </span>
@@ -166,22 +166,28 @@
 
 
                     <div class="row" id="fieldd-1">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="mb-5">
                                 {{-- <label for="s_a_name" class="form-label  mb-3">Signing Authority Name</label> --}}
                                 <input type="text" id="s_a_name" class="form-control form-control-solid" placeholder="S A Name" value="{{$signing_authority->name}}" name="signing_authorities[{{$index}}][sa_name]" >
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="mb-5">
                                 {{-- <label for="s_a_designation" class="form-label  mb-3">Signing Authority Designation</label> --}}
                                 <input type="text" id="s_a_designation" class="form-control form-control-solid" placeholder="S A Designation" value="{{$signing_authority->designation}}" name="signing_authorities[{{$index}}][sa_designation]" >
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="mb-5">
                                 {{-- <label for="s_a_department" class="form-label  mb-3">Department</label> --}}
                                 <input type="text" id="s_a_department" class="form-control form-control-solid" placeholder="Department" value="{{$signing_authority->department}}" name="signing_authorities[{{$index}}][sa_department]" >
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-5">
+                                {{-- <label for="s_a_department" class="form-label  mb-3">Department</label> --}}
+                                <input type="text" id="s_a_other" class="form-control form-control-solid" placeholder="Others" value="{{$signing_authority->other}}" name="signing_authorities[{{$index}}][sa_other]" >
                             </div>
                         </div>
                     </div>
@@ -199,7 +205,7 @@
                     A copy is forwarded for similar compliance :-
                </div>
                 <div class="col-md-6" style="text-align: end;">
-                    <button type="button" id="add-fielddd" onclick="ForwardCopy()" class="btn btn btn-icon btn-primary text-white hide-arrow ps-2 pe-0">
+                    <button id="gos_bg_color" type="button" id="add-fielddd" onclick="ForwardCopy()" class="btn btn btn-icon btn-primary text-white hide-arrow ps-2 pe-0">
                     <span data-bs-toggle="tooltip">
                         <i class="fas fa-plus"></i>
                     </span>
@@ -242,10 +248,10 @@
 
 {{-- end letter preview --}}
                 <div class="col-md-12" style="text-align: center;">
-                    <a href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
-                    <a  type="button" name="" value=""  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
-                    <button type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
-                    <button  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
+                    <a id="gos_bg_color" href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
+                    <a id="gos_bg_color" type="button" name="" value=""  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
+                    <button id="gos_bg_color" type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
+                    <button id="gos_bg_color"  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
                     {{-- <a href="{{ route('forms') }}"
                     class="btn btn-secondary btn-active-light-primary">{{ __('messages.common.cancel') }}
                     </a> --}}
@@ -283,7 +289,7 @@
 
         <div class="col-md-12 col-lg-12">
 
-            <label style="color:white;" for="signed_letter" class="form-label  mb-3">NOTE: Download the letter, have it signed, then scan and upload it as a PDF. Ensure the file number matches the letter number for a successful upload.</label>
+            <label style="color:red;" for="signed_letter" class="form-label  mb-3">NOTE: Download the letter, have it signed, then scan and upload it as a PDF. Ensure the file number matches the letter number for a successful upload.</label>
         </div>
         <div style="display:flex;align-items:center;justify-content:center">
         <div class="col-lg-4">
@@ -294,7 +300,7 @@
 
         </div>
         {{-- <div class="col-md-3"> --}}
-            <button style="width:150px; margin-left:5px;" type="submit" class="btn btn-primary text-center">Submit Letter</button>
+            <button id="gos_bg_color" style="width:150px; margin-left:5px;" type="submit" class="btn btn-primary text-center">Submit Letter</button>
         {{-- </div> --}}
     </div>
     </form>

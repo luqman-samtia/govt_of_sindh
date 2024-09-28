@@ -243,6 +243,7 @@ class FormController extends Controller
             $sa->name = $authority['sa_name'];
             $sa->designation = $authority['sa_designation'];
             $sa->department = $authority['sa_department'];
+            $sa->other = $authority['sa_other'];
             $sa->save();
         }
            // Save forwarded copies
@@ -352,6 +353,7 @@ foreach ($request->input('signing_authorities', []) as $authority) {
             'name' => $authority['sa_name'],
             'designation' => $authority['sa_designation'],
             'department' => $authority['sa_department'],
+            'other' => $authority['sa_other'],
         ]);
         $existingAuthorityIds[] = $authority['id'];
     } else {
@@ -360,6 +362,7 @@ foreach ($request->input('signing_authorities', []) as $authority) {
             'name' => $authority['sa_name'],
             'designation' => $authority['sa_designation'],
             'department' => $authority['sa_department'],
+            'other' => $authority['sa_other'],
         ]);
         $existingAuthorityIds[] = $newAuthority->id;
     }

@@ -34,15 +34,13 @@
                 <div class="row">
                     <div class="col-lg-2 col-md-2 col-sm-4">
                         <div class="mb-5">
-                            {{-- <label for="letter_no" class="form-label"></label> --}}
-                            {{-- <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$newLetterNo}}" placeholder="Letter No" name="letter_no" readonly> --}}
+
                             <img src="{{asset('storage/qr-codes/download4.jpeg')}}" class="form-control form-control-solid" alt="GOVT OF SINDH" width="" style="width: 150px;background:none;border:none">
                         </div>
                     </div>
                     <div class="col-lg-5 col-md-5 col-sm-4">
                         <div class="mb-5" style="text-align:left;justify-content:center;">
-                            {{-- <label for="letter_no" class="form-label mt-3"></label> --}}
-                            {{-- <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$newLetterNo}}" placeholder="Letter No" name="letter_no" readonly> --}}
+
                             <h4 class="form-control form-control-solid" style="background:none;border:none">ANTI-CORRUPTION ESTABLISHMENT SINDH</h4>
                         </div>
                     </div>
@@ -115,7 +113,7 @@
                 </div>
                 <div class="col-lg-2">
                    <div class="mb-5">
-                    <button type="button" onclick="addRecipient()" id="add-field" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
+                    <button id="gos_bg_color" type="button" onclick="addRecipient()" id="add-field" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
                         <span data-bs-toggle="tooltip" data-bs-placement="top" >
                             <i class="fas fa-plus"></i>
                         </span>
@@ -135,20 +133,7 @@
                             <input type="text" id="subject" class="form-control form-control-solid" placeholder="Subject" name="subject" required>
                         </div>
                     </div>
-                    <div class="col-lg-3">
-                        <div class="mb-5">
-                            {{-- <label for="dear" class="form-label  mb-3">Dear</label> --}}
-                            <select name="dear" class="form-control form-control-solid" id="dear">
-                                <option value="">Select option</option>
-                                <option value="Respected Mam.">Respected Mam</option>
-                                <option value="Respected Sir.">Respected Sir</option>
-                                <option value="Mr.">Mr.</option>
-                                <option value="Mrs.">Mrs.</option>
-                                <option value="Ms.">Ms.</option>
 
-                            </select>
-                        </div>
-                    </div>
                 </div>
 
                 <hr>
@@ -169,22 +154,28 @@
                 </div> --}}
                 <div id="dynamic-fieldds">
                     <div class="row" id="fieldd-1">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="mb-5">
                                 {{-- <label for="s_a_name" class="form-label  mb-3">Signing Authority Name</label> --}}
                                 <input type="text" id="s_a_name" class="form-control form-control-solid" placeholder="S A Name" name="signing_authorities[0][sa_name]" >
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="mb-5">
                                 {{-- <label for="s_a_designation" class="form-label  mb-3">Signing Authority Designation</label> --}}
                                 <input type="text" id="s_a_designation" class="form-control form-control-solid" placeholder="S A Designation" name="signing_authorities[0][sa_designation]" >
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <div class="mb-5">
                                 {{-- <label for="s_a_department" class="form-label  mb-3">Department</label> --}}
                                 <input type="text" id="s_a_department" class="form-control form-control-solid" placeholder="Department" name="signing_authorities[0][sa_department]" >
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-5">
+                                {{-- <label for="s_a_department" class="form-label  mb-3">Department</label> --}}
+                                <input type="text" id="s_a_other" class="form-control form-control-solid" placeholder="Other" name="signing_authorities[0][sa_other]" >
                             </div>
                         </div>
                     </div>
@@ -209,7 +200,7 @@
                     </div>
                 </div>
                 <div class="col-md-6" style="text-align: end;">
-                    <button type="button" id="add-fielddd" onclick="ForwardCopy()" class="btn btn btn-icon btn-primary text-white hide-arrow ps-2 pe-0">
+                    <button id="gos_bg_color" type="button" id="add-fielddd" onclick="ForwardCopy()" class="btn btn btn-icon btn-primary text-white hide-arrow ps-2 pe-0">
                     <span >
                         <i class="fas fa-plus"></i>
                     </span>
@@ -220,8 +211,8 @@
 
                 <hr>
                 <div class="col-md-12" style="text-align: center;">
-                    <button  type="submit" name="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save As Draft</button>
-                    <button  type="reset" name="reset"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Reset</button>
+                    <button id="gos_bg_color"  type="submit" name="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save As Draft</button>
+                    <button id="gos_bg_color" type="reset" name="reset"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Reset</button>
                     {{-- <button  type="submit" name="submit"     class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save & Submit</button> --}}
                     {{-- <a href="{{ route('forms') }}"
                     class="btn btn-secondary btn-active-light-primary">{{ __('messages.common.cancel') }}
