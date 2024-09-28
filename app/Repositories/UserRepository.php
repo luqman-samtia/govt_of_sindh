@@ -51,7 +51,7 @@ class UserRepository extends BaseRepository
 
             $user = $this->createUser($input, $tenant);
             $user->email_verified_at = now();
-            $user->designation = $input['designation'];
+            $user->designation = strtolower($input['designation']);
             $user->district = $input['district'];
             $user->grade = $input['grade'];
             $user->zone = $input['zone'];
@@ -84,7 +84,7 @@ class UserRepository extends BaseRepository
             }
 
             $user->update($input);
-            $user->designation = $input['designation'];
+            $user->designation = strtolower($input['designation']);
             $user->district = $input['district'];
             $user->grade = $input['grade'];
             $user->zone = $input['zone'];

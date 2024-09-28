@@ -29,13 +29,14 @@
             <span class="dropdown-icon me-4 ">
                 <i  style="color:black !important;" class="fa-solid fa-right-from-bracket"></i>
             </span>
-            <form id="logout-form" action="{{ route('logout') }}" method="post">
-                @csrf
-            </form>
+
             <span  style="color:black !important;"
                 onclick="event.preventDefault(); localStorage.clear();  document.getElementById('logout-form').submit();">
                 {{ __('messages.sign_out') }}</span>
         </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="post">
+            @csrf
+        </form>
     </li>
 
     {{-- <li class="nav-item {{ Request::is('super-admin/users*') ? 'active' : '' }}">
@@ -116,9 +117,9 @@
     <li class="nav-item {{ Request::is('admin/dashboard*', 'admin/currency-reports*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('admin.dashboard') }}">
             <span class="menu-icon">
-                <i class="fa-solid fa-chart-pie pe-3"></i>
+                <i style="color:black;" class="fa-solid fa-chart-pie pe-3"></i>
             </span>
-            <span class="aside-menu-title">{{ __('messages.dashboard') }}</span>
+            <span style="color:black;" class="aside-menu-title">{{ __('messages.dashboard') }}</span>
         </a>
     </li>
 
@@ -186,23 +187,25 @@
     <li class="nav-item {{ Request::is('profile/edit*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="{{ route('profile.setting') }}">
             <span class="dropdown-icon me-4 text-gray-600">
-                <i class="fa-solid fa-user"></i>
+                <i style="color:black;" class="fa-solid fa-user"></i>
             </span>
-            <span class="aside-menu-title">{{ __('Update Profile') }}</span>
+            <span style="color:black;" class="aside-menu-title">{{ __('Update Profile') }}</span>
         </a>
     </li>
-    <li class="nav-item {{ Request::is('logout*') ? 'active' : '' }}">
+    <li class="nav-item">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page">
             <span class="dropdown-icon me-4 text-gray-600">
-                <i class="fa-solid fa-right-from-bracket"></i>
+                <i style="color:black;" class="fa-solid fa-right-from-bracket"></i>
             </span>
-            <form id="logout-form" action="{{ route('logout') }}" method="post">
-                @csrf
-            </form>
-            <span
+
+            <span style="color:black;"
                 onclick="event.preventDefault(); localStorage.clear();  document.getElementById('logout-form').submit();">
-                {{ __('messages.sign_out') }}</span>
+                {{ __('messages.sign_out') }}
+            </span>
         </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+            @csrf
+        </form>
     </li>
 
     {{-- <li class="nav-item {{ Request::is('admin/payment-qr-codes*') ? 'active' : '' }}">

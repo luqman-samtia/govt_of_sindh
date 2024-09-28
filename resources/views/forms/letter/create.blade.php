@@ -89,7 +89,7 @@
                     </div>
                 </div>
         <div id="dynamic-fields">
-            <div class="row" id="field-1" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
+            <div class="row" id="field-0" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
 
                 <div class="col-lg-2">
                     <div class="mb-5">
@@ -139,7 +139,7 @@
                 <hr>
                 <div class="col-lg-12">
                     <div class="mb-5">
-                        <label for="draft_para" class="form-label required mb-3">Draft Section</label>
+                        {{-- <label for="draft_para" class="form-label required mb-3">Draft Section</label> --}}
                         <textarea id="draft_para" cols="70" rows="10" class="form-control form-control-solid ckeditor" placeholder="Draft Para" name="draft_para" required></textarea>
 
                     </div>
@@ -191,14 +191,6 @@
                 <div class="col-md-6 mb-5">
                      A copy is forwarded for similar compliance :-
                 </div>
-
-                <div id="dynamic-fielddds">
-             <div class="row" id="fielddd-1">
-                <div class="col-lg-6">
-                       <div class="mb-5">
-                        <input type="text" id="copy_forwarded" class="form-control form-control-solid" placeholder="Copy of Forwarded" name="forwarded_copies[0][copy_forwarded]" required>
-                    </div>
-                </div>
                 <div class="col-md-6" style="text-align: end;">
                     <button id="gos_bg_color" type="button" id="add-fielddd" onclick="ForwardCopy()" class="btn btn btn-icon btn-primary text-white hide-arrow ps-2 pe-0">
                     <span >
@@ -206,6 +198,14 @@
                     </span>
                     </button>
                 </div>
+            <div id="dynamic-fielddds">
+             <div class="row" id="fielddd-0">
+                <div class="col-lg-6">
+                       <div class="mb-5">
+                        <input type="text" id="copy_forwarded" class="form-control form-control-solid" placeholder="Copy of Forwarded" name="forwarded_copies[0][copy_forwarded]" required>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -248,7 +248,6 @@
             const newField = `
                 <div class="row" id="field-${fieldCounter}" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
 
-
                 <div class="col-lg-2">
                     <div class="mb-5">
                         <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" name="designation[${fieldCounter}][designation]" required>
@@ -269,16 +268,22 @@
                         <input type="text" id="contact" class="form-control form-control-solid" placeholder="Contact" name="designation[${fieldCounter}][contact]" >
                     </div>
                 </div>
+
                 <div class="col-lg-2">
-                    <div class="mb-5">
-                        <input type="hidden" id="designation" class="form-control form-control-solid">
-                    </div>
-                </div>
+                <button type="button" class="btn btn-danger mb-5" onclick="removeRecipient(${fieldCounter})">
+                    <i class="fa fa-minus"></i>
+                </button>
+                 </div>
                 </div>`;
             document.getElementById('dynamic-fields').insertAdjacentHTML('beforeend', newField);
         // });
     }
-
+    function removeRecipient(id) {
+    const field = document.getElementById(`field-${id}`);
+    if (field) {
+        field.remove(); // Remove the row
+    }
+}
     function signing_authority(){
         let fieldCounters = 0;
                     // document.getElementById('add-fieldd').addEventListener('click', function() {
@@ -302,7 +307,8 @@
                                                     <label for="s_a_department" class="form-label  mb-3">Department</label>
                                                     <input type="text" id="s_a_department" class="form-control form-control-solid" placeholder="Department" name="signing_authorities[${fieldCounters}][sa_department]" >
                                                 </div>
-                                            </div>
+                                        </div>
+
                             </div>`;
                         document.getElementById('dynamic-fieldds').insertAdjacentHTML('beforeend', newFieldd);
                     // });
@@ -318,9 +324,20 @@
                         <input type="text" id="copy_forwarded" class="form-control form-control-solid" placeholder="Copy of Forwarded" name="forwarded_copies[${fieldCounterss}][copy_forwarded]" required>
                     </div>
                 </div>
+                <div class="col-lg-2">
+                <button type="button" class="btn btn-danger mb-5" onclick="removeForwarddCopy(${fieldCounterss})">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
                     </div>`;
                 document.getElementById('dynamic-fielddds').insertAdjacentHTML('beforeend', newFielddd);
             // });
 
      }
+     function removeForwarddCopy(id) {
+    const field = document.getElementById(`fielddd-${id}`);
+    if (field) {
+        field.remove(); // Remove the row
+    }
+}
 </script>

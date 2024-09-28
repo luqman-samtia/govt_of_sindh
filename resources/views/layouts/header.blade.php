@@ -4,8 +4,8 @@
     $styleCss = 'style';
 @endphp
 <header class='d-flex align-items-center justify-content-between flex-grow-1 header px-3 px-xl-0' >
-    <button type="button" class="btn px-0 aside-menu-container__aside-menubar d-block d-xl-none sidebar-btn">
-        <i class="fa-solid fa-bars fs-1"></i>
+    <button id="gos_bg_color" type="button" class="btn px-0 aside-menu-container__aside-menubar d-block d-xl-none sidebar-btn">
+        <i id="gos_bg_color" class="fa-solid fa-bars fs-1"></i>
     </button>
     <nav class="navbar navbar-expand-xl navbar-light top-navbar d-xl-flex d-block px-3 px-xl-0 py-4 py-xl-0 "
         id="nav-header">
@@ -127,19 +127,19 @@
         @endrole
         <li class="px-xxl-3 px-2">
             @if (Auth::user()->dark_mode)
-                <a href="javascript:void(0)" data-turbo="false" title="{{ __('messages.switch_to_light_mode') }}">
-                    <i class="fa-solid fa-moon text-primary fs-2 apply-dark-mode"></i>
+                <a  href="javascript:void(0)" data-turbo="false" title="{{ __('messages.switch_to_light_mode') }}">
+                    <i style="color: #48B7A3 !important;" class="fa-solid fa-moon text-primary fs-2 apply-dark-mode"></i>
                 </a>
             @else
-                <a href="javascript:void(0)" data-turbo="false" title="{{ __('messages.switch_to_dark_mode') }}">
-                    <i class="fa-solid fa-sun text-primary fs-2 apply-dark-mode"></i></a>
+                <a  href="javascript:void(0)" data-turbo="false" title="{{ __('messages.switch_to_dark_mode') }}">
+                    <i style="color: #48B7A3 !important;"  class="fa-solid fa-sun text-info fs-2 apply-dark-mode"></i></a>
             @endif
         </li>
         <li class="px-xxl-3 px-2">
             <div class="dropdown custom-dropdown d-flex align-items-center py-4">
-                <button class="btn dropdown-toggle hide-arrow p-0 position-relative" type="button"
+                <button  class="btn dropdown-toggle hide-arrow p-0 position-relative" type="button"
                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fa-solid fa-bell text-primary fs-2"></i>
+                    <i style="color: #48B7A3 !important;" class="fa-solid fa-bell text-primary fs-2"></i>
                     @if (count(getNotification()) != 0)
                         <span
                             class="position-absolute top-0 start-100 translate-middle badge badge-circle bg-danger notification-count"

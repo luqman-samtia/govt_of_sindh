@@ -45,42 +45,42 @@
             <td width="60">
                 <img src="{{ asset('storage/qr-codes/download.png') }}" alt="Government Logo" width="200" height="100">
             </td>
-            @if (Auth::user()->designation=='Chairman')
-            <td class="center" style="font-size:14px;line-height: 4px;">
+            @if ($letter->user->designation==strtolower('Chairman'))
+            <td class="center" style="font-size:14px;line-height: 2px;">
                 <h2 style="margin-left: 50px;">{{$letter->letter_no}}</h2>
                 <h2 style="margin-left: 50px;">GOVERNMENT OF SINDH</h2>
                 <h2 style="margin-left: 50px;">ANTI-CORRUPTION ESTABLISHMENT</h2>
                 <h2 style="margin-left: 50px;">Chairman Office</h2>
                 <p style="margin-left: 50px;">{{$letter->fix_address}}</p>
-                <p style="margin-left: 50px;">Phone No: {{Auth::user()->contact}}, Fax: {{Auth::user()->tel}}</p>
+                <p style="margin-left: 50px;">Phone No: {{ $letter->user->contact}}, Fax: {{$letter->user->tel}}</p>
             </td>
-            @elseif (Auth::user()->designation == 'Director')
-            <td class="center" style="font-size:14px;line-height: 4px;">
+            @elseif ($letter->user->designation == strtolower('Director'))
+            <td class="center" style="font-size:14px;line-height: 2px;">
                 <h2 style="margin-left: 50px;">{{$letter->letter_no}}</h2>
                 <h2 style="margin-left: 50px;">GOVERNMENT OF SINDH</h2>
                 <h2 style="margin-left: 50px;">ANTI-CORRUPTION ESTABLISHMENT</h2>
                 <h2 style="margin-left: 50px;">HEAD QUATOR</h2>
                 <p style="margin-left: 50px;">{{$letter->fix_address}}</p>
-                <p style="margin-left: 50px;">Phone No: {{Auth::user()->contact}}, Fax: {{Auth::user()->tel}}</p>
+                <p style="margin-left: 50px;">Phone No: {{ $letter->user->contact}}, Fax: {{$letter->user->tel}}</p>
             </td>
-            @elseif (Auth::user()->designation == 'Deputy Director')
-            <td class="center" style="font-size:14px;line-height: 4px;">
+            @elseif ($letter->user->designation ==  strtolower('Deputy Director'))
+            <td class="center" style="font-size:14px;line-height: 2px;">
                 <h2 style="margin-left: 50px;">{{$letter->letter_no}}</h2>
                 <h2 style="margin-left: 50px;">GOVERNMENT OF SINDH</h2>
                 <h2 style="margin-left: 50px;">ANTI-CORRUPTION ESTABLISHMENT</h2>
                 <h2 style="margin-left: 50px;text-transform:capitalize;">{{$letter->head_title}}</h2>
                 <p style="margin-left: 50px;">{{$letter->fix_address}}</p>
-                <p style="margin-left: 50px;">Phone No: {{Auth::user()->contact}}, Fax: {{Auth::user()->tel}}</p>
+                <p style="margin-left: 50px;">Phone No: {{ $letter->user->contact}}, Fax: {{$letter->user->tel}}</p>
             </td>
-            @elseif (Auth::user()->designation == 'Assistant Director' || 'Circle Officer' || 'Inspector' || 'Sub-inspector' )
+            @elseif ($letter->user->designation == strtolower('Assistant Director') || strtolower('Circle Officer') || strtolower('Inspector') || strtolower('Sub inspector' ))
 
-            <td class="center" style="font-size:14px;line-height: 4px;">
+            <td class="center" style="font-size:14px;line-height: 2px;">
                 <h2 style="margin-left: 50px;">{{$letter->letter_no}}</h2>
                 <h2 style="margin-left: 50px;">GOVERNMENT OF SINDH</h2>
                 <h2 style="margin-left: 50px;">ANTI-CORRUPTION ESTABLISHMENT</h2>
                 <h2 style="margin-left: 50px;">Office Of The Circle Officer </h2>
-                <p style="margin-left: 50px;">{{Auth::user()->district}}</p>
-                <p style="margin-left: 50px;">Phone No: {{Auth::user()->contact}}, Fax: {{Auth::user()->tel}}</p>
+                <p style="margin-left: 50px;">{{$letter->head_title}}</p>
+                <p style="margin-left: 50px;">Phone No: {{ $letter->user->contact}}, Fax: {{$letter->user->tel}}</p>
             </td>
             @endif
         </tr>
@@ -149,7 +149,8 @@
             <td class="right" style="text-align: center;line-height: 2px;">
                 @foreach ($letter->signingAuthorities as $Authority)
                 <p style="margin-top: 20px;">
-                    <p><strong>{{$Authority->designation}}</strong></p>
+                    <p><strong>{{$Authority->name}}</strong></p>
+                    <p>{{$Authority->designation}}</p>
                     <p>For {{ $Authority->department}}</p>
                     <p>0301-2255945</p>
                 </p>

@@ -606,14 +606,15 @@ public function letter_search(Request $request)
     $designation_search = $request->input('designation');
     $district_search = $request->input('district');
 
-    $letters = Letter::where('is_submitted', 1)
-        ->where(function($query) use ($query_search, $designation_search, $district_search) {
-            if ($query_search) {
-                $query->where('letter_no', 'LIKE', "%{$query_search}%")
-                    ->orWhereHas('user', function($q) use ($query_search) {
-                        $q->where('first_name', 'LIKE', "%{$query_search}%");
-                    });
-            }
+    $letters = Letter::with(['user', 'designations'])  // Eager load 'user' and 'designations'
+    ->where('is_submitted', 1)
+    ->where(function($query) use ($query_search, $designation_search, $district_search) {
+        if ($query_search) {
+            $query->where('letter_no', 'LIKE', "%{$query_search}%")
+                ->orWhereHas('user', function($q) use ($query_search) {
+                    $q->where('first_name', 'LIKE', "%{$query_search}%");
+                });
+        }
             if ($designation_search) {
                 $query->whereHas('designations', function($q) use ($designation_search) {
                     $q->where('designation', 'LIKE', "%{$designation_search}%");

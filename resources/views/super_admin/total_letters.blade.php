@@ -143,15 +143,6 @@
 
                                             </div>
                                     </div>
-
-                                    {{-- <div class="d-sm-flex d-block justify-content-end">
-                            <a type="button" class="btn btn-primary" href="http://public_html.test/super-admin/users/create">
-                                Add User
-                            </a>
-                            <a type="button" class="btn btn-primary mx-5" href="http://public_html.test/super-admin/super-admins/create">
-                                Add Super Admin
-                            </a>
-                            </div> --}}
                     </div>
                     {{-- End Search and filter  --}}
             <div class="table-responsive mt-5"  id="lettersTable" >

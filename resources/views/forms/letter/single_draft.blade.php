@@ -144,7 +144,7 @@
 
                                          <th scope="col" class="text-center" wire:key="header-col-3-4Of9aF3orQYiqBL2xp3j">
                                             <div class="d-flex align-items-center" wire:click="sortBy('designation')" style="cursor:pointer;">
-                                               <span>Status</span>
+                                               <span>Print Preview</span>
                                                <span class="relative d-flex align-items-center">
                                                   <svg xmlns="http://www.w3.org/2000/svg" class="ml-1" style="width:1em;height:1em;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
@@ -197,14 +197,10 @@
                                            {{date('dS M, Y',strtotime($letter->date))}}
                                          </td>
                                          <td class="" wire:key="cell-0-8-4Of9aF3orQYiqBL2xp3j">
-                                            @if ($letter->is_submitted==0)
-                                            <span class="badge bg-light-success fs-7"> Draft
 
+                                            <button style="border:none;outline:none" class="badge bg-light-success fs-7" type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})"> Print Preview
+                                            </button>
 
-                                            @else
-                                            <span class="badge bg-light-danger fs-7"> Issued
-                                            @endif
-                                            </span>
                                          </td>
                                          {{-- @if($letter->is_submitted==0) --}}
                                          <td class="" wire:key="cell-0-9-4Of9aF3orQYiqBL2xp3j">
@@ -299,12 +295,64 @@
                                         @if(Session::has('error'))
                                             toastr.error("{{ Session::get('error') }}");
                                         @endif
+
+                                        // print preview
+    function loadLetterPreview(letterId) {
+    var previewUrl = '{{ route('letter.preview', ':id') }}';
+    previewUrl = previewUrl.replace(':id', letterId);
+
+    fetch(previewUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(htmlContent => {
+            document.getElementById('letterPreviewContent').innerHTML = htmlContent;
+
+            var modal = new bootstrap.Modal(document.getElementById('letterPreviewModal'));
+            modal.show();
+
+            // Set up the redirect after a timeout (or other event)
+            modal._element.addEventListener('hidden.bs.modal', function () {
+                window.location.href = '{{ route('total_letter', ':id') }}'.replace(':id', letterId);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching letter preview:', error);
+            document.getElementById('letterPreviewContent').innerHTML = '<p>Unable to load the letter preview.</p>';
+        });
+}
+
+// end print preview
+
                                       </script>
 
                                       @endforeach
                                       @endif
                                    </tbody>
                                 </table>
+                                 {{-- print preview --}}
+                                 <div class="modal fade" id="letterPreviewModal" tabindex="-1" role="dialog" aria-labelledby="letterPreviewModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="letterPreviewModalLabel">Letter Preview</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" id="letterPreviewContent" style="overflow: hidden;">
+                                                <!-- Dynamic content will be loaded here -->
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- end print preview --}}
                              </div>
                             <div id="payment-overview-container" class="justify-align-center">
                                 <canvas id="payment_overview"></canvas>

@@ -24,7 +24,7 @@
                     {{-- <img src="{{asset('assets/images/download.png')}}" class="img-fluid object-contain" alt="profile image"> --}}
                 </div>
                 <span
-                    class="text-gray-900 fs-4">ACE Sindh</span>
+                    class="text-gray-900 fs-4"><strong>ACE SINDH</strong></span>
             </a>
         @endrole
         <button type="button" class="btn px-0 aside-menu-container__aside-menubar d-lg-block d-none sidebar-btn">

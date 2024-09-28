@@ -1,3 +1,23 @@
+<div class="modal fade" id="letterPreviewModal" tabindex="-1" role="dialog" aria-labelledby="letterPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="letterPreviewModalLabel">Letter Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="letterPreviewContent" style="overflow: hidden;">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <table class="table table-striped" >
     <thead class="">
        <tr>
@@ -36,7 +56,7 @@
 
           <th scope="col" class="text-center" wire:key="header-col-3-4Of9aF3orQYiqBL2xp3j">
              <div class="d-flex align-items-center" wire:click="sortBy('designation')" style="cursor:pointer;">
-                <span>Status</span>
+                <span>Print Preview</span>
                 <span class="relative d-flex align-items-center">
                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-1" style="width:1em;height:1em;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
@@ -84,14 +104,10 @@
            {{date('dS M, Y',strtotime($letter->date))}}
          </td>
          <td class="" wire:key="cell-0-8-4Of9aF3orQYiqBL2xp3j">
-            @if ($letter->is_submitted==0)
-            <span class="badge bg-light-success fs-7"> Draft
 
+            <button style="border:none;outline:none" class="badge bg-light-success fs-7" type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})"> Print Preview
+            </button>
 
-            @else
-            <span class="badge bg-light-danger fs-7"> Issued
-            @endif
-            </span>
          </td>
          {{-- @if($letter->is_submitted==0) --}}
          <td class="" wire:key="cell-0-9-4Of9aF3orQYiqBL2xp3j">
@@ -142,44 +158,75 @@
 
             // request with Ajax
 
-            document.addEventListener('DOMContentLoaded', function() {
-    const searchForm = document.getElementById('searchForm');
-    const searchInput = document.getElementById('searchInput');
-    const designationInput = document.getElementById('designationInput');
-    const districtInput = document.getElementById('districtInput');
-    const lettersTable = document.getElementById('lettersTable');
+            $(document).ready(function() {
+    const draftSearchInput = $('#searchInput');
+    const draftDesignationInput = $('#designationInput');
+    const draftDistrictInput = $('#districtInput');
+    const draftsTable = $('#lettersTable');
 
-    // Event listeners for each input field
-    const handleSearch = function() {
-        const query = searchInput.value;
-        const designation = designationInput.value;
-        const district = districtInput.value;
-
-        // Build query string
-        const params = new URLSearchParams({
-            query: query,
-            designation: designation,
-            district: district
-        }).toString();
-
-        // Make AJAX request
-        fetch(`/super-admin/letters/search?${params}`, {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-            },
-        })
-        .then(response => response.text())
-        .then(html => {
-            lettersTable.innerHTML = html; // Update table content
-        })
-        .catch(error => console.error('Error:', error));
+    // Debounce function to prevent multiple executions in quick succession
+    const debounce = (func, delay) => {
+        let timer;
+        return function(...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => func.apply(this, args), delay);
+        };
     };
 
-    // Add 'input' event listener to each filter input
-    searchInput.addEventListener('input', handleSearch);
-    designationInput.addEventListener('input', handleSearch);
-    districtInput.addEventListener('input', handleSearch);
+    // Fetch and update letters table
+    const handleDraftSearch = function() {
+        const query = draftSearchInput.val();
+        const designation = draftDesignationInput.val();
+        const district = draftDistrictInput.val();
+
+        // Display loading spinner inside the table
+        draftsTable.html(`
+            <tr>
+                <td colspan="6" class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </td>
+            </tr>
+        `);
+
+        // Build query string with search filters
+        const params = new URLSearchParams({
+            query: query || '',
+            designation: designation || '',
+            district: district || ''
+        }).toString();
+
+        // Perform AJAX request
+        $.ajax({
+            url: `/super-admin/letters/search?${params}`,
+            type: 'GET',
+            dataType: 'html',
+            success: function(html) {
+                draftsTable.html(html); // Replace table content with the new search results
+            },
+            error: function() {
+                draftsTable.html(`
+                    <tr>
+                        <td colspan="6" class="text-center text-danger">
+                            Error loading data. Please try again.
+                        </td>
+                    </tr>
+                `); // Show error if the request fails
+            }
+        });
+    };
+
+    // Debounce the search to prevent multiple rapid calls
+    const debouncedSearch = debounce(handleDraftSearch, 300);
+    draftSearchInput.off('input');
+    draftDesignationInput.off('input');
+    draftDistrictInput.off('input');
+
+    // Attach event listeners to search inputs
+    draftSearchInput.on('input', debouncedSearch);
+    draftDesignationInput.on('input', debouncedSearch);
+    draftDistrictInput.on('input', debouncedSearch);
 });
 
 
@@ -188,27 +235,7 @@
 
 
         //   search code
-                //     document.addEventListener('DOMContentLoaded', function() {
-                // const searchForm = document.getElementById('searchForm');
-                // const searchInput = document.getElementById('searchInput');
-                // const lettersTable = document.getElementById('lettersTable');
 
-                // searchInput.addEventListener('input', function() {
-                // const query = this.value;
-
-                // fetch(`/super-admin/letters/search?query=${encodeURIComponent(query)}`, {
-                // method: 'GET',
-                // headers: {
-                // 'X-Requested-With': 'XMLHttpRequest',
-                // },
-                // })
-                // .then(response => response.text())
-                // .then(html => {
-                // lettersTable.innerHTML = html;
-                // })
-                // .catch(error => console.error('Error:', error));
-                // });
-                // });
 
       function downloadPdf(url) {
             var xhr = new XMLHttpRequest();
@@ -247,6 +274,33 @@
                               window.location.href = url;
                           }
 
+    function loadLetterPreview(letterId) {
+    var previewUrl = '{{ route('letter.previews', ':id') }}';
+    previewUrl = previewUrl.replace(':id', letterId);
+
+    fetch(previewUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(htmlContent => {
+            document.getElementById('letterPreviewContent').innerHTML = htmlContent;
+
+            var modal = new bootstrap.Modal(document.getElementById('letterPreviewModal'));
+            modal.show();
+
+            // Set up the redirect after a timeout (or other event)
+            modal._element.addEventListener('hidden.bs.modal', function () {
+                window.location.href = '{{ route('super.admin.total.draft.letters', ':id') }}'.replace(':id', letterId);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching letter preview:', error);
+            document.getElementById('letterPreviewContent').innerHTML = '<p>Unable to load the letter preview.</p>';
+        });
+}
 
     </script>
       @endforeach

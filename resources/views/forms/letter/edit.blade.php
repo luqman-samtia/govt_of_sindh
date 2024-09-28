@@ -96,7 +96,7 @@
 
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="designation-{{$index}}" class="form-control form-control-solid" placeholder="Designation" value="{{ $toLetter->designation }}" name="designation[{{$index}}][designation]" required autofocus="off"  autocomplete="off">
+                        <input type="text" id="designation-{{$index}}" class="form-control form-control-solid" placeholder="Designation" value="{{ $toLetter->designation }}" name="designation[{{$index}}][designation]">
                     </div>
                 </div>
                 <div class="col-lg-2">
@@ -399,6 +399,11 @@ function loadLetterPreview(letterId) {
             <div class="row" id="field-${fieldCounter}" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
                 <div class="col-lg-2">
                     <div class="mb-5">
+                        <input type="hidden"  class="form-control form-control-solid" placeholder="Designation">
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="mb-5">
                         <input type="text" id="designation-${fieldCounter}" class="form-control form-control-solid" placeholder="Designation" name="designation[${fieldCounter}][designation]" required>
                     </div>
                 </div>
@@ -417,12 +422,24 @@ function loadLetterPreview(letterId) {
                         <input type="text" id="contact-${fieldCounter}" class="form-control form-control-solid" placeholder="Contact" name="designation[${fieldCounter}][contact]" >
                     </div>
                 </div>
+                <div class="col-lg-2">
+                <button type="button" class="btn btn-danger mb-5" onclick="removeRecipient(${fieldCounter})">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
             </div>`;
 
         document.getElementById('dynamic-fields').insertAdjacentHTML('beforeend', newField);
 
 
     }
+    // Function to remove the corresponding row
+function removeRecipient(id) {
+    const field = document.getElementById(`field-${id}`);
+    if (field) {
+        field.remove(); // Remove the row
+    }
+}
     function signing_authority(){
         let fieldCounters = 0;
                     // document.getElementById('add-fieldd').addEventListener('click', function() {
@@ -461,11 +478,22 @@ function loadLetterPreview(letterId) {
                         <input type="text" id="copy_forwarded" class="form-control form-control-solid" placeholder="Copy of Forwarded" name="forwarded_copies[${fieldCounterss}][copy_forwarded]" required>
                     </div>
                 </div>
+                 <div class="col-lg-2">
+                <button type="button" class="btn btn-danger mb-5" onclick="removeForwardCopy(${fieldCounterss})">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
                     </div>`;
                 document.getElementById('dynamic-fielddds').insertAdjacentHTML('beforeend', newFielddd);
 
 
         }
+        function removeForwardCopy(id) {
+    const field = document.getElementById(`fieldd-${id}`);
+    if (field) {
+        field.remove(); // Remove the row
+    }
+}
 
         if (document.getElementById('signed_letter')) {
     document.getElementById('signedLetterUpload').style.display = 'block';

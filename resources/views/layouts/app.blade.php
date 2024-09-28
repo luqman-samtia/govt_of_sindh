@@ -178,6 +178,9 @@ body{
     background-color: #48B7A3 !important;
     border:none;
 }
+.fw-light{
+    height: 21px;
+}
         </style>
 </head>
 <body class="main-body">

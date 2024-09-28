@@ -1,9 +1,9 @@
 <li
     class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('*/dashboard*', '*/currency-reports*') ? 'd-none' : '' }}">
     @hasrole('admin')
-        <a class="nav-link p-0 {{ Request::is('*/dashboard*') ? 'active' : '' }}"
+        {{-- <a class="nav-link p-0 {{ Request::is('*/dashboard*') ? 'active' : '' }}"
             href="{{ route('admin.dashboard') }}">{{ __('messages.dashboard') }}
-        </a>
+        </a> --}}
         {{-- <a class="nav-link p-0 {{ Request::is('*/letters*') ? 'active' : '' }}"
             href="{{ route('total_letter') }}">{{ __('Total Letters') }}
         </a> --}}
@@ -132,16 +132,16 @@
 </li>
 
 @role('admin')
-
+{{--
     <li class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 {{ !Request::is('admin/total/letters*') ? 'd-none' : '' }}">
         <a class="nav-link p-0 {{ Request::is('admin/total/letters*') ? 'active' : '' }}"
             href="{{ route('total_letter') }}">{{ __('Total Letter') }}</a>
-    </li>
+    </li> --}}
 
-    <li class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 mx-5 {{ !Request::is('admin/total/draft_letters*') ? 'd-none' : '' }}">
+    {{-- <li class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 mx-5 {{ !Request::is('admin/total/draft_letters*') ? 'd-none' : '' }}">
         <a class="nav-link p-0 {{ Request::is('admin/total/draft_letters*') ? 'active' : '' }}"
             href="{{ route('total_draft_letter') }}">{{ __('Total Draft') }}</a>
-    </li>
+    </li> --}}
 
 @else
     <li class="nav-item position-relative mx-xl-3 mb-3 mb-xl-0 mx-5 {{ !Request::is('client/transactions*') ? 'd-none' : '' }}">
