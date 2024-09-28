@@ -257,12 +257,22 @@ $(document).ready(function() {
     const draftDistrictInput = $('#draftDistrictInput');
     const draftsTable = $('#draftsTable');
 
+    // Debounce function to prevent multiple execution in quick succession
+    const debounce = (func, delay) => {
+        let timer;
+        return function(...args) {
+            clearTimeout(timer);
+            timer = setTimeout(() => func.apply(this, args), delay);
+        };
+    };
+
+    // Fetch and update drafts table
     const handleDraftSearch = function() {
         const query = draftSearchInput.val();
         const designation = draftDesignationInput.val();
         const district = draftDistrictInput.val();
 
-        // Show loading inside the table
+        // Display loading spinner inside the table
         draftsTable.html(`
             <tr>
                 <td colspan="6" class="text-center">
@@ -273,21 +283,18 @@ $(document).ready(function() {
             </tr>
         `);
 
-        // Build query string with filters
+        // Build query string with search filters
         const params = new URLSearchParams({
-            query: query,
-            designation: designation,
-            district: district
+            query: query || '', // Ensure query params are not undefined
+            designation: designation || '',
+            district: district || ''
         }).toString();
 
-        // Make AJAX request
+        // Perform AJAX request
         $.ajax({
             url: `/super-admin/drafts/search?${params}`,
             type: 'GET',
             dataType: 'html',
-            beforeSend: function() {
-                // You can add more loading animations here if needed
-            },
             success: function(html) {
                 draftsTable.html(html); // Replace table content with the new search results
             },
@@ -298,17 +305,27 @@ $(document).ready(function() {
                             Error loading data. Please try again.
                         </td>
                     </tr>
-                `); // Display an error message inside the table if the request fails
+                `); // Show error if the request fails
             }
         });
     };
 
-    // Attach 'input' event listeners to search inputs dynamically
-    draftSearchInput.on('input', handleDraftSearch);
-    draftDesignationInput.on('input', handleDraftSearch);
-    draftDistrictInput.on('input', handleDraftSearch);
+    // Debounce the search to prevent multiple rapid calls
+    const debouncedSearch = debounce(handleDraftSearch, 300);
+
+    // Detach any previous event listeners (in case of page reloads or SPA navigation)
+    draftSearchInput.off('input');
+    draftDesignationInput.off('input');
+    draftDistrictInput.off('input');
+
+    // Attach event listeners to search inputs
+    draftSearchInput.on('input', debouncedSearch);
+    draftDesignationInput.on('input', debouncedSearch);
+    draftDistrictInput.on('input', debouncedSearch);
 });
 
+
+//    end search query
 
 
 
