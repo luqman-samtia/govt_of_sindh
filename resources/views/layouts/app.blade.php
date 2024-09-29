@@ -128,12 +128,16 @@
                 font-size: 3rem;
                 padding: 2px;
             }
-            .toast-success {
+            .toast-success .toast-message {
+            /* background-color: #48B7A3 !important; */
+            color: white !important;
+        }
+            .toast-success{
             background-color: #48B7A3 !important;
             color: white !important;
         }
             .toast-message {
-            background-color: #48B7A3 !important;
+            /* background-color: #48B7A3 !important; */
             color: white !important;
         }
             .toast-close-button {

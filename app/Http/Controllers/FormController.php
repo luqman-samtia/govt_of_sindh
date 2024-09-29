@@ -490,20 +490,20 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 
     // Generate PDF from a view
     $pdf = PDF::loadView('forms.letter.pdf', compact('letter'));
-
+      $fileName = 'letter_' . $letter->id . '.pdf';
      // Define the file path where the PDF will be stored
-     $filePath = storage_path('app/public/downloaded_letters/letter_' . $letter->id . '.pdf');
+     $filePath = storage_path('app/public/downloaded_letters/'. $fileName);
 
      // Store the PDF file on the server
      $pdf->save($filePath);
 
      // Calculate the hash of the generated PDF
      $pdfHash = hash_file('sha256', $filePath);
-     $letter->pdf_hash = $pdfHash;
+     $letter->pdf_hash = $fileName;
      $letter->save();
     // session()->flash('redirect_url', URL::previous());
     // Return PDF for download
-    return $pdf->download('letter-' . $letter->letter_no . '.pdf');
+    return $pdf->download($fileName);
 
 
 
@@ -569,8 +569,8 @@ public function uploadSignedLetter(Request $request, Letter $letter)
         $filePath = storage_path('app/public/signed_letters/letter_' . $letter->id . '.pdf');
         $file->move(storage_path('app/public/'.$path ), $filename);
          // Calculate the hash of the uploaded file
-         $uploadedFileHash = hash_file('sha256', $filePath);
-         if ($uploadedFileHash === $letter->pdf_hash) {
+        //  $uploadedFileHash = hash_file('sha256', $filePath);
+        if ($file->getClientOriginalName() === $filename) {
         $letter->signed_letter = $filename; // Store only the filename
         $letter->is_submitted = 1;
         $uploadedLetterPath = route('letters.download_signed', $letter->id); // Adjust this route as necessary
