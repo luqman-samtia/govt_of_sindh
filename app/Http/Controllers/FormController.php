@@ -450,22 +450,22 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 {
 
        // Generate the route for the signed letter
-       $letter->save();
+    //    $letter->save();
 
        // Now that the letter is saved, generate the route for the signed letter
     //    $filePath = storage_path('app/public/downloaded_letters/letter_' . $letter->id . '.pdf');
-       $filePath = route('Form.download.pdf', $letter->id);
+       $filePath = storage_path('app/public/signed_letters/letter_' . $letter->id . '.pdf');
        if ($letter->filePath) {
         // Set the route to the uploaded file instead of generating a new one
-        $route = $filePath;
+        $route =route('letters.download_signed', $letter->id);
     } else {
         // If no uploaded file, generate a route for downloading the signed letter
-        $route = route('letters.download_signed', $letter->id);
+        $route = url('/letter/'.$letter->id.'/download-pdf');
     }
     //    $route = route('letters.download_signed', $letter->id);
     //    $route = route('Form.download.pdf', $letter->id);
 
-
+    // letter/{letter}/download-pdf
        // Define the QR code file path
        $qrCodePath = 'qr-codes/' . $letter->id . '.png';
 

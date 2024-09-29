@@ -55,6 +55,8 @@ Route::middleware(['xss'])->group(function () {
     Route::post('letters/{letter}/update-qr-code', [FormController::class, 'updateQRCodeLink'])
     ->name('letters.update_qr_code');
     Route::get('/letters/{letter}/download-signed', [FormController::class, 'downloadSignedLetter'])->name('letters.download_signed');
+Route::get('/letter/{letter}/download-pdf', [FormController::class, 'downloadPdf'])->name('Form.download.pdf');
+
 Route::get('/letter/{letter}/generate-qr-code', [FormController::class, 'generateQRCode'])
 ->name('letters.generate_qr_code');
     // client reset password routes
@@ -117,7 +119,6 @@ Route::get('/letter/{letter}/generate-qr-code', [FormController::class, 'generat
 
 // download uploaded letter
 
-Route::get('/letter/{letter}/download-pdf', [FormController::class, 'downloadPdf'])->name('Form.download.pdf');
 
 Route::post('/upload-signed-letter/{letter}', [FormController::class, 'uploadSignedLetter'])->name('letter.upload');
 Route::delete('forms/letter-form/{letter}', [FormController::class, 'letter_destroy'])->name('forms.letter.destroy');
