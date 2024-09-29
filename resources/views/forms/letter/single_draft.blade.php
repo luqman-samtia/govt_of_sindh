@@ -96,7 +96,7 @@
                     </div>
                 </div>
 
-                <div class="col-xxl-6 col-12 col-md-12 col-lg-12 mb-5 mb-xl-0">
+                <div class="col-xxl-12 col-md-12 col-lg-12 mb-5 mb-xl-0">
                     <div class="card">
                         <div class="card-header pb-0 px-10">
                             <h3 class="mb-0">{{ __('Total Drafts') }}</h3>
