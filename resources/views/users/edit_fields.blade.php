@@ -113,7 +113,7 @@
     <div class="form-text">{{ __('messages.user.allowed_file_types') }}</div>
 </div>
 </div>
-<div class="float-end d-flex mb-5">
+<div class="float-end d-flex mb-5" style="background: #48B7A3;">
     {{ Form::submit(__('messages.common.save'),['class' => 'btn btn-primary me-2']) }}
     <a href="{{ route('users.index') }}" type="reset"
        class="btn btn-secondary btn-active-light-primary">{{__('messages.common.cancel')}}</a>

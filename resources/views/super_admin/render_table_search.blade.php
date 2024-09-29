@@ -154,17 +154,18 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
       <script>
+//  const letterSearchInput = $('#searchInput');
+//     const letterDesignationInput = $('#designationInput');
+//     const letterDistrictInput = $('#districtInput');
+//     const lettersTable = $('#lettersTable');
 
-
-            // request with Ajax
-
-            $(document).ready(function() {
+    $(document).ready(function() {
     const draftSearchInput = $('#searchInput');
     const draftDesignationInput = $('#designationInput');
     const draftDistrictInput = $('#districtInput');
     const draftsTable = $('#lettersTable');
 
-    // Debounce function to prevent multiple executions in quick succession
+    // Debounce function to prevent multiple execution in quick succession
     const debounce = (func, delay) => {
         let timer;
         return function(...args) {
@@ -173,7 +174,7 @@
         };
     };
 
-    // Fetch and update letters table
+    // Fetch and update drafts table
     const handleDraftSearch = function() {
         const query = draftSearchInput.val();
         const designation = draftDesignationInput.val();
@@ -192,7 +193,7 @@
 
         // Build query string with search filters
         const params = new URLSearchParams({
-            query: query || '',
+            query: query || '', // Ensure query params are not undefined
             designation: designation || '',
             district: district || ''
         }).toString();
@@ -219,6 +220,8 @@
 
     // Debounce the search to prevent multiple rapid calls
     const debouncedSearch = debounce(handleDraftSearch, 300);
+
+    // Detach any previous event listeners (in case of page reloads or SPA navigation)
     draftSearchInput.off('input');
     draftDesignationInput.off('input');
     draftDistrictInput.off('input');
@@ -228,8 +231,6 @@
     draftDesignationInput.on('input', debouncedSearch);
     draftDistrictInput.on('input', debouncedSearch);
 });
-
-
 
 
 
