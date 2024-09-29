@@ -452,15 +452,16 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
        // Generate the route for the signed letter
        $letter->save();
 
+    //    file_exists
        // Now that the letter is saved, generate the route for the signed letter
     //    $filePath = storage_path('app/public/downloaded_letters/letter_' . $letter->id . '.pdf');
-       $filePath = storage_path('app/public/signed_letters/letter_' . $letter->id . '.pdf');
-       if ($letter->filePath) {
+    //    $filePath = storage_path('app/public/signed_letters/letter_' . $letter->id . '.pdf');
+       if ($letter->is_submitted==0) {
         // Set the route to the uploaded file instead of generating a new one
-        $route =route('letters.download_signed', $letter->id);
+        $route = url('/letter/'.$letter->id.'/download-pdf');
     } else {
         // If no uploaded file, generate a route for downloading the signed letter
-        $route = url('/letter/'.$letter->id.'/download-pdf');
+        $route =route('letters.download_signed', $letter->id);
     }
     //    $route = route('letters.download_signed', $letter->id);
     //    $route = route('Form.download.pdf', $letter->id);
