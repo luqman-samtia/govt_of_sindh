@@ -110,7 +110,7 @@ class FormController extends Controller
             $total_letters = 0;
         }
         $user = Auth::user()->id;
-        $letters = Letter::where(['user_id'=>$user,'is_submitted'=>0])->orderBy('id', 'desc')->get();
+        $letters = Letter::where(['user_id'=>$user,'is_submitted'=>1])->orderBy('id', 'desc')->get();
         return view('forms.letter.single_draft',compact('letters','total_letters','total_drafts'));
     }
     // for super admin

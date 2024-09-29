@@ -31,7 +31,7 @@
                                         <i class="fas fa-file-invoice card-icon text-white"></i>
                                     </div>
                                     <div class="text-end text-white">
-                                        <h2 class="fs-1-xxl fw-bolder text-white">{{ $total_letters }}
+                                        <h2 class="fs-1-xxl fw-bolder text-white">{{ count($letters) }}
                                         </h2>
                                         <h3 class="mb-0 fs-4 fw-light"> {{ __('Total Letters') }}
                                         </h3>

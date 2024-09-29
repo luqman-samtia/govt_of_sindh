@@ -52,7 +52,11 @@ Route::middleware(['xss'])->group(function () {
     Route::get('/', function () {
         return redirect()->route('login');
     });
-
+    Route::post('letters/{letter}/update-qr-code', [FormController::class, 'updateQRCodeLink'])
+    ->name('letters.update_qr_code');
+    Route::get('/letters/{letter}/download-signed', [FormController::class, 'downloadSignedLetter'])->name('letters.download_signed');
+Route::get('/letter/{letter}/generate-qr-code', [FormController::class, 'generateQRCode'])
+->name('letters.generate_qr_code');
     // client reset password routes
     Route::get('/client-onboard/{id}', [ClientNewPasswordController::class, 'create'])->name('client.password.reset');
     Route::post('/client-reset-password', [ClientNewPasswordController::class, 'store'])->name('client.password.update');
@@ -112,9 +116,7 @@ Route::middleware(['xss'])->group(function () {
 });
 
 // download uploaded letter
-Route::get('/letters/{letter}/download-signed', [FormController::class, 'downloadSignedLetter'])->name('letters.download_signed');
-Route::get('/letter/{letter}/generate-qr-code', [FormController::class, 'generateQRCode'])
-->name('letters.generate_qr_code');
+
 Route::get('/letter/{letter}/download-pdf', [FormController::class, 'downloadPdf'])->name('Form.download.pdf');
 
 Route::post('/upload-signed-letter/{letter}', [FormController::class, 'uploadSignedLetter'])->name('letter.upload');
@@ -147,8 +149,7 @@ Route::prefix('admin')->middleware(['auth', 'xss', 'role:admin', 'check_subscrip
         Route::put('forms/letter-form/{letter}', [FormController::class, 'letter_update'])->name('forms.letter.update');
         Route::get('/letter/{letter}/download-doc', [FormController::class, 'downloadDoc'])->name('letter.download.doc');
         // Route::get('/letters/{letter}/download-signed', [FormController::class, 'downloadSignedLetter'])->name('letters.download_signed');
-        Route::post('letters/{letter}/update-qr-code', [FormController::class, 'updateQRCodeLink'])
-        ->name('letters.update_qr_code');
+
 
         Route::get('pdf-download-redirect', [FormController::class,'downloadPdfRedirect'])->name('pdf.download.redirect');
 
