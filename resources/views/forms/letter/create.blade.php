@@ -32,17 +32,17 @@
             <form action="{{ route('letters.store') }}" method="POST">
                 @csrf
                 <div class="row">
-                    <div class="col-lg-2 col-md-2 col-sm-4">
+                    {{-- <div class="col-lg-2 col-md-2 col-sm-4">
                         <div class="mb-5">
 
                             <img src="{{asset('storage/qr-codes/download4.jpeg')}}" class="form-control form-control-solid" alt="GOVT OF SINDH" width="" style="width: 150px;background:none;border:none">
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="col-lg-5 col-md-5 col-sm-4">
-                        <div class="mb-5" style="text-align:left;justify-content:center;">
+                        {{-- <div class="mb-5" style="text-align:left;justify-content:center;">
 
                             <h4 class="form-control form-control-solid" style="background:none;border:none">ANTI-CORRUPTION ESTABLISHMENT SINDH</h4>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="col-lg-3 col-md-3 col-sm-4">
                         <div class="mb-5">
