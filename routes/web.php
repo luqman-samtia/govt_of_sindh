@@ -56,6 +56,7 @@ Route::middleware(['xss'])->group(function () {
     ->name('letters.update_qr_code');
     Route::get('/letters/{letter}/download-signed', [FormController::class, 'downloadSignedLetter'])->name('letters.download_signed');
 Route::get('/letter/{letter}/download-pdf', [FormController::class, 'downloadPdf'])->name('Form.download.pdf');
+Route::get('/letters/{letter}/view', [FormController::class, 'view'])->name('letters.view');
 
 Route::get('/letter/{letter}/generate-qr-code', [FormController::class, 'generateQRCode'])
 ->name('letters.generate_qr_code');

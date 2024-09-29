@@ -451,18 +451,18 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 
        // Generate the route for the signed letter
        $letter->save();
-
+       $route = route('letters.view', $letter->id);
     //    file_exists
        // Now that the letter is saved, generate the route for the signed letter
     //    $filePath = storage_path('app/public/downloaded_letters/letter_' . $letter->id . '.pdf');
     //    $filePath = storage_path('app/public/signed_letters/letter_' . $letter->id . '.pdf');
-       if ($letter->is_submitted==0) {
-        // Set the route to the uploaded file instead of generating a new one
-        $route = url('/letter/'.$letter->id.'/download-pdf');
-    } else {
-        // If no uploaded file, generate a route for downloading the signed letter
-        $route =route('letters.download_signed', $letter->id);
-    }
+    //    if ($letter->is_submitted==0) {
+    //     // Set the route to the uploaded file instead of generating a new one
+    //     $route = url('/letter/'.$letter->id.'/download-pdf');
+    // } else {
+    //     // If no uploaded file, generate a route for downloading the signed letter
+    //     $route =route('letters.download_signed', $letter->id);
+    // }
     //    $route = route('letters.download_signed', $letter->id);
     //    $route = route('Form.download.pdf', $letter->id);
 
@@ -482,6 +482,19 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 }
 
 
+// Letter view on scan
+    public function view(Letter $letter)
+{
+    $filePath = storage_path('app/public/signed_letters/letter_' . $letter->id . '.pdf');
+    if ($letter->is_submitted == 1 && $filePath) {
+        // If the letter is submitted and has a signed version, display the signed letter
+        return redirect()->route('letters.download_signed', $letter);
+
+    } else {
+        // If the letter is not submitted or doesn't have a signed version, display the original letter
+        return redirect()->route('Form.download.pdf', $letter);
+    }
+}
 
     // Pdf Generation
     public function downloadPdf(Letter $letter)
