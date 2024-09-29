@@ -455,7 +455,8 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
        // Now that the letter is saved, generate the route for the signed letter
        $filePath = storage_path('app/public/signed_letters/letter_' . $letter->id . '.pdf');
 
-       $route = route('letters.download_signed', $letter->id);
+    //    $route = route('letters.download_signed', $letter->id);
+       $route = route('Form.download.pdf', $letter->id);
 
 
        // Define the QR code file path
