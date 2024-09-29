@@ -450,7 +450,7 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 {
 
        // Generate the route for the signed letter
-    //    $letter->save();
+       $letter->save();
 
        // Now that the letter is saved, generate the route for the signed letter
     //    $filePath = storage_path('app/public/downloaded_letters/letter_' . $letter->id . '.pdf');
