@@ -1850,6 +1850,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'tinymce/tinymce' => array(
+            'pretty_version' => '7.3.0',
+            'version' => '7.3.0.0',
+            'reference' => 'e92ab7adaa3db1752639361ded41a7abb2d28996',
+            'type' => 'component',
+            'install_path' => __DIR__ . '/../tinymce/tinymce',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'unicodeveloper/laravel-paystack' => array(
             'pretty_version' => '1.1.0',
             'version' => '1.1.0.0',

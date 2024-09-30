@@ -28,6 +28,9 @@ use PHPHtmlToDoc\PHPHtmlToDoc;
 use HTMLPurifier;
 use HTMLPurifier_Config;
 use Smalot\PdfParser\Parser as PdfParser;
+use PhpOffice\PhpWord\Element\Table;
+use PhpOffice\PhpWord\Element\Cell;
+use PhpOffice\PhpWord\Style\Font;
 // use PhpOffice\PhpWord\Shared\Html;
 
 
@@ -516,7 +519,7 @@ if ($letter->is_submitted == 1 && file_exists($filePath)) {
 
     // Generate PDF from a view
     $pdf = PDF::loadView('forms.letter.pdf', compact('letter'));
-      $fileName = 'letter_' . $letter->id . '.pdf';
+      $fileName = 'letter_' . $letter->letter_no . '.pdf';
      // Define the file path where the PDF will be stored
      $filePath = storage_path('app/public/downloaded_letters/'. $fileName);
 
@@ -554,81 +557,107 @@ public function checkDownloadRoute(Letter $letter)
 
 public function downloadDoc(Letter $letter)
 {
-   
-    $phpWord = new PhpWord();
+    $letter = Letter::with(['user', 'designations', 'signingAuthorities', 'forwardedCopies'])->findOrFail($letter->id);
     
-    // Adding a section
+    $phpWord = new PhpWord();
     $section = $phpWord->addSection();
     
-    // Add government logo
-    $section->addImage(storage_path('app/public/qr-codes/download.png'), [
-        'width' => 200 * 0.75, // Convert pixels to inches (1px = 0.75pt)
-        'height' => 100 * 0.75,
-        'align' => 'center'
-    ]);
-
-    // Add header information
-    $section->addText('GOVERNMENT OF SINDH', ['bold' => true, 'size' => 14], ['align' => 'center']);
-    $section->addText('ANTI-CORRUPTION ESTABLISHMENT', ['bold' => true, 'size' => 14], ['align' => 'center']);
-    $section->addText('Chairman Office', ['bold' => true, 'size' => 14], ['align' => 'center']);
-    $section->addText($letter->fix_address);
-    $section->addText('Phone No: ' . $letter->user->contact . ', Fax: ' . $letter->user->tel);
-
-    $section->addTextBreak(1); // Add a break
-
-    // Adding date
-    $section->addText('Dated: the ' . date('dS M, Y', strtotime($letter->date)), ['bold' => true], ['align' => 'right']);
-
-    $section->addText('To,', ['bold' => true]);
+    // Header table
+    $table = $section->addTable(['width' => 100 * 50]);
+    $table->addRow();
     
-    // Add recipient details
-    foreach ($letter->designations as $toLetter) {
-        $section->addText($toLetter->designation . ',');
-        $section->addText($toLetter->department . ',');
-        $section->addText($toLetter->address);
-        if (!empty($toLetter->contact)) {
-            $section->addText($toLetter->contact);
-        }
-        $section->addTextBreak(1);
-    }
-
-    $section->addText('Subject:', ['bold' => true]);
-    $section->addText(strtoupper($letter->subject), ['bold' => true, 'underline' => true]);
-
-    // Add draft paragraph
-    $section->addText($letter->draft_para, ['indent' => 720]);
-
-    // Add signing authorities
-    $signingTable = $section->addTable();
-    $signingTable->addRow();
-    $signingTable->addCell(90)->addImage(storage_path('app/public/' . $letter->qr_code), [
-        'width' => 90 * 0.75,
-        'height' => 90 * 0.75,
-        'align' => 'center'
+    $cell1 = $table->addCell(1000);
+    $cell1->addImage(storage_path('app/public/qr-codes/download.png'), [
+        'width' => 200,
+        'height' => 100,
     ]);
-
-    $signingCell = $signingTable->addCell(400, ['valign' => 'top']);
-    foreach ($letter->signingAuthorities as $Authority) {
-        $signingCell->addText($Authority->name, ['bold' => true]);
-        $signingCell->addText($Authority->designation);
-        $signingCell->addText('For ' . $Authority->department);
-        $signingCell->addText('0301-2255945');
+    
+    $cell2 = $table->addCell(9000);
+    $headerStyle = ['bold' => true, 'size' => 14, 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER];
+    $cell2->addText($letter->letter_no, $headerStyle);
+    $cell2->addText('GOVERNMENT OF SINDH', $headerStyle);
+    $cell2->addText('ANTI-CORRUPTION ESTABLISHMENT', $headerStyle);
+    
+    if (strtolower($letter->user->designation) == 'chairman') {
+        $cell2->addText('Chairman Office', $headerStyle);
+    } elseif (strtolower($letter->user->designation) == 'director') {
+        $cell2->addText('HEAD QUATOR', $headerStyle);
+    } elseif (strtolower($letter->user->designation) == 'deputy director') {
+        $cell2->addText(ucwords($letter->head_title), $headerStyle);
+    } elseif (in_array(strtolower($letter->user->designation), ['assistant director', 'circle officer', 'inspector', 'sub inspector'])) {
+        $cell2->addText('Office Of The Circle Officer', $headerStyle);
+        $cell2->addText($letter->head_title, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
     }
-
-    // Add forwarded copies
-    $section->addText('A copy is forwarded for similar compliance:', ['bold' => true]);
+    
+    $cell2->addText($letter->fix_address, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
+    $cell2->addText("Phone No: {$letter->user->contact}, Fax: {$letter->user->tel}", ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
+    
+    // Date
+    $section->addText("Dated: the " . date('dS M, Y', strtotime($letter->date)), ['align' => 'right', 'bold' => true]);
+    
+    // To section
+    $toTable = $section->addTable(['width' => 100 * 50]);
+    $toTable->addRow();
+    $toCell1 = $toTable->addCell(1000);
+    $toCell1->addText('To,', ['bold' => true]);
+    $toCell2 = $toTable->addCell(9000);
+    foreach ($letter->designations as $toLetter) {
+        $toCell2->addText($toLetter->designation . ',', ['bold' => true]);
+        $toCell2->addText($toLetter->department . ',');
+        $toCell2->addText($toLetter->address . ',');
+        if (!empty($toLetter->contact)) {
+            $toCell2->addText($toLetter->contact);
+        }
+        $toCell2->addTextBreak();
+    }
+    
+    // Subject
+    $subjectTable = $section->addTable(['width' => 100 * 50]);
+    $subjectTable->addRow();
+    $subjectCell1 = $subjectTable->addCell(1000);
+    $subjectCell1->addText('Subject:', ['bold' => true]);
+    $subjectCell2 = $subjectTable->addCell(9000);
+    $subjectCell2->addText(strtoupper($letter->subject), ['bold' => true, 'underline' => 'single']);
+    
+    // Main content
+    $textrun = $section->addTextRun(['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH]);
+    $textrun->addText($letter->draft_para, ['indent' => 7]);
+    
+    // Signature and QR code
+    $signatureTable = $section->addTable(['width' => 100 * 50]);
+    $signatureTable->addRow();
+    $qrCell = $signatureTable->addCell(5000);
+    $qrCell->addImage(storage_path('app/public/' . $letter->qr_code), [
+        'width' => 90,
+        'height' => 90,
+        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::LEFT,
+    ]);
+    
+    $signCell = $signatureTable->addCell(5000);
+    foreach ($letter->signingAuthorities as $authority) {
+        $signCell->addText($authority->name, ['bold' => true, 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::RIGHT]);
+        $signCell->addText($authority->designation, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::RIGHT]);
+        $signCell->addText("For {$authority->department}", ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::RIGHT]);
+        $signCell->addText('0301-2255945', ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::RIGHT]);
+    }
+    
+    // Forwarded copies
+    $section->addText('A copy is forwarded for similar compliance:-', ['bold' => true]);
+    $listStyle = [
+        'listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER,
+    ];
     foreach ($letter->forwardedCopies as $forward) {
-        $section->addText($forward->copy_forwarded);
+        $section->addListItem($forward->copy_forwarded, 0, null, $listStyle);
     }
-
-    // Save the file
-    $filePath = storage_path('app/public/downloaded_letters/' . $letter->letter_no . '.docx');
+    
+    // Save and download
     $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-    $objWriter->save($filePath);
-
-    return response()->download($filePath)->deleteFileAfterSend(true);
+    $fileName = 'letter_' . $letter->letter_no . '.docx';
+    $tempFile = tempnam(sys_get_temp_dir(), $fileName);
+    $objWriter->save($tempFile);
+    
+    return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
 }
-
 public function uploadSignedLetter(Request $request, Letter $letter)
 {
     $request->validate([

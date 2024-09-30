@@ -5,7 +5,11 @@
 
 @section('content')
 {{-- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> --}}
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+{{-- <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script> --}}
+<script src="{{url('js/tinymce/tinymce.js')}}"></script>
+<script src="https://cdn.tiny.cloud/1/i10phyfkd7x4i9lbrewk9dd4xubyzmxksrii4hywqn55bqmp/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+<link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/43.1.1/ckeditor5.css" />
+
 
     <div class="container-fluid">
         <div class="d-flex flex-column ">
@@ -31,19 +35,19 @@
 @endif
             <form action="{{ route('letters.store') }}" method="POST">
                 @csrf
-                <div class="row">
+                <div class="row" style="text-align: right;">
                     {{-- <div class="col-lg-2 col-md-2 col-sm-4">
                         <div class="mb-5">
 
                             <img src="{{asset('storage/qr-codes/download4.jpeg')}}" class="form-control form-control-solid" alt="GOVT OF SINDH" width="" style="width: 150px;background:none;border:none">
                         </div>
                     </div> --}}
-                    <div class="col-lg-5 col-md-5 col-sm-4">
-                        {{-- <div class="mb-5" style="text-align:left;justify-content:center;">
+                    {{-- <div class="col-lg-5 col-md-5 col-sm-4">
+                        <div class="mb-5" style="text-align:left;justify-content:center;">
 
                             <h4 class="form-control form-control-solid" style="background:none;border:none">ANTI-CORRUPTION ESTABLISHMENT SINDH</h4>
-                        </div> --}}
-                    </div>
+                        </div>
+                    </div> --}}
                     <div class="col-lg-3 col-md-3 col-sm-4">
                         <div class="mb-5">
                             {{-- <label for="letter_no" class="form-label required mb-3">Letter No</label> --}}
@@ -63,13 +67,13 @@
                 <div class="col-lg-6" style="display: none;">
                     <div class="mb-5">
                         {{-- <label for="head_title" class="form-label required mb-3">Head Title</label> --}}
-                        <input type="text" id="head_title" value="{{Auth::user()->district}}" class="form-control form-control-solid" placeholder="Head Title" name="head_title" required>
+                        <input type="text" id="head_title" value="{{Auth::user()->district}}" class="form-control form-control-solid" placeholder="Head Title" name="head_title" >
                     </div>
                 </div>
                 <div class="col-lg-6" style="display:none;">
                     <div class="mb-5">
                         {{-- <label for="fix_address" class="form-label required mb-3">Address</label> --}}
-                        <input type="text" id="fix_address" value="{{Auth::user()->address}}" class="form-control form-control-solid" placeholder="Address" name="fix_address" required>
+                        <input type="text" id="fix_address" value="{{Auth::user()->address}}" class="form-control form-control-solid" placeholder="Address" name="fix_address" >
                     </div>
                 </div>
 
@@ -140,8 +144,37 @@
                 <div class="col-lg-12">
                     <div class="mb-5">
                         {{-- <label for="draft_para" class="form-label required mb-3">Draft Section</label> --}}
-                        <textarea id="draft_para" cols="70" rows="10" class="form-control form-control-solid ckeditor" placeholder="Draft Para" name="draft_para" required></textarea>
-
+                        <textarea id="editor" cols="70" rows="10" class="form-control form-control-solid" placeholder="Draft Para" name="draft_para" required></textarea>
+                        <script type="importmap">
+                            {
+                                "imports": {
+                                    "ckeditor5": "https://cdn.ckeditor.com/ckeditor5/43.1.1/ckeditor5.js",
+                                    "ckeditor5/": "https://cdn.ckeditor.com/ckeditor5/43.1.1/"
+                                }
+                            }
+                        </script>
+                        <script type="module">
+                            import {
+                                ClassicEditor,
+                                Essentials,
+                                Bold,
+                                Italic,
+                                Font,
+                                Paragraph
+                            } from 'ckeditor5';
+                        
+                            ClassicEditor
+                                .create( document.querySelector( '#editor' ), {
+                                    plugins: [ Essentials, Bold, Italic, Font, Paragraph ],
+                                    toolbar: [
+                                        'undo', 'redo', '|', 'bold', 'italic', '|',
+                                        'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                                    ]
+                                } )
+                                .then( /* ... */ )
+                                .catch( /* ... */ );
+                        </script>
+                        
                     </div>
                 </div>
                 <hr>
@@ -237,7 +270,7 @@
 <script>
     var fieldCounter = 0;
     var fieldCounterss = 0;
- CKEDITOR.replace('draft_para');
+//  CKEDITOR.replace('draft_para');
 
 
 

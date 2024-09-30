@@ -7,6 +7,7 @@
 <!-- Bootstrap CSS -->
 
 
+
 <!-- Bootstrap 4 CSS -->
 
 
@@ -14,16 +15,7 @@
     <div class="container-fluid">
         <div class="d-flex flex-column ">
             @include('flash::message')
-            {{-- @if(session('message'))
-            <h6 class="alert alert-success">
-                {{ session('message') }}
-            </h6>
-                    @endif
-                    @if(session('error'))
-            <h6 class="alert alert-danger">
-                {{ session('error') }}
-            </h6>
-                    @endif --}}
+           
      @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -38,18 +30,7 @@
                 @method('PUT')
 
                 <div class="row " style="display:flex;flex-direction:row;align-items:center; justify-content:right;">
-                    {{-- <div class="col-lg-2 col-md-2 col-sm-4">
-                        <div class="mb-5">
-
-                            <img src="{{asset('storage/qr-codes/download4.jpeg')}}" class="form-control form-control-solid" alt="GOVT OF SINDH" width="" style="width: 150px;background:none;border:none">
-                        </div>
-                    </div> --}}
-                    {{-- <div class="col-lg-5 col-md-5 col-sm-4">
-                        <div class="mb-5" style="text-align:left;justify-content:center;">
-
-                            <h4 class="form-control form-control-solid" style="background:none;border:none">ANTI-CORRUPTION ESTABLISHMENT SINDH</h4>
-                        </div>
-                    </div> --}}
+                   
                     <div class="col-lg-3 col-md-3 col-sm-4">
                         <div class="mb-5">
                             {{-- <label for="letter_no" class="form-label required mb-3">Letter No</label> --}}
@@ -65,16 +46,7 @@
                 </div>
 
             <div class="row">
-                {{-- <hr>
-                <h4>To,</h4> --}}
-
-                {{-- <div class="col-md-12" style="text-align: end;">
-                    <button type="button" onclick="addRecipient()" id="add-field" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0" name="designation">
-                    <span data-bs-toggle="tooltip" data-bs-placement="top"  >
-                        <i class="fas fa-plus"></i>
-                    </span>
-                    </button>
-                </div> --}}
+               
                 <div class="col-lg-2">
                     <div>
                         <h4>To,</h4>
@@ -130,37 +102,18 @@
                         <input type="text" id="subject" class="form-control form-control-solid" placeholder="Subject" value="{{$letter->subject}}" name="subject" required>
                     </div>
                 </div>
-                {{-- <div class="col-lg-3">
-                    <div class="mb-5">
-                        <label for="dear" class="form-label  mb-3">Dear</label>
-                        <select name="dear" class="form-control form-control-solid" id="dear">
-                            <option value="">Select option</option>
-                            <option value="Respected Mam."{{($letter->dear=='Respected Mam.' ? 'selected': '')}}>Respected Mam</option>
-                            <option value="Respected Sir."{{($letter->dear=='Respected Sir.' ? 'selected': '')}}>Respected Sir</option>
-                            <option value="Mr."{{($letter->dear=='Respected Mam.' ? 'selected': '')}}>Mr.</option>
-                            <option value="Mrs."{{($letter->dear=='Mrs.' ? 'selected': '')}}>Mrs.</option>
-                            <option value="Ms."{{($letter->dear=='Ms.' ? 'selected': '')}}>Ms.</option>
-
-                        </select>
-                    </div>
-                </div> --}}
+                
                </div>
                 <hr>
                 <div class="col-lg-12">
-                    <div class="mb-5">
+                    <div class="mb-5" >
                         {{-- <label for="draft_para" class="form-label required mb-3">Draft Section</label> --}}
-                        <textarea id="draft_para" cols="70" rows="10" class="form-control form-control-solid ckeditor" placeholder="Draft Para" name="draft_para" required>{{$letter->draft_para}}</textarea>
-
+                        <textarea id="editor" cols="70" rows="10" class="form-control form-control-solid " placeholder="Draft Para" name="draft_para" required>{{$letter->draft_para}}</textarea>
+                     
                     </div>
                 </div>
                 <hr>
-                 {{-- <div class="col-md-12" style="text-align: end;">
-                    <button type="button" onclick="signing_authority()" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0" id="add-fieldd" name="signing">
-                <span data-bs-toggle="tooltip" data-bs-placement="top"  >
-                    <i class="fas fa-plus"></i>
-                </span>
-            </button>
-                </div> --}}
+                 
                 <div id="dynamic-fieldds">
                     @foreach ($letter->signingAuthorities as $index => $signing_authority)
 
@@ -246,16 +199,12 @@
     </div>
 </div>
 
-{{-- end letter preview --}}
-{{-- onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')" --}}
                 <div class="col-md-12" style="text-align: center;">
                     <a id="gos_bg_color" href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
-                    <a href="{{route('letter.download.doc',$letter->id)}}" id="gos_bg_color" type="button"   class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
+                    <a href="" onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')" id="gos_bg_color" type="button"   class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
                     <button id="gos_bg_color" type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
                     <button id="gos_bg_color"  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
-                    {{-- <a href="{{ route('forms') }}"
-                    class="btn btn-secondary btn-active-light-primary">{{ __('messages.common.cancel') }}
-                    </a> --}}
+
                 </div>
             </div>
             <script>
@@ -270,13 +219,7 @@
                                       link.href = window.URL.createObjectURL(blob);
                                       link.download = 'letter-' + '{{ $letter->letter_no }}' + '.pdf';
                                       link.click();
-                                    //   fetch('/forms/letter-form/{{$letter->id}}/edit')
-                                    //   .then(response => response.text())
-                                    //   .then(formUrl => {
-                                    //       window.location.href = formUrl;
-                                    //   });
-                                    //   window.location.href = '{{ URL::previous() }}'; // Redirect back to previous page
-                                    //   window.location.href = "{{ route('forms.letter.edit',$letter->id) }}";
+                                    
                                     window.location.href = "{{ route('forms.letter.edit', $letter->id) }}";
                                   }
                               };
@@ -291,7 +234,7 @@
                                       var blob = new Blob([xhr.response], {type: 'application/pdf'});
                                       var link = document.createElement('a');
                                       link.href = window.URL.createObjectURL(blob);
-                                      link.download = 'letter-' + '{{ $letter->id }}' + '.docx';
+                                      link.download = 'letter-' + '{{ $letter->letter_no }}' + '.docx';
                                       link.click();
                                     //   fetch('/forms/letter-form/{{$letter->id}}/edit')
                                     //   .then(response => response.text())
@@ -337,20 +280,21 @@
 
 @endsection
 
-{{-- @if($letter->is_submitted)
-    <script>
-        document.querySelectorAll('input, textarea, select').forEach(function(el) {
-            el.setAttribute('disabled', true);
-        });
-    </script>
-@endif --}}
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+
+
+
+<!-- A friendly reminder to run on a server, remove this during the integration. -->
+
 <script>
-    // var fieldCounter =  0;
+   
+    // CKEDITOR.replace( 'draft_para' );
+  
+   
+
     var fieldCounter = {{ count($letter->designations) ? count($letter->designations) - 1 : -1 }};
     var fieldCounterss = {{ count($letter->forwardedCopies) ? count($letter->forwardedCopies) - 1 : -1 }};
 
- CKEDITOR.replace('draft_para');
+//  CKEDITOR.replace('draft_para');
    
     // letter preview
 //     function loadLetterPreview(letterId) {

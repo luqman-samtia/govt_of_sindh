@@ -38,6 +38,7 @@
         "stancl/tenancy": "^3.7",
         "stripe/stripe-php": "^7.104",
         "tightenco/ziggy": "^1.1",
+        "tinymce/tinymce": "^7.3",
         "unicodeveloper/laravel-paystack": "^1.1"
     },
     "require-dev": {

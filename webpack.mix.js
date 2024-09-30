@@ -187,3 +187,4 @@ mix.copyDirectory("node_modules/intl-tel-input/build/img", "public/assets/img");
 
 mix.copyDirectory("resources/theme/webfonts", "public/assets/webfonts");
 mix.copyDirectory("resources/theme/css/fonts", "public/assets/css/fonts");
+mix.copyDirectory("vendor/tinymce/tinymce", "public/js/tinymce");
