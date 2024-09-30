@@ -503,7 +503,7 @@ if ($letter->is_submitted == 1 && file_exists($filePath)) {
     if (file_exists($originalLetterPath)) {
         return response()->download($originalLetterPath);
     } else {
-        return response()->download($originalLetterPath);
+        return redirect()->route('Form.download.pdf',$letter->id);
     }
 }
 }
