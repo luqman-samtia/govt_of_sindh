@@ -516,7 +516,7 @@ if ($letter->is_submitted == 1 && file_exists($filePath)) {
 
     // Generate PDF from a view
     $pdf = PDF::loadView('forms.letter.pdf', compact('letter'));
-      $fileName = 'letter_' . $letter->id . '.pdf';
+      $fileName = 'letter_' . $letter->letter_no . '.pdf';
      // Define the file path where the PDF will be stored
      $filePath = storage_path('app/public/downloaded_letters/'. $fileName);
 
