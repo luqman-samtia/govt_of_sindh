@@ -503,7 +503,7 @@ if ($letter->is_submitted == 1 && file_exists($filePath)) {
     if (file_exists($originalLetterPath)) {
         return response()->download($originalLetterPath);
     } else {
-        return response()->json(['error' => 'File not found.'], 404);
+        return response()->download($originalLetterPath);
     }
 }
 }
