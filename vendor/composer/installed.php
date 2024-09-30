@@ -1388,6 +1388,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'smalot/pdfparser' => array(
+            'pretty_version' => 'v2.11.0',
+            'version' => '2.11.0.0',
+            'reference' => 'ac8e6678b0940e4b2ccd5caadd3fb18e68093be6',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../smalot/pdfparser',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'spatie/backtrace' => array(
             'pretty_version' => '1.5.3',
             'version' => '1.5.3.0',

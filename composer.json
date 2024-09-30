@@ -30,6 +30,7 @@
         "rappasoft/laravel-livewire-tables": "^2.11",
         "razorpay/razorpay": "^2.8",
         "simplesoftwareio/simple-qrcode": "^4.2",
+        "smalot/pdfparser": "^2.11",
         "spatie/laravel-cookie-consent": "^3.2.4",
         "spatie/laravel-medialibrary": "^10.7",
         "spatie/laravel-permission": "^5.8",

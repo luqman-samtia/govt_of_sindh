@@ -247,9 +247,10 @@
 </div>
 
 {{-- end letter preview --}}
+{{-- onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')" --}}
                 <div class="col-md-12" style="text-align: center;">
                     <a id="gos_bg_color" href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
-                    <a href="" id="gos_bg_color" type="button" onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
+                    <a href="{{route('letter.download.doc',$letter->id)}}" id="gos_bg_color" type="button"   class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
                     <button id="gos_bg_color" type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
                     <button id="gos_bg_color"  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
                     {{-- <a href="{{ route('forms') }}"
