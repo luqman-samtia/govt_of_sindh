@@ -5,12 +5,7 @@
 
 @section('content')
 <!-- Bootstrap CSS -->
-
-
-
 <!-- Bootstrap 4 CSS -->
-
-
 
     <div class="container-fluid">
         <div class="d-flex flex-column ">
@@ -109,7 +104,6 @@
                     <div class="mb-5" >
                         {{-- <label for="draft_para" class="form-label required mb-3">Draft Section</label> --}}
                         <textarea id="editor" cols="70" rows="10" class="form-control form-control-solid " placeholder="Draft Para" name="draft_para" required>{{$letter->draft_para}}</textarea>
-                     
                     </div>
                 </div>
                 <hr>
@@ -208,6 +202,7 @@
                 </div>
             </div>
             <script>
+                CKEDITOR.replace('editor')
                 function downloadPdf(url) {
                               var xhr = new XMLHttpRequest();
                               xhr.open('GET', url, true);
