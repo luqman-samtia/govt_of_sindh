@@ -125,10 +125,10 @@
         </script>
         @routes
         <script src="{{ mix('assets/js/pages.js') }}"></script>
-        <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
+        {{-- <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
         <script src="{{asset('ckeditor/build-config.js')}}"></script>
         <script src="{{asset('ckeditor/config.js')}}"></script>
-        <script src="{{asset('ckeditor/styles.js')}}"></script>
+        <script src="{{asset('ckeditor/styles.js')}}"></script> --}}
         {{-- <script src="//cdn.ckeditor.com/4.22.1/full/ckeditor.js"></script> --}}
         {{-- <script src="https://cdn.ckeditor.com/4.25.0/standard/ckeditor.js"></script> --}}
         @yield('phone_js')
