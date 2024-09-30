@@ -23,7 +23,13 @@ use Illuminate\Support\Facades\Storage;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Hash;
-// use DB;
+use PhpOffice\PhpWord\Settings;
+use PHPHtmlToDoc\PHPHtmlToDoc;
+use HTMLPurifier;
+use HTMLPurifier_Config;
+// use PhpOffice\PhpWord\Shared\Html;
+
+
 
 
 
@@ -543,32 +549,140 @@ public function checkDownloadRoute(Letter $letter)
 public function downloadDoc(Letter $letter)
 {
     // Load letter data with related models
-    $letter = $letter->load(['designations', 'signingAuthorities', 'forwardedCopies']);
+ // Fetch the letter data using the provided id
+//  $letter = Letter::findOrFail($id);
 
-    // Generate the HTML content from the view
-    $htmlContent = view('forms.letter.doc-template', compact('letter'))->render();
+ // Create a new PhpWord instance
+ $phpWord = new PhpWord();
 
-    // Create a new instance of PhpWord
-    $phpWord = new PhpWord();
+ // Add a section to the Word document
+ $section = $phpWord->addSection();
 
-    // Add a section to the document
-    $section = $phpWord->addSection();
+ // Add logo
+ $section->addImage(storage_path('app/public/qr-codes/download.png'), ['width' => 200, 'height' => 100]);
 
-    // Add HTML content to the section
-    \PhpOffice\PhpWord\Shared\Html::addHtml($section, $htmlContent, false, false);
+ // Add letter details
+ $this->addLetterDetails($section, $letter);
 
-    // Save the document as a Word file
-    $fileName = 'letter-' . $letter->letter_no . '.docx';
-    $tempFile = tempnam(sys_get_temp_dir(), $fileName);
+ // Add date
+ $section->addText('Dated: the ' . date('dS M, Y', strtotime($letter->date)), ['bold' => true], ['align' => 'right']);
 
-    // Save to the temp location
-    $writer = IOFactory::createWriter($phpWord, 'Word2007');
-    $writer->save($tempFile);
+ // Add recipient
+ $this->addRecipient($section, $letter);
 
-    // Return the DOCX file as a download
-    return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
+ // Add subject
+ $this->addSubject($section, $letter);
+
+ // Add draft paragraph
+ $this->addDraftParagraph($section, $letter);
+
+ // Add signing authorities
+ $this->addSigningAuthorities($section, $letter);
+
+ // Add forwarded copies
+ $this->addForwardedCopies($section, $letter);
+
+ // Save the generated document
+ $outputPath = storage_path('app/public/downloaded_letters/' . $letter->id . '.docx');
+ $phpWord->save($outputPath);
+
+ // Return the file for download
+ return response()->download($outputPath)->deleteFileAfterSend(true);
 }
 
+protected function addLetterDetails($section, $letter)
+{
+ $title = strtoupper($letter->letter_no);
+ $government = "GOVERNMENT OF SINDH\nANTI-CORRUPTION ESTABLISHMENT";
+ $designation = $this->getDesignation($letter);
+ $address = $letter->fix_address;
+ $contact = "Phone No: {$letter->user->contact}, Fax: {$letter->user->tel}";
+
+ $section->addText($title, ['size' => 14, 'bold' => true, 'align' => 'center']);
+ $section->addText($government, ['size' => 14, 'bold' => true, 'align' => 'center']);
+ $section->addText($designation, ['size' => 14, 'bold' => true, 'align' => 'center']);
+ $section->addText($address, ['align' => 'center']);
+ $section->addText($contact, ['align' => 'center']);
+}
+
+protected function getDesignation($letter)
+{
+ switch (strtolower($letter->user->designation)) {
+     case 'chairman':
+         return "Chairman Office";
+     case 'director':
+         return "HEAD QUARTER";
+     case 'deputy director':
+         return ucfirst($letter->head_title);
+     default:
+         return "Office Of The Circle Officer";
+ }
+}
+
+protected function addRecipient($section, $letter)
+{
+ $section->addText('To,', ['bold' => true]);
+
+ foreach ($letter->designations as $toLetter) {
+     $section->addText("{$toLetter->designation},");
+     $section->addText("{$toLetter->department},");
+     $section->addText("{$toLetter->address},");
+     if (!empty($toLetter->contact)) {
+         $section->addText("{$toLetter->contact}");
+     }
+     $section->addTextBreak(1);
+ }
+}
+
+protected function addSubject($section, $letter)
+{
+ $section->addText('Subject:', ['bold' => true]);
+ $section->addText(strtoupper($letter->subject), ['bold' => true, 'underline' => 'single']);
+}
+
+protected function addDraftParagraph($section, $letter)
+{
+ $section->addTextBreak(1);
+ $section->addText(html_entity_decode($letter->draft_para), ['align' => 'justify', 'indentation' => ['left' => 500, 'right' => 500]]);
+}
+
+protected function addSigningAuthorities($section, $letter)
+{
+ $section->addTextBreak(1);
+ foreach ($letter->signingAuthorities as $Authority) {
+     $section->addText($Authority->name, ['bold' => true]);
+     $section->addText($Authority->designation);
+     $section->addText('For ' . $Authority->department);
+     $section->addText('0301-2255945');
+     $section->addTextBreak(1);
+ }
+}
+
+protected function addForwardedCopies($section, $letter)
+{
+ $section->addText('A copy is forwarded for similar compliance:', ['bold' => true]);
+ $section->addListItem('Forwarded Copies:', 0);
+ foreach ($letter->forwardedCopies as $forward) {
+     $section->addListItem($forward->copy_forwarded);
+ }
+
+    // try {
+    //     $letter = $letter->load(['designations', 'signingAuthorities', 'forwardedCopies']);
+    //     $htmlContent = view('forms.letter.doc-template', compact('letter'))->render();
+
+    //     $phpHtmlToDoc = new PHPHtmlToDoc();
+    //     $fileName = 'letter-' . $letter->letter_no . '.docx';
+    //     $tempFile = tempnam(sys_get_temp_dir(), $fileName);
+
+    //     $phpHtmlToDoc->convertHtml($htmlContent, $tempFile);
+
+    //     return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
+    // } catch (\Exception $e) {
+    //     Log::error('Error generating Word document: ' . $e->getMessage());
+    //     Log::error('Stack trace: ' . $e->getTraceAsString());
+    //     return back()->with('error', 'There was an error generating the document. Please check the logs for more information.');
+    // }
+}
 
 public function uploadSignedLetter(Request $request, Letter $letter)
 {

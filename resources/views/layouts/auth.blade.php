@@ -20,7 +20,7 @@
     @stack('css')
     @yield('css')
 </head>
-<body>
+<body style=" background: linear-gradient(to right, #ffffff 8%, #48b7a3 100%);">
 <div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed authImage">
     @yield('content')
 </div>

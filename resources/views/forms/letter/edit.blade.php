@@ -249,7 +249,7 @@
 {{-- end letter preview --}}
                 <div class="col-md-12" style="text-align: center;">
                     <a id="gos_bg_color" href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
-                    <a id="gos_bg_color" type="button" name="" value=""  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
+                    <a href="" id="gos_bg_color" type="button" onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
                     <button id="gos_bg_color" type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
                     <button id="gos_bg_color"  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
                     {{-- <a href="{{ route('forms') }}"
@@ -268,6 +268,29 @@
                                       var link = document.createElement('a');
                                       link.href = window.URL.createObjectURL(blob);
                                       link.download = 'letter-' + '{{ $letter->letter_no }}' + '.pdf';
+                                      link.click();
+                                    //   fetch('/forms/letter-form/{{$letter->id}}/edit')
+                                    //   .then(response => response.text())
+                                    //   .then(formUrl => {
+                                    //       window.location.href = formUrl;
+                                    //   });
+                                    //   window.location.href = '{{ URL::previous() }}'; // Redirect back to previous page
+                                    //   window.location.href = "{{ route('forms.letter.edit',$letter->id) }}";
+                                    window.location.href = "{{ route('forms.letter.edit', $letter->id) }}";
+                                  }
+                              };
+                              xhr.send();
+                          }
+                          function downloadDOC(url) {
+                              var xhr = new XMLHttpRequest();
+                              xhr.open('GET', url, true);
+                              xhr.responseType = 'blob';
+                              xhr.onload = function() {
+                                  if (xhr.status === 200) {
+                                      var blob = new Blob([xhr.response], {type: 'application/pdf'});
+                                      var link = document.createElement('a');
+                                      link.href = window.URL.createObjectURL(blob);
+                                      link.download = 'letter-' + '{{ $letter->id }}' + '.docx';
                                       link.click();
                                     //   fetch('/forms/letter-form/{{$letter->id}}/edit')
                                     //   .then(response => response.text())
@@ -325,9 +348,9 @@
     var fieldCounter = {{ count($letter->designations) ? count($letter->designations) - 1 : -1 }};
     var fieldCounterss = {{ count($letter->forwardedCopies) ? count($letter->forwardedCopies) - 1 : -1 }};
 
-
+    $(document).ready(function() {
  CKEDITOR.replace('draft_para');
-
+    });
     // letter preview
 //     function loadLetterPreview(letterId) {
 //     // Correct the URL to the preview route using Laravel's route helper in Blade

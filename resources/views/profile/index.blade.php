@@ -43,20 +43,20 @@
                                     <div class="row">
                                         <div class="col-lg-6 fv-row fv-plugins-icon-container">
                                             @if (Auth::user()->hasRole('admin'))
-                                            {!! Form::text('first_name', $user->first_name, ['class'=> 'form-control removeFocus', 'placeholder' => __('messages.client.first_name'), 'readonly', 'id' => 'editProfileFirstName']) !!}
+                                            {!! Form::text('first_name', $user->first_name, ['class'=> 'form-control removeFocus', 'placeholder' => __('messages.client.first_name'), 'required', 'id' => 'editProfileFirstName']) !!}
 
                                             @else
-                                            {!! Form::text('first_name', $user->first_name, ['class'=> 'form-control removeFocus', 'placeholder' => __('messages.client.first_name'), 'required', 'id' => 'editProfileFirstName']) !!}
+                                            {!! Form::text('first_name', $user->first_name, ['class'=> 'form-control removeFocus', 'placeholder' => __('messages.client.first_name'), 'readonly', 'id' => 'editProfileFirstName']) !!}
 
                                             @endif
                                             <div class="fv-plugins-message-container invalid-feedback"></div>
                                         </div>
                                         <div class="col-lg-6 fv-row fv-plugins-icon-container">
                                             @if (Auth::user()->hasRole('admin'))
-                                            {!! Form::text('last_name', $user->last_name, ['class'=> 'form-control removeFocus', 'placeholder' => __('messages.client.last_name'), 'readonly', 'id' => 'editProfileLastName']) !!}
+                                            {!! Form::text('last_name', $user->last_name, ['class'=> 'form-control removeFocus', 'placeholder' => __('messages.client.last_name'), 'required', 'id' => 'editProfileLastName']) !!}
                                             @else
 
-                                            {!! Form::text('last_name', $user->last_name, ['class'=> 'form-control removeFocus', 'placeholder' => __('messages.client.last_name'), 'required', 'id' => 'editProfileLastName']) !!}
+                                            {!! Form::text('last_name', $user->last_name, ['class'=> 'form-control removeFocus', 'placeholder' => __('messages.client.last_name'), 'readonly', 'id' => 'editProfileLastName']) !!}
                                             @endif
                                         </div>
                                     </div>
@@ -66,7 +66,7 @@
                                 <label class="col-lg-4 form-label required">{{ __('messages.user.email').':' }}</label>
                                 <div class="col-lg-8 fv-row fv-plugins-icon-container">
                                     @if (Auth::user()->hasRole('admin'))
-                                    {!! Form::email('email', $user->email, ['class'=> 'form-control removeFocus', 'placeholder' => __('messages.user.email'), 'readonly', 'id' => 'isEmailEditProfile']) !!}
+                                    {!! Form::email('email', $user->email, ['class'=> 'form-control removeFocus', 'placeholder' => __('messages.user.email'), 'required', 'id' => 'isEmailEditProfile']) !!}
 
                                     @else
                                     {!! Form::email('email', $user->email, ['class'=> 'form-control removeFocus', 'placeholder' => __('messages.user.email'), 'required', 'id' => 'isEmailEditProfile']) !!}
@@ -80,7 +80,7 @@
                                 <div class="col-lg-8 fv-row fv-plugins-icon-container">
                                     {{-- {!! Form::designation('designation', $user->designation, ['class'=> 'form-control removeFocus', 'placeholder' => __('designation'), 'required', 'id' => 'isDesignationEditProfile']) !!} --}}
                                     {{-- <input type="text" class="form-control removeFocus" value="{{$user->designation}}" > --}}
-                                    {!! Form::text('designation', $user->designation, ['class'=> 'form-control', 'readonly']) !!}
+                                    {!! Form::text('designation', $user->designation, ['class'=> 'form-control', 'required','removeFocus']) !!}
 
                                 </div>
                             </div>
@@ -89,7 +89,7 @@
                                 <div class="col-lg-8 fv-row fv-plugins-icon-container">
                                     {{-- {!! Form::designation('designation', $user->designation, ['class'=> 'form-control removeFocus', 'placeholder' => __('designation'), 'required', 'id' => 'isDesignationEditProfile']) !!} --}}
                                     {{-- <input type="text" class="form-control removeFocus" value="{{$user->designation}}" > --}}
-                                    {!! Form::text('zone', $user->zone, ['class'=> 'form-control', 'readonly']) !!}
+                                    {!! Form::text('zone', $user->zone, ['class'=> 'form-control', 'required']) !!}
 
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                             <div class="row mb-6">
                                 <label class="col-lg-4 form-label required">{{ __('District').':' }}</label>
                                 <div class="col-lg-8 fv-row fv-plugins-icon-container">
-                                    {!! Form::text('district', $user->district, ['class'=> 'form-control', 'readonly']) !!}
+                                    {!! Form::text('district', $user->district, ['class'=> 'form-control', 'required']) !!}
 
                                 </div>
                             </div>
@@ -138,7 +138,7 @@
                                 <div class="col-lg-8 fv-row fv-plugins-icon-container">
                                     {{-- {!! Form::designation('designation', $user->designation, ['class'=> 'form-control removeFocus', 'placeholder' => __('designation'), 'required', 'id' => 'isDesignationEditProfile']) !!} --}}
                                     {{-- <input type="text" class="form-control removeFocus" value="{{$user->designation}}" > --}}
-                                    {!! Form::text('grade', $user->grade, ['class'=> 'form-control', 'readonly']) !!}
+                                    {!! Form::text('grade', $user->grade, ['class'=> 'form-control', 'required']) !!}
 
                                 </div>
                             </div>
@@ -149,7 +149,7 @@
                                     {{-- {{ Form::tel('contact', isset($user)?$user->contact:null, ['class' => 'form-control removeFocus', 'placeholder' =>  __('messages.client.contact_no'), 'onkeyup' => 'if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,"")','id'=>'phoneNumber']) }} --}}
                                     {{-- {{ Form::tel('contact', isset($user) ? $user->contact : null, ['class' => 'form-control form-control-solid', 'placeholder' => __('messages.client.contact_no'),'readonly']) }} --}}
                                     @if (Auth::user()->hasRole('admin'))
-                                        {{ Form::tel('contact', isset($user) ? $user->contact : null, ['class' => 'form-control form-control-solid', 'placeholder' => __('messages.client.contact_no'), 'readonly']) }}
+                                        {{ Form::tel('contact', isset($user) ? $user->contact : null, ['class' => 'form-control form-control-solid', 'placeholder' => __('messages.client.contact_no'), 'required']) }}
                                     @else
                                         {{ Form::tel('contact', isset($user) ? $user->contact : null, ['class' => 'form-control form-control-solid', 'placeholder' => __('messages.client.contact_no'), 'required']) }}
                                     @endif

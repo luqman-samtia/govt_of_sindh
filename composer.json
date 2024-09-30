@@ -12,6 +12,7 @@
         "php": "^8.1",
         "ext-json": "*",
         "barryvdh/laravel-dompdf": "^2.1",
+        "ezyang/htmlpurifier": "^4.17",
         "guzzlehttp/guzzle": "^7.2",
         "lab404/laravel-impersonate": "^1.7",
         "laracasts/flash": "^3.2",
