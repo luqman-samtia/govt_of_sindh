@@ -492,14 +492,14 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 // Letter view on scan
     public function view(Letter $letter)
 {
-    $filePath = storage_path('app/public/signed_letters/letter_' . $letter->letter_no . '.pdf');
+    $filePath = storage_path('app/public/signed_letters/letter_' . $letter->id . '.pdf');
 
 if ($letter->is_submitted == 1 && file_exists($filePath)) {
     // If the letter is submitted and the signed letter file exists, download it directly
     return response()->download($filePath);
 } else {
     // If the letter is not submitted or doesn't have a signed version, download the original letter
-    $originalLetterPath = storage_path('app/public/downloaded_letters/letter_' . $letter->letter_no . '.pdf');
+    $originalLetterPath = storage_path('app/public/downloaded_letters/letter_' . $letter->id . '.pdf');
     if (file_exists($originalLetterPath)) {
         return response()->download($originalLetterPath);
     } else {
@@ -516,7 +516,7 @@ if ($letter->is_submitted == 1 && file_exists($filePath)) {
 
     // Generate PDF from a view
     $pdf = PDF::loadView('forms.letter.pdf', compact('letter'));
-      $fileName = 'letter_' . $letter->letter_no . '.pdf';
+      $fileName = 'letter_' . $letter->id . '.pdf';
      // Define the file path where the PDF will be stored
      $filePath = storage_path('app/public/downloaded_letters/'. $fileName);
 

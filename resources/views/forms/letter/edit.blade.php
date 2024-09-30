@@ -344,14 +344,14 @@
         });
     </script>
 @endif --}}
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 <script>
     // var fieldCounter =  0;
     var fieldCounter = {{ count($letter->designations) ? count($letter->designations) - 1 : -1 }};
     var fieldCounterss = {{ count($letter->forwardedCopies) ? count($letter->forwardedCopies) - 1 : -1 }};
 
-    $(document).ready(function() {
  CKEDITOR.replace('draft_para');
-    });
+   
     // letter preview
 //     function loadLetterPreview(letterId) {
 //     // Correct the URL to the preview route using Laravel's route helper in Blade
