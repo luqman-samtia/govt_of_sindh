@@ -129,6 +129,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         'contact',
         'region_code',
         'status',
+        'letter_no',
         'password',
         'language',
         'dark_mode',
@@ -220,5 +221,16 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     public function letters()
     {
         return $this->hasMany(Letter::class);
+    }
+    public static function generateLetterNumber($district)
+    {
+        $letter = self::firstOrCreate(['district' => $district]);
+        $letter->current_number++;
+        $letter->save();
+
+        $prefix = strtoupper(substr($district, 0, 2)); // Get first two letters of district name
+        $year = date('Y');
+        
+        return "{$prefix}-DRF-{$year}-";
     }
 }

@@ -238,7 +238,7 @@
                                     //   });
                                     //   window.location.href = '{{ URL::previous() }}'; // Redirect back to previous page
                                     //   window.location.href = "{{ route('forms.letter.edit',$letter->id) }}";
-                                    window.location.href = "{{ route('forms.letter.edit', $letter->id) }}";
+                                    window.location.href = url;
                                   }
                               };
                               xhr.send();

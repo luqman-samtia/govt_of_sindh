@@ -43,7 +43,7 @@
                     <div class="col-lg-2 col-md-2 col-sm-4">
                         <div class="mb-5">
                             {{-- <label for="date" class="form-label required mb-3">Date</label> --}}
-                            <input type="text" id="date" value="{{date(Auth::user()->date)}}"  class="form-control form-control-solid" placeholder="Date" name="date" readonly>
+                            <input type="text" id="date" value="{{now()->format('F d, Y')}}"  class="form-control form-control-solid" placeholder="Date" name="date" readonly>
                         </div>
                     </div>
                 </div>

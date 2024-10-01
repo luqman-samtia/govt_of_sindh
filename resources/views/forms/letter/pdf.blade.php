@@ -51,7 +51,7 @@
                 <h2 style="margin-left: 50px;">GOVERNMENT OF SINDH</h2>
                 <h2 style="margin-left: 50px;">ANTI-CORRUPTION ESTABLISHMENT</h2>
                 <h2 style="margin-left: 50px;">Chairman Office</h2>
-                <p style="margin-left: 50px;">{{$letter->fix_address}}</p>
+                <p style="margin-left: 50px;">{{$letter->user->address}}</p>
                 <p style="margin-left: 50px;">Phone No: {{ $letter->user->contact}}, Fax: {{$letter->user->tel}}</p>
             </td>
             @elseif ($letter->user->designation == strtolower('Director'))
@@ -60,7 +60,7 @@
                 <h2 style="margin-left: 50px;">GOVERNMENT OF SINDH</h2>
                 <h2 style="margin-left: 50px;">ANTI-CORRUPTION ESTABLISHMENT</h2>
                 <h2 style="margin-left: 50px;">HEAD QUATOR</h2>
-                <p style="margin-left: 50px;">{{$letter->fix_address}}</p>
+                <p style="margin-left: 50px;">{{$letter->user->address}}</p>
                 <p style="margin-left: 50px;">Phone No: {{ $letter->user->contact}}, Fax: {{$letter->user->tel}}</p>
             </td>
             @elseif ($letter->user->designation ==  strtolower('Deputy Director'))
@@ -69,7 +69,7 @@
                 <h2 style="margin-left: 50px;">GOVERNMENT OF SINDH</h2>
                 <h2 style="margin-left: 50px;">ANTI-CORRUPTION ESTABLISHMENT</h2>
                 <h2 style="margin-left: 50px;text-transform:capitalize;">{{$letter->head_title}}</h2>
-                <p style="margin-left: 50px;">{{$letter->fix_address}}</p>
+                <p style="margin-left: 50px;">{{$letter->user->address}}</p>
                 <p style="margin-left: 50px;">Phone No: {{ $letter->user->contact}}, Fax: {{$letter->user->tel}}</p>
             </td>
             @elseif ($letter->user->designation == strtolower('Assistant Director') || strtolower('Circle Officer') || strtolower('Inspector') || strtolower('Sub inspector' ))

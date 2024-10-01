@@ -49,12 +49,27 @@ class UserRepository extends BaseRepository
             DB::beginTransaction();
             $tenant = MultiTenant::create(['tenant_username' => $input['first_name']]);
 
+
             $user = $this->createUser($input, $tenant);
             $user->email_verified_at = now();
             $user->designation = strtolower($input['designation']);
             $user->district = $input['district'];
             $user->grade = $input['grade'];
             $user->zone = $input['zone'];
+            
+            $words = explode(' ', $input['district']);
+            $prefix = '';
+            foreach ($words as $word) {
+                $prefix .= strtoupper(substr($word, 0, 1));
+                if (strlen($prefix) == 2) break;
+            }
+            $prefix = substr($prefix . 'XX', 0, 2); // Ensure we always have 2 characters
+            
+            $year = date('Y');
+            
+            $letter_no = "{$prefix}-SND-{$year}-";
+            
+            $user->letter_no = $letter_no;
             $user->sendEmailVerificationNotification();
             $user->save();
             DB::commit();
@@ -87,7 +102,9 @@ class UserRepository extends BaseRepository
             $user->designation = strtolower($input['designation']);
             $user->district = $input['district'];
             $user->grade = $input['grade'];
+            $user->letter_no = $input['letter_no'];
             $user->zone = $input['zone'];
+           
 
             if (isset($input['profile']) && ! empty($input['profile'])) {
                 $user->clearMediaCollection(User::PROFILE);

@@ -161,14 +161,18 @@ class FormController extends Controller
         $letters = Letter::where('user_id',Auth::user()->id)->get();
         return view('forms.index' ,compact('letters'));
     }
-    public function letter_create(Letter $letter){
+    public function letter_create(Letter $letter, User $user){
         $user = auth()->user();
-         // Get the last inserted letter to increment the letter number
-    $lastLetter = Letter::latest('id')->first();
+         
     // $lastLetter = Letter::latest('id')->first();
-    // $lastLetter = DB::getPdo()->lastInsertId();
-    // Set the default prefix for the letter number
-    $prefix = 'ABC-GDXSC-2024-';
+   
+    $prefix = $user->letter_no; // Assuming this field exists in the user table
+
+    // Fetch the latest letter for this user based on their prefix
+    $lastLetter = Letter::where('letter_no', 'LIKE', "{$prefix}%")
+                        ->where('user_id', $user->id)
+                        ->latest('letter_no')
+                        ->first();
 
     // Initialize the next number based on the last letter number
     if ($lastLetter && str_contains($lastLetter->letter_no, $prefix)) {
@@ -179,8 +183,9 @@ class FormController extends Controller
         $nextNumber = 1; // Start with 1 if no previous letters
     }
 
-    // Generate the new letter number
+    // Generate the new letter number for this user
     $newLetterNo = $prefix . $nextNumber;
+
         if (!$user->address || !$user->date || !$user->tel) {
             // Redirect to profile update page if profile is incomplete
             return redirect()->route('admin.dashboard')->with('error', 'Please complete your profile before creating a letter.');
@@ -220,10 +225,15 @@ class FormController extends Controller
 
         // Store the letter
          // Get the last inserted letter to increment the letter number
-    $lastLetter = Letter::latest('id')->first();
+    // $lastLetter = Letter::latest('id')->first();
+    $user = auth()->user();
+    $prefix = $user->letter_no; // Assuming this field exists in the user table
 
-    // Set the default prefix for the letter number
-    $prefix = 'ABC-GDXSC-2024-';
+    // Fetch the latest letter for this user based on their prefix
+    $lastLetter = Letter::where('letter_no', 'LIKE', "{$prefix}%")
+                        ->where('user_id', $user->id)
+                        ->latest('letter_no')
+                        ->first();
 
     // Initialize the next number based on the last letter number
     if ($lastLetter && str_contains($lastLetter->letter_no, $prefix)) {
@@ -234,7 +244,7 @@ class FormController extends Controller
         $nextNumber = 1; // Start with 1 if no previous letters
     }
 
-    // Generate the new letter number
+    // Generate the new letter number for this user
     $newLetterNo = $prefix . $nextNumber;
 
 
@@ -611,28 +621,46 @@ public function downloadDoc(Letter $letter)
     ]);
     
     // Content cell (right side)
-    $cell2 = $table->addCell(8000); // Adjust width as needed
+    $cell2 = $table->addCell(8000,[ 'text-align' => 'center']); // Adjust width as needed
     $headerStyle = [
         'bold' => true,
-        'size' => 14,
-        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
+        'size' => 11,
+        // 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
     ];
-    $cell2->addText(html2text($letter->letter_no), $headerStyle);
-    $cell2->addText('GOVERNMENT OF SINDH', $headerStyle);
-    $cell2->addText('ANTI-CORRUPTION ESTABLISHMENT', $headerStyle);
+    $paragraphStyle = [
+        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, // Center alignment
+        'spaceAfter' => 0, 
+        'spaceBefore' => 0, 
+        'lineHeight' => 1.2, 
+    ];
+    // $cell2->getStyle()->setMargins(0, 0, 0, 10);
+    $cell2->addText(html2text($letter->letter_no), $headerStyle,$paragraphStyle);
+    $cell2->addText('GOVERNMENT OF SINDH', $headerStyle,$paragraphStyle);
+    $cell2->addText('ANTI-CORRUPTION ESTABLISHMENT', $headerStyle,$paragraphStyle);
     
     if (strtolower($letter->user->designation) == 'chairman') {
-        $cell2->addText('Chairman Office', $headerStyle);
+        $cell2->addText('Chairman Office', $headerStyle,$paragraphStyle);
     } elseif (strtolower($letter->user->designation) == 'director') {
-        $cell2->addText('HEAD QUATOR', $headerStyle);
+        $cell2->addText('HEAD QUATOR', $headerStyle,$paragraphStyle);
     } // Add other conditions as needed
     
     $normalStyle = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER];
-    $cell2->addText(html2text($letter->fix_address), $normalStyle);
-    $cell2->addText("Phone No: {$letter->user->contact}, Fax: {$letter->user->tel}", $normalStyle);
+    $cell2->addText(html2text($letter->user->address), $normalStyle,$paragraphStyle);
+    $cell2->addText("Phone No: {$letter->user->contact}, Fax: {$letter->user->tel}", $normalStyle,$paragraphStyle);
     // Date
-    $section->addText("Dated: the " . date('dS M, Y', strtotime($letter->date)), ['align' => 'right']);
+    $rightAlignStyle = [
+        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::END, // Right alignment
+        'bold' => true,
+    ];
     
+    // Add the date text with the right alignment style
+    $section->addText("Dated: the " . date('dS M, Y', strtotime($letter->date)), [], $rightAlignStyle);
+    $paragraphStyless = [
+      
+        'spaceAfter' => 0, 
+        'spaceBefore' => 0, 
+        'lineHeight' => 1.2, 
+    ];
     // To section
     $toTable = $section->addTable();
     $toTable->addRow();
@@ -640,11 +668,11 @@ public function downloadDoc(Letter $letter)
     $toCell1->addText('To,', ['bold' => true]);
     $toCell2 = $toTable->addCell(9000);
     foreach ($letter->designations as $toLetter) {
-        $toCell2->addText($toLetter->designation, ['bold' => true]);
-        $toCell2->addText($toLetter->department);
-        $toCell2->addText($toLetter->address);
+        $toCell2->addText($toLetter->designation, ['bold' => true],$paragraphStyless);
+        $toCell2->addText($toLetter->department,[],$paragraphStyless);
+        $toCell2->addText($toLetter->address,[],$paragraphStyless);
         if (!empty($toLetter->contact)) {
-            $toCell2->addText($toLetter->contact);
+            $toCell2->addText($toLetter->contact,[],$paragraphStyless);
         }
         $toCell2->addTextBreak();
     }
@@ -659,32 +687,62 @@ public function downloadDoc(Letter $letter)
     
     // Main content
     // $textrun = $section->addTextRun();
+    // $indentStyle = [
+    //     'indentation' => ['left' => 720], // Set left indentation (720 twips = 0.5 inch)
+    // ];
     $plainText = html2text($letter->draft_para);
 
     // Split the text into paragraphs
     $paragraphs = explode("\n\n", $plainText);
     
-    foreach ($paragraphs as $paragraph) {
-        $section->addText($paragraph, ['indent' => 7]);
-        $section->addTextBreak();
+    
+foreach ($paragraphs as $paragraph) {
+    // Trim the paragraph to remove any leading/trailing whitespace
+    $paragraph = trim($paragraph);
+    
+    // Skip empty paragraphs
+    if (empty($paragraph)) {
+        continue;
     }
+    
+    // Add each paragraph with indentation for the first line
+    $section->addText($paragraph, null, [
+        'indentation' => [
+            'firstLine' => 830, // 0.5 inch indentation (720 twips)
+        ],
+        'spacing' => [
+            'after' => 1, // No extra spacing after the paragraph
+        ],
+    ]);
+    
+    // Add a line break after each paragraph
+    $section->addTextBreak(1, null, ['spacing' => ['after' => 0]]);
+}
     
     // Signature and QR code
     $signatureTable = $section->addTable();
     $signatureTable->addRow();
     $qrCell = $signatureTable->addCell(5000);
     $qrCell->addImage(storage_path('app/public/' . $letter->qr_code), [
-        'width' => 90,
-        'height' => 90,
+        'width' => 50,
+        'height' => 50,
     ]);
     
+    $centerAlignStyle = [
+        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, // Center alignment
+        'spaceAfter' => 0, 
+         'spaceBefore' => 0, 
+         'lineHeight' => 1.2, 
+    ];
+    
+    // Add content to the signing authority cell with center alignment
     $signCell = $signatureTable->addCell(5000);
     foreach ($letter->signingAuthorities as $authority) {
-        $signCell->addText($authority->name, ['bold' => true]);
-        $signCell->addText($authority->designation);
-        $signCell->addText("For {$authority->department}");
-        $signCell->addText('0301-2255945');
-        $signCell->addTextBreak();
+        $signCell->addText($authority->name, ['bold' => true], $centerAlignStyle); // Name with bold and center alignment
+        $signCell->addText($authority->designation, [], $centerAlignStyle); // Designation with center alignment
+        $signCell->addText("For {$authority->department}", [], $centerAlignStyle); // Department with center alignment
+        $signCell->addText('0301-2255945', [], $centerAlignStyle); // Phone number with center alignment
+        $signCell->addTextBreak(); // Line break
     }
     
     // Forwarded copies
@@ -698,7 +756,7 @@ public function downloadDoc(Letter $letter)
     
     // Save and download
     $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-    $fileName = 'letter_' . $letter->id . '.docx';
+    $fileName = 'letter_' . $letter->letter_no. '.docx';
     $tempFile = tempnam(sys_get_temp_dir(), $fileName);
     $objWriter->save($tempFile);
     

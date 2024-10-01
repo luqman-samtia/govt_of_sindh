@@ -261,7 +261,7 @@ $(document).ready(function() {
                                      url = "{{ route('Form.download.pdf', ':id') }}".replace(':id', letterId);
                                  } else if (fileType === 'doc') {
                                      // Set the URL for the DOC route
-                                     url = "{{ route('Form.download.pdf', ':id') }}".replace(':id', letterId);
+                                     url = "{{ route('letter.download.doc', ':id') }}".replace(':id', letterId);
                                  }
 
                                  // Redirect to the appropriate URL for the download

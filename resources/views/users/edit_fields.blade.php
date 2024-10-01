@@ -33,6 +33,12 @@
         </div>
     </div>
     <div class="col-lg-6">
+        <div class="mb-5">
+            <label for="letter_no" class="form-label required mb-3">Letter No:</label>
+            <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$user->letter_no}}" placeholder="Edit Letter No" name="letter_no" required>
+        </div>
+    </div>
+    <div class="col-lg-6">
         <div class="class="mb-5">
             <label class="form-label required mb-3" for="grade">Grade:</label>
             <input type="text" id="grade" class="form-control form-control-solid" value="{{$user->grade}}" placeholder="Enter District" name="grade" required>
