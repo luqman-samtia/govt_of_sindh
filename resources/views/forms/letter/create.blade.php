@@ -4,7 +4,7 @@
 @endsection
 
 @section('content')
-<script src="//cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
 
 
 
@@ -226,30 +226,34 @@
     </script>
 @endif --}}
 <script>
+   
     var fieldCounter = 0;
     var fieldCounterss = 0;
-    const originalConsoleWarn = console.warn;
-        console.warn = function(message) {
-            // Suppress the CKEditor upgrade warning
-            if (message.includes('This CKEditor 4.22.1 version is not secure. Consider upgrading to the latest one, 4.25.0-lts.')) {
-                return;
-            }
-            originalConsoleWarn.apply(console, arguments);
-        };
+    
 
-        // CKEditor initialization
-        CKEDITOR.replace('editor', {
-            height: 100
-        });
+    
+  
+        
+        // Wait for the content to be inserted, then initialize CKEditor
+        if ($('#editor').length) {
+            CKEDITOR.replace('editor', {
+                height: 100 // Adjust height as needed
+            });
+        }
 
-        // Restore console.warn after CKEditor initialization
-        setTimeout(function() {
-            console.warn = originalConsoleWarn;
-        }, 500);
+        // Reload the page after a brief delay to ensure CKEditor is loaded
+      
 
+//     function refreshCreateLetter() {
+//     // Add a timestamp or random number to the URL to force a refresh
+//     const url = window.location.href.split('?')[0]; // Get the base URL
+//     window.location.href = url + '?refresh=' + new Date().getTime(); // Reload the page with a timestamp
+// }
 
-
-
+// $(document).ready(function() {
+    // Initialize CKEditor on page load
+    
+// });
     function addRecipient(){
         // document.getElementById('add-field').addEventListener('click', function() {
             fieldCounter++;
@@ -348,4 +352,8 @@
         field.remove(); // Remove the row
     }
 }
+
+if (performance.navigation.type != performance.navigation.TYPE_RELOAD) {
+        location.reload();
+    }
 </script>

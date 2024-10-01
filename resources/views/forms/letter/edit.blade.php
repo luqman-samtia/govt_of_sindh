@@ -35,7 +35,7 @@
                     <div class="col-lg-3 col-md-3 col-sm-4">
                         <div class="mb-5">
                             {{-- <label for="date" class="form-label required mb-3">Date</label> --}}
-                            <input type="text" id="date" value="{{date(Auth::user()->date)}}"  class="form-control form-control-solid" placeholder="Date" name="date" readonly>
+                            <input type="text" id="date" value="{{now()->format('F d, Y')}}"  class="form-control form-control-solid" placeholder="Date" name="date" readonly>
                         </div>
                     </div>
                 </div>
@@ -192,10 +192,10 @@
         </div>
     </div>
 </div>
-
+{{--  --}}
                 <div class="col-md-12" style="text-align: center;">
                     <a id="gos_bg_color" href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
-                    <a href="" onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')" id="gos_bg_color" type="button"   class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
+                    <a href=""  id="gos_bg_color" type="button" onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
                     <button id="gos_bg_color" type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
                     <button id="gos_bg_color"  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
 

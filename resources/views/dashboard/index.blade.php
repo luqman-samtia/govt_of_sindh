@@ -167,8 +167,10 @@
                             <div class="row">
                                 <div class="col-md-6 col-lg-6 col-xl-6">
                                     <h4>Create Letter</h4>
-                                   <a id="gos_bg_color" style="width: 9.563rem !important"  href="{{route('forms.letter.form.create')}}" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0"
-
+                                    <a id="gos_bg_color" style="width: 9.563rem !important" 
+                                    href="#" 
+                                    onclick="createLetter(event)"
+                                    class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0"
                                     >
                                     <span data-bs-toggle="tooltip" data-bs-placement="top" >
                                         <i class="fas fa-plus"></i>
@@ -211,4 +213,13 @@
     </div>
     {{-- {{ Form::hidden('currency', getCurrencySymbol(), ['id' => 'currency']) }} --}}
     {{-- {{ Form::hidden('currency_position', currencyPosition(), ['id' => 'currency_position']) }} --}}
+    <script>
+     function createLetter(event) {
+    event.preventDefault(); // Prevent default anchor behavior
+    window.location.href = "{{ route('forms.letter.form.create') }}";
+    
+            // location.reload();
+   
+}
+    </script>
 @endsection

@@ -33,7 +33,28 @@ use PhpOffice\PhpWord\Element\Cell;
 use PhpOffice\PhpWord\Style\Font;
 // use PhpOffice\PhpWord\Shared\Html;
 
-
+function html2text($html) {
+    // Replace <br> and <p> tags with newlines
+    $text = preg_replace('/<br\s*\/?>/i', "\n", $html);
+    $text = preg_replace('/<\/p>/i', "\n\n", $text);
+    
+    // Convert <b>, <strong>, <i>, <em>, <u> to their plain text equivalents
+    $text = preg_replace('/<(b|strong)>(.*?)<\/(b|strong)>/i', '*$2*', $text);
+    $text = preg_replace('/<(i|em)>(.*?)<\/(i|em)>/i', '_$2_', $text);
+    $text = preg_replace('/<u>(.*?)<\/u>/i', '$1', $text);
+    
+    // Remove all remaining HTML tags
+    $text = strip_tags($text);
+    
+    // Decode HTML entities
+    $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    
+    // Remove extra whitespace
+    $text = preg_replace('/\s+/', ' ', $text);
+    $text = trim($text);
+    
+    return $text;
+}
 
 
 
@@ -102,7 +123,7 @@ class FormController extends Controller
     }
     public function total_draft_letter(Letter $letter){
         $user = Auth::user()->id;
-        $users_form = Letter::where('user_id', $user)->get();
+        $users_form = Letter::where(['user_id'=>$user,'is_submitted'=>1])->get();
         $draft = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
 
         if ($draft !== null && $draft->isNotEmpty()) {
@@ -120,7 +141,7 @@ class FormController extends Controller
             $total_letters = 0;
         }
         $user = Auth::user()->id;
-        $letters = Letter::where(['user_id'=>$user,'is_submitted'=>1])->orderBy('id', 'desc')->get();
+        $letters = Letter::where(['user_id'=>$user,'is_submitted'=>0])->orderBy('id', 'desc')->get();
         return view('forms.letter.single_draft',compact('letters','total_letters','total_drafts'));
     }
     // for super admin
@@ -164,7 +185,11 @@ class FormController extends Controller
             // Redirect to profile update page if profile is incomplete
             return redirect()->route('admin.dashboard')->with('error', 'Please complete your profile before creating a letter.');
         }
-        return view('forms.letter.create',compact('newLetterNo'));
+        // return view('forms.letter.create',compact('newLetterNo'));
+        return response()->view('forms.letter.create',compact('newLetterNo'))
+    ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+    ->header('Pragma', 'no-cache')
+    ->header('Expires', '0');
     }
     public function letter_store(Request $request){
         // Validate incoming request
@@ -555,6 +580,10 @@ public function checkDownloadRoute(Letter $letter)
     }
 }
 
+
+
+
+
 public function downloadDoc(Letter $letter)
 {
     $letter = Letter::with(['user', 'designations', 'signingAuthorities', 'forwardedCopies'])->findOrFail($letter->id);
@@ -563,18 +592,32 @@ public function downloadDoc(Letter $letter)
     $section = $phpWord->addSection();
     
     // Header table
-    $table = $section->addTable(['width' => 100 * 50]);
+    // $table = $section->addTable();
+    // $table->addRow();
+    
+    $table = $section->addTable([
+        'width' => 100 * 50,
+        'unit' => 'pct',
+        'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::START
+    ]);
     $table->addRow();
     
-    $cell1 = $table->addCell(1000);
+    // Logo cell (left side)
+    $cell1 = $table->addCell(2000); // Adjust width as needed
     $cell1->addImage(storage_path('app/public/qr-codes/download.png'), [
-        'width' => 200,
-        'height' => 100,
+        'width' => 100,
+        'height' => 50,
+        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::START
     ]);
     
-    $cell2 = $table->addCell(9000);
-    $headerStyle = ['bold' => true, 'size' => 14, 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER];
-    $cell2->addText($letter->letter_no, $headerStyle);
+    // Content cell (right side)
+    $cell2 = $table->addCell(8000); // Adjust width as needed
+    $headerStyle = [
+        'bold' => true,
+        'size' => 14,
+        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
+    ];
+    $cell2->addText(html2text($letter->letter_no), $headerStyle);
     $cell2->addText('GOVERNMENT OF SINDH', $headerStyle);
     $cell2->addText('ANTI-CORRUPTION ESTABLISHMENT', $headerStyle);
     
@@ -582,29 +625,24 @@ public function downloadDoc(Letter $letter)
         $cell2->addText('Chairman Office', $headerStyle);
     } elseif (strtolower($letter->user->designation) == 'director') {
         $cell2->addText('HEAD QUATOR', $headerStyle);
-    } elseif (strtolower($letter->user->designation) == 'deputy director') {
-        $cell2->addText(ucwords($letter->head_title), $headerStyle);
-    } elseif (in_array(strtolower($letter->user->designation), ['assistant director', 'circle officer', 'inspector', 'sub inspector'])) {
-        $cell2->addText('Office Of The Circle Officer', $headerStyle);
-        $cell2->addText($letter->head_title, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
-    }
+    } // Add other conditions as needed
     
-    $cell2->addText($letter->fix_address, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
-    $cell2->addText("Phone No: {$letter->user->contact}, Fax: {$letter->user->tel}", ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
-    
+    $normalStyle = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER];
+    $cell2->addText(html2text($letter->fix_address), $normalStyle);
+    $cell2->addText("Phone No: {$letter->user->contact}, Fax: {$letter->user->tel}", $normalStyle);
     // Date
-    $section->addText("Dated: the " . date('dS M, Y', strtotime($letter->date)), ['align' => 'right', 'bold' => true]);
+    $section->addText("Dated: the " . date('dS M, Y', strtotime($letter->date)), ['align' => 'right']);
     
     // To section
-    $toTable = $section->addTable(['width' => 100 * 50]);
+    $toTable = $section->addTable();
     $toTable->addRow();
     $toCell1 = $toTable->addCell(1000);
     $toCell1->addText('To,', ['bold' => true]);
     $toCell2 = $toTable->addCell(9000);
     foreach ($letter->designations as $toLetter) {
-        $toCell2->addText($toLetter->designation . ',', ['bold' => true]);
-        $toCell2->addText($toLetter->department . ',');
-        $toCell2->addText($toLetter->address . ',');
+        $toCell2->addText($toLetter->designation, ['bold' => true]);
+        $toCell2->addText($toLetter->department);
+        $toCell2->addText($toLetter->address);
         if (!empty($toLetter->contact)) {
             $toCell2->addText($toLetter->contact);
         }
@@ -612,7 +650,7 @@ public function downloadDoc(Letter $letter)
     }
     
     // Subject
-    $subjectTable = $section->addTable(['width' => 100 * 50]);
+    $subjectTable = $section->addTable();
     $subjectTable->addRow();
     $subjectCell1 = $subjectTable->addCell(1000);
     $subjectCell1->addText('Subject:', ['bold' => true]);
@@ -620,25 +658,33 @@ public function downloadDoc(Letter $letter)
     $subjectCell2->addText(strtoupper($letter->subject), ['bold' => true, 'underline' => 'single']);
     
     // Main content
-    $textrun = $section->addTextRun(['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::BOTH]);
-    $textrun->addText($letter->draft_para, ['indent' => 7]);
+    // $textrun = $section->addTextRun();
+    $plainText = html2text($letter->draft_para);
+
+    // Split the text into paragraphs
+    $paragraphs = explode("\n\n", $plainText);
+    
+    foreach ($paragraphs as $paragraph) {
+        $section->addText($paragraph, ['indent' => 7]);
+        $section->addTextBreak();
+    }
     
     // Signature and QR code
-    $signatureTable = $section->addTable(['width' => 100 * 50]);
+    $signatureTable = $section->addTable();
     $signatureTable->addRow();
     $qrCell = $signatureTable->addCell(5000);
     $qrCell->addImage(storage_path('app/public/' . $letter->qr_code), [
         'width' => 90,
         'height' => 90,
-        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::LEFT,
     ]);
     
     $signCell = $signatureTable->addCell(5000);
     foreach ($letter->signingAuthorities as $authority) {
-        $signCell->addText($authority->name, ['bold' => true, 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::RIGHT]);
-        $signCell->addText($authority->designation, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::RIGHT]);
-        $signCell->addText("For {$authority->department}", ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::RIGHT]);
-        $signCell->addText('0301-2255945', ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::RIGHT]);
+        $signCell->addText($authority->name, ['bold' => true]);
+        $signCell->addText($authority->designation);
+        $signCell->addText("For {$authority->department}");
+        $signCell->addText('0301-2255945');
+        $signCell->addTextBreak();
     }
     
     // Forwarded copies
@@ -652,12 +698,15 @@ public function downloadDoc(Letter $letter)
     
     // Save and download
     $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-    $fileName = 'letter_' . $letter->letter_no . '.docx';
+    $fileName = 'letter_' . $letter->id . '.docx';
     $tempFile = tempnam(sys_get_temp_dir(), $fileName);
     $objWriter->save($tempFile);
     
     return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
 }
+
+
+
 public function uploadSignedLetter(Request $request, Letter $letter)
 {
     $request->validate([
