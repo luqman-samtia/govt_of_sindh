@@ -41,7 +41,7 @@ class OrderController extends Controller
 
     // $lastLetter = Letter::latest('id')->first();
 
-    $prefix = $user->letter_no; // Assuming this field exists in the user table
+    $prefix = $user->order_no; // Assuming this field exists in the user table
 
     // Fetch the latest letter for this user based on their prefix
     $lastLetter = Order::where('letter_no', 'LIKE', "{$prefix}%")
@@ -100,7 +100,7 @@ class OrderController extends Controller
          // Get the last inserted letter to increment the letter number
     // $lastLetter = Letter::latest('id')->first();
     $user = auth()->user();
-    $prefix = $user->letter_no; // Assuming this field exists in the user table
+    $prefix = $user->order_no; // Assuming this field exists in the user table
 
     // Fetch the latest letter for this user based on their prefix
     $lastLetter = Order::where('letter_no', 'LIKE', "{$prefix}%")
