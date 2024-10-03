@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('order_to_letters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('letter_id')->constrained('orders')->onDelete('cascade');
+            $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->string('designation');
             $table->string('department');
             $table->string('address');
