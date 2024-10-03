@@ -37,6 +37,8 @@ class DashboardController extends AppBaseController
         $user = Auth::user()->id;
         $users_form = Letter::where(['user_id'=>$user,'is_submitted'=>1])->get();
         $draft = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
+        $users_draft_order = Order::where(['user_id'=>$user,'is_submitted'=>0])->get();
+
 
         if ($draft !== null && $draft->isNotEmpty()) {
             $total_drafts = $draft->count();
@@ -54,7 +56,7 @@ class DashboardController extends AppBaseController
         }
         $order = Order::where(['user_id'=>$user,'is_submitted'=>1])->get();
 
-        return view('dashboard.index',compact('total_letters','total_drafts','order'))->with($dashboardData);
+        return view('dashboard.index',compact('total_letters','total_drafts','order','users_draft_order'))->with($dashboardData);
     }
 
     public function SuperAdminDashboardData(): \Illuminate\View\View

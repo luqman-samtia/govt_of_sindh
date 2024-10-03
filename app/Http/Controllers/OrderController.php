@@ -459,6 +459,8 @@ public function downloadSignedOrder(Order $letter)
             $users_form = Letter::where(['user_id'=>$user,'is_submitted'=>1])->get();
             $users_order = Order::where(['user_id'=>$user,'is_submitted'=>1])->get();
             $draft = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
+            $users_draft_order = Order::where(['user_id'=>$user,'is_submitted'=>0])->get();
+
 
             if ($draft !== null && $draft->isNotEmpty()) {
                 $total_drafts = $draft->count();
@@ -476,7 +478,7 @@ public function downloadSignedOrder(Order $letter)
             }
             $user = Auth::user()->id;
             $letters = Order::where(['user_id'=>$user,'is_submitted'=>1])->orderBy('id', 'desc')->get();
-            return view('forms.order.single-order',compact('letters','total_letters','total_drafts','users_order'));
+            return view('forms.order.single-order',compact('letters','total_letters','total_drafts','users_order','users_draft_order'));
         }
 
         public function total_draft_order(Order $letter){
@@ -485,6 +487,8 @@ public function downloadSignedOrder(Order $letter)
             $draft = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
             $draft_order = Order::where(['user_id'=>$user,'is_submitted'=>0])->get();
             $users_order = Order::where(['user_id'=>$user,'is_submitted'=>1])->get();
+            $users_draft_order = Order::where(['user_id'=>$user,'is_submitted'=>0])->get();
+
 
             if ($draft !== null && $draft->isNotEmpty()) {
                 $total_drafts = $draft->count();
@@ -502,7 +506,7 @@ public function downloadSignedOrder(Order $letter)
             }
             $user = Auth::user()->id;
             $letters = Order::where(['user_id'=>$user,'is_submitted'=>0])->orderBy('id', 'desc')->get();
-            return view('forms.order.draft-order',compact('letters','total_letters','total_drafts','users_order','draft_order'));
+            return view('forms.order.draft-order',compact('letters','total_letters','total_drafts','users_order','draft_order','users_draft_order'));
         }
 
 }

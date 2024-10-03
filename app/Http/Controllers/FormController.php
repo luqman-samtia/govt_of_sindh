@@ -104,6 +104,7 @@ class FormController extends Controller
         $users_form = Letter::where(['user_id'=>$user,'is_submitted'=>1])->get();
         $draft = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
         $users_order = Order::where(['user_id'=>$user,'is_submitted'=>1])->get();
+        $users_draft_order = Order::where(['user_id'=>$user,'is_submitted'=>0])->get();
 
         if ($draft !== null && $draft->isNotEmpty()) {
             $total_drafts = $draft->count();
@@ -121,7 +122,7 @@ class FormController extends Controller
         }
         $user = Auth::user()->id;
         $letters = Letter::where(['user_id'=>$user,'is_submitted'=>1])->orderBy('id', 'desc')->get();
-        return view('forms.letter.single',compact('letters','total_letters','total_drafts','users_order'));
+        return view('forms.letter.single',compact('letters','total_letters','total_drafts','users_order','users_draft_order'));
     }
     public function total_draft_letter(Letter $letter){
         $user = Auth::user()->id;
@@ -129,6 +130,8 @@ class FormController extends Controller
         $draft = Letter::where(['user_id'=>$user,'is_submitted'=>0])->get();
         $draft_order = Order::where(['user_id'=>$user,'is_submitted'=>0])->get();
         $users_order = Order::where(['user_id'=>$user,'is_submitted'=>1])->get();
+        $users_draft_order = Order::where(['user_id'=>$user,'is_submitted'=>0])->get();
+
 
         if ($draft !== null && $draft->isNotEmpty()) {
             $total_drafts = $draft->count();
@@ -146,7 +149,7 @@ class FormController extends Controller
         }
         $user = Auth::user()->id;
         $letters = Letter::where(['user_id'=>$user,'is_submitted'=>0])->orderBy('id', 'desc')->get();
-        return view('forms.letter.single_draft',compact('letters','total_letters','total_drafts','users_order','draft_order'));
+        return view('forms.letter.single_draft',compact('letters','total_letters','total_drafts','users_order','draft_order','users_draft_order'));
     }
     // for super admin
     public function getAllForms()
