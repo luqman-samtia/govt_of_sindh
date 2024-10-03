@@ -56,7 +56,7 @@ class UserRepository extends BaseRepository
             $user->district = $input['district'];
             $user->grade = $input['grade'];
             $user->zone = $input['zone'];
-            
+
             $words = explode(' ', $input['district']);
             $prefix = '';
             foreach ($words as $word) {
@@ -64,12 +64,13 @@ class UserRepository extends BaseRepository
                 if (strlen($prefix) == 2) break;
             }
             $prefix = substr($prefix . 'XX', 0, 2); // Ensure we always have 2 characters
-            
+
             $year = date('Y');
-            
+
             $letter_no = "{$prefix}-SND-{$year}-";
-            
+
             $user->letter_no = $letter_no;
+            $user->order_no = $letter_no;
             $user->sendEmailVerificationNotification();
             $user->save();
             DB::commit();
@@ -103,8 +104,9 @@ class UserRepository extends BaseRepository
             $user->district = $input['district'];
             $user->grade = $input['grade'];
             $user->letter_no = $input['letter_no'];
+            $user->order_no = $input['order_no'];
             $user->zone = $input['zone'];
-           
+
 
             if (isset($input['profile']) && ! empty($input['profile'])) {
                 $user->clearMediaCollection(User::PROFILE);

@@ -39,6 +39,12 @@
         </div>
     </div>
     <div class="col-lg-6">
+        <div class="mb-5">
+            <label for="order_no" class="form-label required mb-3">Order No:</label>
+            <input type="text" id="order_no" class="form-control form-control-solid" value="{{$user->order_no}}" placeholder="Edit Order No" name="order_no" required>
+        </div>
+    </div>
+    <div class="col-lg-6">
         <div class="class="mb-5">
             <label class="form-label required mb-3" for="grade">Grade:</label>
             <input type="text" id="grade" class="form-control form-control-solid" value="{{$user->grade}}" placeholder="Enter District" name="grade" required>

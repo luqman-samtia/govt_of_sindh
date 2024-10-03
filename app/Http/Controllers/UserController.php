@@ -27,6 +27,7 @@ use Laracasts\Flash\Flash;
 use Stancl\Tenancy\Database\TenantScope;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use App\Models\Letter;
+use App\Models\Order;
 
 
 class UserController extends AppBaseController
@@ -57,7 +58,9 @@ class UserController extends AppBaseController
             $q->where('name', Role::ROLE_ADMIN);
         })->with('roles')->select('users.*');
         $data['users'] = $query->count();
-        return view('users.index',compact('letters','data','users_form'));
+        $order = Order::withCount('user')->where('is_submitted',1)->get();
+
+        return view('users.index',compact('letters','data','users_form','order'));
     }
 
     public function create(): \Illuminate\View\View

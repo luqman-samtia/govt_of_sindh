@@ -78,6 +78,10 @@ class UserTable extends LivewireTableComponent
                 ->searchable()
                 ->sortable()
                 ->view('users.table-components.letter_no'),
+            Column::make(__('order_no'), 'order_no')  // Adding District column
+                ->searchable()
+                ->sortable()
+                ->view('users.table-components.order_no'),
 
             Column::make(__('grade'), 'grade')  // Adding Grade column
                 ->searchable()

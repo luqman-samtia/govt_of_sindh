@@ -34,6 +34,7 @@ use App\Http\Controllers\TaxController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\LetterController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -55,11 +56,16 @@ Route::middleware(['xss'])->group(function () {
     Route::post('letters/{letter}/update-qr-code', [FormController::class, 'updateQRCodeLink'])
     ->name('letters.update_qr_code');
     Route::get('/letters/{letter}/download-signed', [FormController::class, 'downloadSignedLetter'])->name('letters.download_signed');
+    Route::get('/orders/{letter}/download-signed', [OrderController::class, 'downloadSignedOrder'])->name('orders.download_signed');
 Route::get('/letter/{letter}/download-pdf', [FormController::class, 'downloadPdf'])->name('Form.download.pdf');
+Route::get('/order/{letter}/download-pdf', [OrderController::class, 'downloadPdf'])->name('Order.download.pdf');
 Route::get('/letters/{letter}/view', [FormController::class, 'view'])->name('letters.view');
+Route::get('/orders/{letter}/view', [OrderController::class, 'view'])->name('orders.view');
 
 Route::get('/letter/{letter}/generate-qr-code', [FormController::class, 'generateQRCode'])
 ->name('letters.generate_qr_code');
+Route::get('/order/{letter}/generate-qr-code', [OrderController::class, 'generateQRCode'])
+->name('orders.generate_qr_code');
 Route::get('/letter/{letter}/download-doc', [FormController::class, 'downloadDoc'])->name('letter.download.doc');
 
     // client reset password routes
@@ -124,6 +130,7 @@ Route::get('/letter/{letter}/download-doc', [FormController::class, 'downloadDoc
 
 
 Route::post('/upload-signed-letter/{letter}', [FormController::class, 'uploadSignedLetter'])->name('letter.upload');
+Route::post('/upload-signed-order/{letter}', [OrderController::class, 'uploadSignedOrder'])->name('order.upload');
 Route::delete('forms/letter-form/{letter}', [FormController::class, 'letter_destroy'])->name('forms.letter.destroy');
 
 
@@ -140,7 +147,7 @@ Route::prefix('admin')->middleware(['auth', 'xss', 'role:admin', 'check_subscrip
         'yearly-income-chart',
         [DashboardController::class, 'getYearlyIncomeChartData']
     )->name('yearly-income-chart');
-        //Form route
+        //Form route >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         Route::get('password', [FormController::class, 'password']);
         Route::get('total/letters', [FormController::class, 'total_letter'])->name('total_letter');
         Route::get('total/draft_letters', [FormController::class, 'total_draft_letter'])->name('total_draft_letter');
@@ -152,9 +159,20 @@ Route::prefix('admin')->middleware(['auth', 'xss', 'role:admin', 'check_subscrip
 
         Route::put('forms/letter-form/{letter}', [FormController::class, 'letter_update'])->name('forms.letter.update');
         // Route::get('/letters/{letter}/download-signed', [FormController::class, 'downloadSignedLetter'])->name('letters.download_signed');
-
-
         Route::get('pdf-download-redirect', [FormController::class,'downloadPdfRedirect'])->name('pdf.download.redirect');
+
+
+
+        // Order Routes >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        Route::get('forms/order-form', [OrderController::class, 'order_create'])->name('forms.order.form.create');
+        Route::post('forms/order-form', [OrderController::class, 'order_store'])->name('orders.store');
+        Route::get('forms/order-form/{letter}/edit', [OrderController::class, 'order_edit'])->name('forms.order.edit');
+        Route::put('forms/order-form/{letter}', [OrderController::class, 'order_update'])->name('forms.order.update');
+        Route::get('forms/order-form/{id}/preview', [OrderController::class, 'preview'])->name('order.preview');
+        Route::get('total/orders', [OrderController::class, 'total_order'])->name('total_order');
+        Route::get('total/draft_orders', [OrderController::class, 'total_draft_order'])->name('total_draft_order');
+
+
 
 
 

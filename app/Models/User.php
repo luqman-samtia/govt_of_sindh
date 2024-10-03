@@ -222,6 +222,10 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     {
         return $this->hasMany(Letter::class);
     }
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
     public static function generateLetterNumber($district)
     {
         $letter = self::firstOrCreate(['district' => $district]);
@@ -230,7 +234,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
         $prefix = strtoupper(substr($district, 0, 2)); // Get first two letters of district name
         $year = date('Y');
-        
+
         return "{$prefix}-DRF-{$year}-";
     }
 }

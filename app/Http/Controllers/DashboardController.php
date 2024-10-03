@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Laracasts\Flash\Flash;
 use App\Models\Letter;
+use App\Models\Order;
 use Auth;
 
 class DashboardController extends AppBaseController
@@ -51,7 +52,9 @@ class DashboardController extends AppBaseController
             // Handle the case where no letters were found
             $total_letters = 0;
         }
-        return view('dashboard.index',compact('total_letters','total_drafts'))->with($dashboardData);
+        $order = Order::where(['user_id'=>$user,'is_submitted'=>1])->get();
+
+        return view('dashboard.index',compact('total_letters','total_drafts','order'))->with($dashboardData);
     }
 
     public function SuperAdminDashboardData(): \Illuminate\View\View

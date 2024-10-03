@@ -34,9 +34,9 @@
                 onclick="event.preventDefault(); localStorage.clear();  document.getElementById('logout-form').submit();">
                 {{ __('messages.sign_out') }}</span>
         </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="post">
+        {{-- <form id="logout-form" action="{{ route('logout') }}" method="post">
             @csrf
-        </form>
+        </form> --}}
     </li>
 
     {{-- <li class="nav-item {{ Request::is('super-admin/users*') ? 'active' : '' }}">
