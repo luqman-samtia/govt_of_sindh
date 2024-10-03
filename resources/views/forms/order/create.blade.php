@@ -38,7 +38,7 @@
                     <div class="col-lg-3 col-md-3 col-sm-4">
                         <div class="mb-5">
                             {{-- <label for="letter_no" class="form-label required mb-3">Letter No</label> --}}
-                            <input type="text" id="letter_no" class="form-control form-control-solid" value="{{$newLetterNo}}" placeholder="Letter No" name="letter_no" readonly>
+                            <input type="text" id="letter_no" class="form-control form-control-solid" value="{{Auth::user()->order_no}}" placeholder="Letter No" name="letter_no" readonly>
                         </div>
                     </div>
                     <div class="col-lg-2 col-md-2 col-sm-4">
