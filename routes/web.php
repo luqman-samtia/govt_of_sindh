@@ -67,6 +67,7 @@ Route::get('/letter/{letter}/generate-qr-code', [FormController::class, 'generat
 Route::get('/order/{letter}/generate-qr-code', [OrderController::class, 'generateQRCode'])
 ->name('orders.generate_qr_code');
 Route::get('/letter/{letter}/download-doc', [FormController::class, 'downloadDoc'])->name('letter.download.doc');
+Route::get('/order/{letter}/download-doc', [FormController::class, 'downloadDocOrder'])->name('order.download.doc');
 
     // client reset password routes
     Route::get('/client-onboard/{id}', [ClientNewPasswordController::class, 'create'])->name('client.password.reset');
@@ -132,6 +133,7 @@ Route::get('/letter/{letter}/download-doc', [FormController::class, 'downloadDoc
 Route::post('/upload-signed-letter/{letter}', [FormController::class, 'uploadSignedLetter'])->name('letter.upload');
 Route::post('/upload-signed-order/{letter}', [OrderController::class, 'uploadSignedOrder'])->name('order.upload');
 Route::delete('forms/letter-form/{letter}', [FormController::class, 'letter_destroy'])->name('forms.letter.destroy');
+Route::delete('forms/order-form/{letter}', [FormController::class, 'order_destroy'])->name('forms.order.destroy');
 
 
 Route::prefix('admin')->middleware(['auth', 'xss', 'role:admin', 'check_subscription', 'checkUserStatus', 'multi_tenant', 'verified'])->group(function () {
@@ -378,17 +380,28 @@ Route::prefix('super-admin')->middleware(['auth', 'xss', 'role:super_admin'])->g
         [DashboardController::class, 'SuperAdminDashboardData']
     )->name('super.admin.dashboard');
     Route::get('/letters/search', [FormController::class, 'letter_search'])->name('letters.search');
+    Route::get('/orders/search', [FormController::class, 'order_search'])->name('orders.search');
     Route::get('/drafts/search', [FormController::class, 'draft_search'])->name('drafts.search');
+    Route::get('/drafts/search/order', [FormController::class, 'draft_search_order'])->name('drafts.search.order');
     Route::get('letter-form/{id}/preview', [FormController::class, 'preview'])->name('letter.previews');
+    Route::get('order-form/{id}/preview', [FormController::class, 'order_preview'])->name('order.previews');
 
     Route::get(
         '/total_letters',
         [FormController::class, 'SuperAdminTotalLetter']
     )->name('super.admin.total.letters');
     Route::get(
+        '/total_orders',
+        [FormController::class, 'SuperAdminTotalOrder']
+    )->name('super.admin.total.orders');
+    Route::get(
         '/total_draft_letters',
         [FormController::class, 'SuperAdminTotalDraftLetter']
     )->name('super.admin.total.draft.letters');
+    Route::get(
+        '/total_draft_orders',
+        [FormController::class, 'SuperAdminTotalDraftOrder']
+    )->name('super.admin.total.draft.orders');
 
     Route::get(
         'revenue-chart',

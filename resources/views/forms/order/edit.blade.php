@@ -42,61 +42,7 @@
 
             <div class="row">
 
-                {{-- <div class="col-lg-2">
-                    <div>
-                        <h4>To,</h4>
-                    </div>
-                </div> --}}
-                {{-- <div style="text-align:right;">
-                    <div class="">
-                     <button id="gos_bg_color" type="button" onclick="addRecipient()" id="add-recipient-btn" class="btn btn btn-icon btn-primary text-white dropdown-toggle hide-arrow ps-2 pe-0">
-                         <span data-bs-toggle="tooltip" data-bs-placement="top" >
-                             <i class="fas fa-plus"></i>
-                         </span>
-                  </button>
-                    </div>
-                </div> --}}
-            {{-- <div id="dynamic-fields">
-                @foreach($letter->designations as $index => $toLetter)
-                <div class="row" id="field-{{$index}}" style="display:flex;flex-direction:row;justify-content:center;align-items:center;">
 
-                <div class="col-lg-2">
-                    <div class="mb-5">
-                        <input type="text" id="designation-{{$index}}" class="form-control form-control-solid" placeholder="Designation" value="{{ $toLetter->designation }}" name="designation[{{$index}}][designation]">
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="mb-5">
-                        <input type="text" id="department-{{$index}}"  class="form-control form-control-solid" placeholder="Department" value="{{ $toLetter->department }}" name="designation[{{$index}}][department]" required>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="mb-5">
-                        <input type="text" id="address-{{$index}}" class="form-control form-control-solid" placeholder="Address" value="{{ $toLetter->address }}" name="designation[{{$index}}][address]" required>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="mb-5">
-                        <input type="text" id="contact-{{$index}}" class="form-control form-control-solid" placeholder="Contact" value="{{ $toLetter->contact }}" name="designation[{{$index}}][contact]" >
-                    </div>
-                </div>
-
-            </div>
-                @endforeach
-
-
-            </div> --}}
-
-                {{-- <hr>
-                <h4>Subject:</h4> --}}
-               {{-- <div class="row" style="display:flex:flex-direction:row">
-                <div class="col-lg-10 ">
-                    <div class="mb-5">
-                        <input type="text" id="subject" class="form-control form-control-solid" placeholder="Subject" value="{{$letter->subject}}" name="subject" required>
-                    </div>
-                </div>
-
-               </div> --}}
                 <hr>
                 <div class="col-lg-12">
                     <div class="mb-5" >
@@ -202,7 +148,7 @@
 
                 <div class="col-md-12" style="text-align: center;">
                     <a id="gos_bg_color" href="" onclick="downloadPdf('{{ route('Order.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
-                    <a href=""  id="gos_bg_color" type="button" onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
+                    <a href=""  id="gos_bg_color" type="button" onclick="downloadDOC('{{route('order.download.doc',$letter->id)}}')"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
                     <button id="gos_bg_color" type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
                     <button id="gos_bg_color"  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
 

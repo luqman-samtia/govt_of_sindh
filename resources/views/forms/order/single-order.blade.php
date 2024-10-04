@@ -284,7 +284,7 @@
                                                     url = "{{ route('orders.download_signed', ':id') }}".replace(':id', letterId);
                                                 } else if (fileType === 'doc') {
                                                     // Set the URL for the DOC route
-                                                    url = "{{ route('letter.download.doc', ':id') }}".replace(':id', letterId);
+                                                    url = "{{ route('order.download.doc', ':id') }}".replace(':id', letterId);
                                                 }
 
                                                 // Redirect to the appropriate URL for the download
@@ -298,7 +298,7 @@
                                                     url = "{{ route('orders.download_signed', ':id') }}".replace(':id', letterId);
                                                 } else if (fileType === 'doc') {
                                                     // Set the URL for the DOC route
-                                                    url = "{{ route('letter.download.doc', ':id') }}".replace(':id', letterId);
+                                                    url = "{{ route('order.download.doc', ':id') }}".replace(':id', letterId);
                                                 }
 
                                                 // Redirect to the appropriate URL for the download

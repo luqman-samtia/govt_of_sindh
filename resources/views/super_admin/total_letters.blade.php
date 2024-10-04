@@ -65,7 +65,7 @@
                         </a>
                     </div>
                     <div class="col-xxl-3 col-xl-3 col-md-3 col-sm-6 widget">
-                        <a href=""
+                        <a href="{{route('super.admin.total.orders')}}"
                            class="mb-xl-8 text-decoration-none">
 
                             <div
@@ -76,7 +76,7 @@
 
                                 </div>
                                 <div class="text-end text-white">
-                                    <h2 class="fs-1-xxl fw-bolder text-white">0</h2>
+                                    <h2 class="fs-1-xxl fw-bolder text-white">{{count($orders)}}</h2>
                                     <h3 class="mb-0 fs-4 fw-light">{{ __('Total Order Issued') }}</h3>
                                 </div>
 
@@ -94,7 +94,7 @@
                                     <i class="fas fa-file-invoice card-icon text-white"></i>
                                 </div>
                                 <div class="text-end text-white">
-                                    <h2 class="fs-1-xxl fw-bolder text-white">{{count($draft)}}</h2>
+                                    <h2 class="fs-1-xxl fw-bolder text-white">{{count($draft_order) + count($draft)}}</h2>
                                     <h3 class="mb-0 fs-4 fw-light">{{ __('Total Drafts') }}</h3>
                                 </div>
                             </div>

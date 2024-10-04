@@ -62,7 +62,9 @@ class DashboardController extends AppBaseController
     public function SuperAdminDashboardData(): \Illuminate\View\View
     {
         $users_form = Letter::withCount('user')->where('is_submitted',1)->get();
+        $users_order_form = Order::withCount('user')->where('is_submitted',1)->get();
         $draft = Letter::where('is_submitted',0)->get();
+        $order_draft = Order::where('is_submitted',0)->get();
         $query = User::whereHas('roles', function ($q) {
             $q->where('name', Role::ROLE_ADMIN);
         })->with('roles')->select('users.*');
@@ -76,7 +78,7 @@ class DashboardController extends AppBaseController
         $data['activeUserPlan'] = $subscriptionPlanCount['activePlansCount'];
         $data['deActiveUserPlan'] = $subscriptionPlanCount['deActivePlansCount'];
 
-        return view('super_admin.dashboard.index', compact('data','users_form','draft'));
+        return view('super_admin.dashboard.index', compact('data','users_form','draft','order_draft','users_order_form'));
     }
 
     public function paymentOverview()

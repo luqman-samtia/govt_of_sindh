@@ -67,12 +67,30 @@ class FormController extends Controller
         $totalLetters = Letter::count();
         $users_form = Letter::withCount('user')->get();
         $letters = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $orders = Order::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
         $draft = Letter::where('is_submitted',0)->get();
+        $draft_order = Order::where('is_submitted',0)->get();
         $query = User::whereHas('roles', function ($q) {
             $q->where('name', Role::ROLE_ADMIN);
         })->with('roles')->select('users.*');
         $data['users'] = $query->count();
-        return view('super_admin.total_letters',compact('letters','users_form','draft','data'));
+        return view('super_admin.total_letters',compact('letters','users_form','draft','data','draft_order','orders'));
+
+    }
+    public function SuperAdminTotalOrder()
+    {
+        $totalLetters = Letter::count();
+        $users_form = Letter::withCount('user')->get();
+        $letters = Order::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $letter = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $orders = Order::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $draft = Letter::where('is_submitted',0)->get();
+        $draft_order = Order::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+        return view('super_admin.total_orders',compact('letters','users_form','draft','data','draft_order','orders','letter'));
 
     }
     // search Letters
@@ -83,8 +101,13 @@ class FormController extends Controller
     {
         $totalLetters = Letter::count();
         $users_form = Letter::withCount('user')->where('is_submitted',1)->get();
+        $users_order_form = Order::withCount('user')->where('is_submitted',1)->get();
         // $letters = Letter::where('is_submitted',0)->get();
         $letters = Letter::with('user')
+            ->where('is_submitted', 0)
+            ->orderBy('id', 'desc')
+            ->get();
+        $orders_draft = Order::with('user')
             ->where('is_submitted', 0)
             ->orderBy('id', 'desc')
             ->get();
@@ -93,7 +116,29 @@ class FormController extends Controller
             $q->where('name', Role::ROLE_ADMIN);
         })->with('roles')->select('users.*');
         $data['users'] = $query->count();
-        return view('super_admin.total_draft',compact('letters','users_form','data'));
+        return view('super_admin.total_draft',compact('letters','users_form','data','users_order_form','orders_draft'));
+
+    }
+    public function SuperAdminTotalDraftOrder()
+    {
+        $totalLetters = Letter::count();
+        $users_form = Letter::withCount('user')->where('is_submitted',1)->get();
+        $users_order_form = Order::withCount('user')->where('is_submitted',1)->get();
+        // $letters = Letter::where('is_submitted',0)->get();
+        $letters = Order::with('user')
+            ->where('is_submitted', 0)
+            ->orderBy('id', 'desc')
+            ->get();
+        $orders_draft = Letter::with('user')
+            ->where('is_submitted', 0)
+            ->orderBy('id', 'desc')
+            ->get();
+        // $draft = Letter::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+        return view('super_admin.total_draft_order',compact('letters','users_form','data','users_order_form','orders_draft'));
 
     }
 
@@ -469,10 +514,10 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 
     public function letter_destroy(Letter $letter)
     {
-        $user = Auth::user();
-        if ($letter->is_submitted==1) {
-            return redirect()->back()->with('error', 'Submitted letters cannot be deleted.');
-        }
+        // $user = Auth::user();
+        // if ($letter->is_submitted==1) {
+        //     return redirect()->back()->with('error', 'Submitted letters cannot be deleted.');
+        // }
 
         DB::beginTransaction();
 
@@ -483,12 +528,33 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
             $letter->delete();
 
             DB::commit();
-            if($user->hasRole(Role::ROLE_ADMIN)){
+
                 return redirect()->back()->with('message', 'Letter deleted successfully');
 
-            }else{
-                return redirect()->back()->with('message', 'Letter deleted successfully');
-            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error deleting letter: ' . $e->getMessage());
+        }
+    }
+    public function order_destroy(Order $letter)
+    {
+        // $user = Auth::user();
+        // if ($letter->is_submitted==1) {
+        //     return redirect()->back()->with('error', 'Submitted letters cannot be deleted.');
+        // }
+
+        DB::beginTransaction();
+
+        try {
+            $letter->designations()->delete();
+            $letter->signingAuthorities()->delete();
+            $letter->forwardedCopies()->delete();
+            $letter->delete();
+
+            DB::commit();
+
+                return redirect()->back()->with('message', 'Order deleted successfully');
+
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Error deleting letter: ' . $e->getMessage());
@@ -559,7 +625,12 @@ if ($letter->is_submitted == 1 && file_exists($filePath)) {
 
     // Generate PDF from a view
     $pdf = PDF::loadView('forms.letter.pdf', compact('letter'));
-      $fileName = 'letter_' . $letter->letter_no . '.pdf';
+    $letter_no = $letter->letter_no;
+    if (strpos($letter_no, '/') !== false) {
+        // Replace all slashes with underscores
+        $letter_no = str_replace('/', '_', $letter_no);
+    }
+      $fileName = 'letter_' . $letter_no . '.pdf';
      // Define the file path where the PDF will be stored
      $filePath = storage_path('app/public/downloaded_letters/'. $fileName);
 
@@ -604,8 +675,17 @@ public function downloadDoc(Letter $letter)
     $letter = Letter::with(['user', 'designations', 'signingAuthorities', 'forwardedCopies'])->findOrFail($letter->id);
 
     $phpWord = new PhpWord();
+    $phpWord->setDefaultFontName('Times New Roman');
+    $phpWord->setDefaultFontSize(11);
+
     $section = $phpWord->addSection();
 
+
+    $fontStyle = [
+        'name' => 'Times New Roman',
+        'size' => 11,
+        'bold' => false
+    ];
     // Header table
     // $table = $section->addTable();
     // $table->addRow();
@@ -628,6 +708,7 @@ public function downloadDoc(Letter $letter)
     // Content cell (right side)
     $cell2 = $table->addCell(8000,[ 'text-align' => 'center']); // Adjust width as needed
     $headerStyle = [
+        'name' => 'Times New Roman',
         'bold' => true,
         'size' => 11,
         // 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
@@ -637,9 +718,10 @@ public function downloadDoc(Letter $letter)
         'spaceAfter' => 0,
         'spaceBefore' => 0,
         'lineHeight' => 1,
+        'name' => 'Times New Roman',
     ];
     // $cell2->getStyle()->setMargins(0, 0, 0, 10);
-    $cell2->addText(html2text($letter->letter_no), $headerStyle,$paragraphStyle);
+    // $cell2->addText(html2text($letter->letter_no), $headerStyle,$paragraphStyle);
     $cell2->addText('GOVERNMENT OF SINDH', $headerStyle,$paragraphStyle);
     $cell2->addText('ANTI-CORRUPTION ESTABLISHMENT', $headerStyle,$paragraphStyle);
 
@@ -647,21 +729,38 @@ public function downloadDoc(Letter $letter)
         $cell2->addText('Chairman Office', $headerStyle,$paragraphStyle);
     } elseif (strtolower($letter->user->designation) == 'director') {
         $cell2->addText('HEAD QUATOR', $headerStyle,$paragraphStyle);
-    } // Add other conditions as needed
-
-    $normalStyle = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER];
+    } else {
+        $cell2->addText($letter->head_title, $headerStyle, $paragraphStyle);
+    }
+    $normalStyle = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
+    'name' => 'Times New Roman',
+    ];
     $cell2->addText(html2text($letter->user->address), $normalStyle,$paragraphStyle);
     $cell2->addText("Phone No: {$letter->user->contact}, Fax: {$letter->user->tel}", $normalStyle,$paragraphStyle);
-    // Date
-    $rightAlignStyle = [
-        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::END, // Right alignment
-        'bold' => true,
-    ];
 
-    // Add the date text with the right alignment style
-    $section->addText("Dated: the " . date('dS M, Y', strtotime($letter->date)), [], $rightAlignStyle);
+$headerTable = $section->addTable([
+    'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::CENTER,
+]);
+
+$headerTable->addRow();
+$cell1 = $headerTable->addCell(5000); // Adjust the width as needed
+$cell2 = $headerTable->addCell(5000, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::END]);
+
+// Add letter_no in the left cell
+$headerStyle = [
+    'bold' => false,
+    'size' => 11,
+];
+$cell1->addText(html2text($letter->letter_no), $headerStyle);
+
+// Add the date in the right cell
+$rightAlignStyle = [
+    'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::END, // Right alignment for date
+    'bold' => true,
+];
+$cell2->addText("Dated: the " . date('dS M, Y', strtotime($letter->date)), ['bold'=>true], $rightAlignStyle);
     $paragraphStyless = [
-
+        'name' => 'Times New Roman',
         'spaceAfter' => 0,
         'spaceBefore' => 0,
         'lineHeight' => 1,
@@ -693,9 +792,9 @@ public function downloadDoc(Letter $letter)
     $subjectTable = $section->addTable();
     $subjectTable->addRow();
     $subjectCell1 = $subjectTable->addCell(1000);
-    $subjectCell1->addText('Subject:', ['bold' => true]);
+    $subjectCell1->addText('Subject:', ['bold' => true, 'name' => 'Times New Roman']);
     $subjectCell2 = $subjectTable->addCell(9000);
-    $subjectCell2->addText(strtoupper($letter->subject), ['bold' => true, 'underline' => 'single']);
+    $subjectCell2->addText(strtoupper($letter->subject), ['bold' => true, 'underline' => 'single', 'name' => 'Times New Roman']);
 
     // Main content
     // $textrun = $section->addTextRun();
@@ -720,10 +819,12 @@ foreach ($paragraphs as $paragraph) {
     // Add each paragraph with indentation for the first line
     $section->addText($paragraph, null, [
         'indentation' => [
-            'firstLine' => 720, // 0.5 inch indentation (720 twips)
+            'firstLine' => 920, // 0.5 inch indentation (720 twips)
+            'name' => 'Times New Roman',
         ],
         'spacing' => [
             'after' => 0, // No extra spacing after the paragraph
+            'name' => 'Times New Roman',
         ],
     ]);
 
@@ -745,6 +846,7 @@ foreach ($paragraphs as $paragraph) {
         'spaceAfter' => 0,
          'spaceBefore' => 0,
          'lineHeight' => 1,
+         'name' => 'Times New Roman',
     ];
 
     // Add content to the signing authority cell with center alignment
@@ -763,11 +865,13 @@ foreach ($paragraphs as $paragraph) {
         'listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER,
         'spaceAfter' => 0,
          'spaceBefore' => 0,
+         'name' => 'Times New Roman',
 
     ];
     $listStyleType = [
         'spaceAfter' => 0,
          'spaceBefore' => 0,
+         'name' => 'Times New Roman',
 
     ];
     foreach ($letter->forwardedCopies as $forward) {
@@ -775,8 +879,280 @@ foreach ($paragraphs as $paragraph) {
     }
 
     // Save and download
+    $letter_no = $letter->letter_no;
+    if (strpos($letter_no, '/') !== false) {
+        // Replace all slashes with underscores
+        $letter_no = str_replace('/', '_', $letter_no);
+    }
     $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-    $fileName = 'letter_' . $letter->letter_no. '.docx';
+    $fileName = 'letter_' . $letter_no. '.docx';
+    $tempFile = tempnam(sys_get_temp_dir(), $fileName);
+    $objWriter->save($tempFile);
+
+    return response()->download($tempFile, $fileName)->deleteFileAfterSend(true);
+}
+
+// Order Doc Download
+public function downloadDocOrder(Order $letter)
+{
+    $letter = Order::with(['user', 'designations', 'signingAuthorities', 'forwardedCopies'])->findOrFail($letter->id);
+
+    $phpWord = new PhpWord();
+    $phpWord->setDefaultFontName('Times New Roman');
+    $phpWord->setDefaultFontSize(11);
+
+    $section = $phpWord->addSection();
+
+
+    $fontStyle = [
+        'name' => 'Times New Roman',
+        'size' => 11,
+        'bold' => false
+    ];
+    // Header table
+    // $table = $section->addTable();
+    // $table->addRow();
+
+    $table = $section->addTable([
+        'width' => 100 * 50,
+        'unit' => 'pct',
+        'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::START
+    ]);
+    $table->addRow();
+
+    // Logo cell (left side)
+    $cell1 = $table->addCell(2000); // Adjust width as needed
+    $cell1->addImage(storage_path('app/public/qr-codes/download.png'), [
+        'width' => 100,
+        'height' => 50,
+        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::START
+    ]);
+
+    // Content cell (right side)
+    $cell2 = $table->addCell(8000,[ 'text-align' => 'center']); // Adjust width as needed
+    $headerStyle = [
+        'name' => 'Times New Roman',
+        'bold' => true,
+        'size' => 11,
+        // 'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER
+    ];
+    $paragraphStyle = [
+        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, // Center alignment
+        'spaceAfter' => 0,
+        'spaceBefore' => 0,
+        'lineHeight' => 1,
+        'name' => 'Times New Roman',
+    ];
+    // $cell2->getStyle()->setMargins(0, 0, 0, 10);
+    // $cell2->addText(html2text($letter->letter_no), $headerStyle,$paragraphStyle);
+    $cell2->addText('GOVERNMENT OF SINDH', $headerStyle,$paragraphStyle);
+    $cell2->addText('ANTI-CORRUPTION ESTABLISHMENT', $headerStyle,$paragraphStyle);
+
+    if (strtolower($letter->user->designation) == 'chairman') {
+        $cell2->addText('Chairman Office', $headerStyle,$paragraphStyle);
+    } elseif (strtolower($letter->user->designation) == 'director') {
+        $cell2->addText('HEAD QUATOR', $headerStyle,$paragraphStyle);
+    } else {
+        $cell2->addText($letter->head_title, $headerStyle, $paragraphStyle);
+    }
+    $normalStyle = ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
+    'name' => 'Times New Roman',
+    ];
+    $cell2->addText(html2text($letter->user->address), $normalStyle,$paragraphStyle);
+    $cell2->addText("Phone No: {$letter->user->contact}, Fax: {$letter->user->tel}", $normalStyle,$paragraphStyle);
+
+
+
+
+    $paragraphStyless = [
+        'name' => 'Times New Roman',
+        'spaceAfter' => 0,
+        'spaceBefore' => 0,
+        'lineHeight' => 1,
+    ];
+    $cellStyle = [
+        // 'valign' => 'center', // Vertical alignment (if needed)
+        'spaceBefore' => 200 // Adjust the margin top (in twips)
+    ];
+
+    // $toTable = $section->addTable();
+    // $toTable->addRow();
+    // $toCell1 = $toTable->addCell(1000);
+    // $toCell1->addText('To,', ['bold' => true]);
+
+    // $toCell2 = $toTable->addCell(9000);
+    // $toCell2->addTextBreak();
+
+    // foreach ($letter->designations as $toLetter) {
+    //     $toCell2->addText($toLetter->designation, ['bold' => true],$paragraphStyless);
+    //     $toCell2->addText($toLetter->department,[],$paragraphStyless);
+    //     $toCell2->addText($toLetter->address,[],$paragraphStyless);
+    //     if (!empty($toLetter->contact)) {
+    //         $toCell2->addText($toLetter->contact,[],$paragraphStyless);
+    //     }
+    //     $toCell2->addTextBreak();
+    // }
+
+    // Subject
+    $subjectTable = $section->addTable();
+    $subjectTable->addRow();
+    $subjectCell1 = $subjectTable->addCell(1000);
+    $subjectCell1->addText('ORDER:', ['bold' => true, 'name' => 'Times New Roman','underline' => 'single']);
+    // $subjectCell2 = $subjectTable->addCell(9000);
+    // $subjectCell2->addText(strtoupper($letter->subject), ['bold' => true, 'underline' => 'single', 'name' => 'Times New Roman']);
+
+    // Main content
+    // $textrun = $section->addTextRun();
+    // $indentStyle = [
+    //     'indentation' => ['left' => 720], // Set left indentation (720 twips = 0.5 inch)
+    // ];
+    $plainText = html2text($letter->draft_para);
+
+    // Split the text into paragraphs
+    $paragraphs = explode("\n\n", $plainText);
+
+
+foreach ($paragraphs as $paragraph) {
+    // Trim the paragraph to remove any leading/trailing whitespace
+    $paragraph = trim($paragraph);
+
+    // Skip empty paragraphs
+    if (empty($paragraph)) {
+        continue;
+    }
+
+    // Add each paragraph with indentation for the first line
+    $section->addText($paragraph, null, [
+        'indentation' => [
+            'firstLine' => 920, // 0.5 inch indentation (720 twips)
+            'name' => 'Times New Roman',
+        ],
+        'spacing' => [
+            'after' => 0, // No extra spacing after the paragraph
+            'name' => 'Times New Roman',
+        ],
+    ]);
+
+    // Add a line break after each paragraph
+    $section->addTextBreak(1, null, ['spacing' => ['after' => 0]]);
+}
+
+    // Signature and QR code
+    $signatureTable = $section->addTable();
+    $signatureTable->addRow();
+    $qrCell = $signatureTable->addCell(5000);
+    $qrCell->addImage(storage_path('app/public/' . $letter->qr_code), [
+        'width' => 50,
+        'height' => 50,
+    ]);
+
+    $centerAlignStyle = [
+        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER, // Center alignment
+        'spaceAfter' => 0,
+         'spaceBefore' => 0,
+         'lineHeight' => 1,
+         'name' => 'Times New Roman',
+    ];
+
+    // Add content to the signing authority cell with center alignment
+    $signCell = $signatureTable->addCell(5000);
+    foreach ($letter->signingAuthorities as $authority) {
+        $signCell->addText($authority->name, ['bold' => true], $centerAlignStyle); // Name with bold and center alignment
+        $signCell->addText($authority->designation, [], $centerAlignStyle); // Designation with center alignment
+        $signCell->addText("For {$authority->department}", [], $centerAlignStyle); // Department with center alignment
+        $signCell->addText('0301-2255945', [], $centerAlignStyle); // Phone number with center alignment
+        $signCell->addTextBreak(); // Line break
+    }
+       // for date and letter no
+        $headerTable = $section->addTable([
+            'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::CENTER,
+        ]);
+
+        $headerTable->addRow();
+        $cell1 = $headerTable->addCell(5000); // Adjust the width as needed
+        $cell2 = $headerTable->addCell(5000, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::END]);
+
+        // Add letter_no in the left cell
+        $headerStyle = [
+            'bold' => false,
+            'size' => 11,
+        ];
+        $cell1->addText(html2text($letter->letter_no), $headerStyle);
+
+        // Add the date in the right cell
+        $rightAlignStyle = [
+            'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::END, // Right alignment for date
+            'bold' => true,
+        ];
+        $cell2->addText("Dated: the " . date('dS M, Y', strtotime($letter->date)), ['bold'=>true], $rightAlignStyle);
+
+    // Forwarded copies
+    $section->addText('A copy is forwarded for similar compliance:-', ['bold' => true]);
+    $listStyle = [
+        'listType' => \PhpOffice\PhpWord\Style\ListItem::TYPE_NUMBER,
+        'spaceAfter' => 0,
+         'spaceBefore' => 0,
+         'name' => 'Times New Roman',
+
+    ];
+    $listStyleType = [
+        'spaceAfter' => 0,
+         'spaceBefore' => 0,
+         'name' => 'Times New Roman',
+
+    ];
+    foreach ($letter->forwardedCopies as $forward) {
+        $section->addListItem($forward->copy_forwarded, 0, null, $listStyle,$listStyleType);
+    }
+
+
+
+   // Create a table for the signature and signing authorities
+$signatureTable = $section->addTable();
+
+// Add a row to the table
+$signatureTable->addRow();
+
+// Add the first cell for the QR code (or empty column if no image is needed)
+$qrCell = $signatureTable->addCell(5000, ['valign' => 'center']); // Empty column (5000 width)
+
+// Leave this cell empty intentionally (no image or placeholder needed)
+// You can leave this line empty or add a comment for clarity:
+// $qrCell->addText(''); // If you want a truly empty column, omit this line
+
+// Add the second cell for signing authority details (centered)
+$signCell = $signatureTable->addCell(5000, ['valign' => 'center']); // Column for toLetter (5000 width)
+
+// Center the text in the second cell
+$centerAlignStyle = [
+    'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER,
+    'spaceAfter' => 0,
+    'spaceBefore' => 0,
+    'lineHeight' => 1,
+    'name' => 'Times New Roman',
+];
+
+// Add the signing authority details to the second column and center the content
+foreach ($letter->designations as $toLetter) {
+    $signCell->addText($toLetter->designation, ['bold' => true], $centerAlignStyle);
+    $signCell->addText($toLetter->department, [], $centerAlignStyle);
+    $signCell->addText($toLetter->address, [], $centerAlignStyle);
+    if (!empty($toLetter->contact)) {
+        $signCell->addText($toLetter->contact, [], $centerAlignStyle);
+    }
+    $signCell->addTextBreak(); // Add space between different designations
+}
+
+
+
+    // Save and download
+    $letter_no = $letter->letter_no;
+    if (strpos($letter_no, '/') !== false) {
+        // Replace all slashes with underscores
+        $letter_no = str_replace('/', '_', $letter_no);
+    }
+    $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
+    $fileName = 'letter_' . $letter_no. '.docx';
     $tempFile = tempnam(sys_get_temp_dir(), $fileName);
     $objWriter->save($tempFile);
 
@@ -793,9 +1169,14 @@ public function uploadSignedLetter(Request $request, Letter $letter)
     // app/public/
     if ($request->hasFile('signed_letter')) {
         $file = $request->file('signed_letter');
-        $filename = 'letter_' . $letter->letter_no . '.pdf';
+        $letter_no = $letter->letter_no;
+    if (strpos($letter_no, '/') !== false) {
+        // Replace all slashes with underscores
+        $letter_no = str_replace('/', '_', $letter_no);
+    }
+        $filename = 'letter_' . $letter_no . '.pdf';
         $path = 'signed_letters/';
-        $filePath = storage_path('app/public/signed_letters/letter_' . $letter->letter_no . '.pdf');
+        $filePath = storage_path('app/public/signed_letters/letter_' . $letter_no . '.pdf');
         $file->move(storage_path('app/public/'.$path ), $filename);
          // Calculate the hash of the uploaded file
         //  $uploadedFileHash = hash_file('sha256', $filePath);
@@ -879,6 +1260,57 @@ public function letter_search(Request $request)
 
     return view('super_admin.total_letters', compact('letters','data','users_form','totalLetters','draft'));
 }
+public function order_search(Request $request)
+{
+    $totalLetters = Order::count();
+        $users_form = Order::withCount('user')->get();
+        // $letters = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $draft = Order::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+    $query_search = $request->input('query');
+    $designation_search = $request->input('designation');
+    $district_search = $request->input('district');
+
+    $letters = Order::with(['user', 'designations'])  // Eager load 'user' and 'designations'
+    ->where('is_submitted', 1)
+    ->where(function($query) use ($query_search, $designation_search, $district_search) {
+        if ($query_search) {
+            $query->where('letter_no', 'LIKE', "%{$query_search}%")
+                ->orWhereHas('user', function($q) use ($query_search) {
+                    $q->where('first_name', 'LIKE', "%{$query_search}%");
+                });
+        }
+            if ($designation_search) {
+                $query->whereHas('designations', function($q) use ($designation_search) {
+                    $q->where('designation', 'LIKE', "%{$designation_search}%");
+                });
+            }
+            if ($district_search) {
+                $query->whereHas('user', function($q) use ($district_search) {
+                    $q->where('district', 'LIKE', "%{$district_search}%");
+                });
+            }
+        })
+        ->get();
+
+                    //  if ($request->ajax()) {
+                    //     return response()->json([
+                    //         'html' => view('super_admin.total_letters', compact('letters','data','users_form','totalLetters','draft'))->render() // Render only the table
+                    //     ]);
+                    // }
+                    if ($request->ajax()) {
+
+                        return view('super_admin.render_table_order_search', compact('letters'))->render();
+
+                    }
+
+
+    return view('super_admin.total_orders', compact('letters','data','users_form','totalLetters','draft'));
+}
+
 public function draft_search(Request $request)
 {
     $totalLetters = Letter::count();
@@ -930,6 +1362,57 @@ public function draft_search(Request $request)
     return view('super_admin.total_draft', compact('letters','data','users_form','totalLetters','draft'));
 }
 
+public function draft_search_order(Request $request)
+{
+    $totalLetters = Letter::count();
+        $users_form = Letter::withCount('user')->get();
+        // $letters = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $draft = Letter::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+    $query_search = $request->input('query');
+    $designation_search = $request->input('designation');
+    $district_search = $request->input('district');
+
+    $letters = Order::with(['user', 'designations'])  // Eager load 'user' and 'designations'
+    ->where('is_submitted', 0)
+    ->where(function($query) use ($query_search, $designation_search, $district_search) {
+        if ($query_search) {
+            $query->where('letter_no', 'LIKE', "%{$query_search}%")
+                ->orWhereHas('user', function($q) use ($query_search) {
+                    $q->where('first_name', 'LIKE', "%{$query_search}%");
+                });
+        }
+        if ($designation_search) {
+            $query->whereHas('designations', function($q) use ($designation_search) {
+                $q->where('designation', 'LIKE', "%{$designation_search}%");
+            });
+        }
+        if ($district_search) {
+            $query->whereHas('user', function($q) use ($district_search) {
+                $q->where('district', 'LIKE', "%{$district_search}%");
+            });
+        }
+    })
+    ->get();
+
+                    //  if ($request->ajax()) {
+                    //     return response()->json([
+                    //         'html' => view('super_admin.total_letters', compact('letters','data','users_form','totalLetters','draft'))->render() // Render only the table
+                    //     ]);
+                    // }
+                    if ($request->ajax()) {
+
+                        return view('super_admin.render_draft_search_order', compact('letters'))->render();
+
+                    }
+
+
+    return view('super_admin.total_draft_order', compact('letters','data','users_form','totalLetters','draft'));
+}
+
     public function downloadSignedLetter(Letter $letter)
     {
 // Check if the letter has a signed letter file
@@ -961,5 +1444,14 @@ public function draft_search(Request $request)
 
                 // Pass the letter data to a preview view
                 return view('forms.letter.preview', compact('letter'));
+            }
+            public function order_preview($id){
+                // Retrieve the letter by ID
+                $letter = Order::findOrFail($id);
+
+                $letter = $letter->load(['designations', 'signingAuthorities', 'forwardedCopies']);
+
+                // Pass the letter data to a preview view
+                return view('forms.order.preview', compact('letter'));
             }
 }

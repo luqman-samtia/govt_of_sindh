@@ -53,6 +53,9 @@ class UserController extends AppBaseController
         $letters = Letter::with('user')
             ->where('is_submitted', 0)
             ->get();
+        $draft_orders = Order::with('user')
+            ->where('is_submitted', 0)
+            ->get();
         // $draft = Letter::where('is_submitted',0)->get();
         $query = User::whereHas('roles', function ($q) {
             $q->where('name', Role::ROLE_ADMIN);
@@ -60,7 +63,7 @@ class UserController extends AppBaseController
         $data['users'] = $query->count();
         $order = Order::withCount('user')->where('is_submitted',1)->get();
 
-        return view('users.index',compact('letters','data','users_form','order'));
+        return view('users.index',compact('letters','data','users_form','order','draft_orders'));
     }
 
     public function create(): \Illuminate\View\View
