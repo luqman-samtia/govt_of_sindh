@@ -186,7 +186,7 @@
                                       var blob = new Blob([xhr.response], {type: 'application/pdf'});
                                       var link = document.createElement('a');
                                       link.href = window.URL.createObjectURL(blob);
-                                      link.download = 'order-' + '{{ $letter->letter_no }}' + '.pdf';
+                                      link.download = 'order_' + '{{ $letter->letter_no }}' + '.pdf';
                                       link.click();
 
                                     window.location.href = "{{ route('forms.order.edit', $letter->id) }}";
@@ -203,7 +203,7 @@
                                       var blob = new Blob([xhr.response], {type: 'application/pdf'});
                                       var link = document.createElement('a');
                                       link.href = window.URL.createObjectURL(blob);
-                                      link.download = 'letter-' + '{{ $letter->letter_no }}' + '.docx';
+                                      link.download = 'order_' + '{{ $letter->letter_no }}' + '.docx';
                                       link.click();
                                     //   fetch('/forms/letter-form/{{$letter->id}}/edit')
                                     //   .then(response => response.text())

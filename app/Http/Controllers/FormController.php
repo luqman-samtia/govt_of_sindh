@@ -975,29 +975,20 @@ public function downloadDocOrder(Order $letter)
         'spaceBefore' => 200 // Adjust the margin top (in twips)
     ];
 
-    // $toTable = $section->addTable();
-    // $toTable->addRow();
-    // $toCell1 = $toTable->addCell(1000);
-    // $toCell1->addText('To,', ['bold' => true]);
 
-    // $toCell2 = $toTable->addCell(9000);
-    // $toCell2->addTextBreak();
-
-    // foreach ($letter->designations as $toLetter) {
-    //     $toCell2->addText($toLetter->designation, ['bold' => true],$paragraphStyless);
-    //     $toCell2->addText($toLetter->department,[],$paragraphStyless);
-    //     $toCell2->addText($toLetter->address,[],$paragraphStyless);
-    //     if (!empty($toLetter->contact)) {
-    //         $toCell2->addText($toLetter->contact,[],$paragraphStyless);
-    //     }
-    //     $toCell2->addTextBreak();
-    // }
 
     // Subject
     $subjectTable = $section->addTable();
     $subjectTable->addRow();
     $subjectCell1 = $subjectTable->addCell(1000);
-    $subjectCell1->addText('ORDER:', ['bold' => true, 'name' => 'Times New Roman','underline' => 'single']);
+    $subjectCell1->addText('O R D E R',
+     ['bold' => true, 'name' => 'Times New Roman','underline' => 'single'],
+     [
+        'spaceBefore' => 1100, // Adds space before the text (value in twips, 300 = 0.2 inch)
+        'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::LEFT // Keeps the alignment to the left
+    ]
+
+    );
     // $subjectCell2 = $subjectTable->addCell(9000);
     // $subjectCell2->addText(strtoupper($letter->subject), ['bold' => true, 'underline' => 'single', 'name' => 'Times New Roman']);
 
@@ -1028,6 +1019,7 @@ foreach ($paragraphs as $paragraph) {
             'name' => 'Times New Roman',
         ],
         'spacing' => [
+            'alignment' => \PhpOffice\PhpWord\SimpleType\Jc::JUSTIFY,
             'after' => 0, // No extra spacing after the paragraph
             'name' => 'Times New Roman',
         ],
@@ -1060,7 +1052,7 @@ foreach ($paragraphs as $paragraph) {
         $signCell->addText($authority->name, ['bold' => true], $centerAlignStyle); // Name with bold and center alignment
         $signCell->addText($authority->designation, [], $centerAlignStyle); // Designation with center alignment
         $signCell->addText("For {$authority->department}", [], $centerAlignStyle); // Department with center alignment
-        $signCell->addText('0301-2255945', [], $centerAlignStyle); // Phone number with center alignment
+        $signCell->addText($authority->contact, [], $centerAlignStyle); // Phone number with center alignment
         $signCell->addTextBreak(); // Line break
     }
        // for date and letter no
@@ -1116,11 +1108,6 @@ $signatureTable->addRow();
 // Add the first cell for the QR code (or empty column if no image is needed)
 $qrCell = $signatureTable->addCell(5000, ['valign' => 'center']); // Empty column (5000 width)
 
-// Leave this cell empty intentionally (no image or placeholder needed)
-// You can leave this line empty or add a comment for clarity:
-// $qrCell->addText(''); // If you want a truly empty column, omit this line
-
-// Add the second cell for signing authority details (centered)
 $signCell = $signatureTable->addCell(5000, ['valign' => 'center']); // Column for toLetter (5000 width)
 
 // Center the text in the second cell
@@ -1152,7 +1139,7 @@ foreach ($letter->designations as $toLetter) {
         $letter_no = str_replace('/', '_', $letter_no);
     }
     $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
-    $fileName = 'letter_' . $letter_no. '.docx';
+    $fileName = 'order_' . $letter_no. '.docx';
     $tempFile = tempnam(sys_get_temp_dir(), $fileName);
     $objWriter->save($tempFile);
 

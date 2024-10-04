@@ -87,7 +87,7 @@
         <tr>
 
            <td style="">
-            <p style="font-weight: 700;text-align:start;text-decoration:underline;">Order</p>
+            <p style="font-weight: 700;text-align:start;text-decoration:underline;">O R D E R</p>
             </td>
 
 
