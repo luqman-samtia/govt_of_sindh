@@ -104,6 +104,7 @@
                             </div>
                             <div class="card-header pb-0 px-10">
                                 <a href="{{route('total_draft_order')}}" class="btn btn-danger mb-0">{{ __('Draft Orders') }}-{{count($draft_order)}}</a>
+                                <a style="margin-left:5px;" href="{{route('total_draft_letter')}}" class="btn btn-danger mb-0">{{ __('Draft Letters') }}-{{$total_drafts}}</a>
                             </div>
                         </div>
 
@@ -217,7 +218,7 @@
                                                 <button id="dropdown-toggle" class="btn btn-sm px-2 text-primary fs-3 py-2 dropdown-toggle"
                                                         type="button" id="downloadDropdown" data-bs-toggle="dropdown"
                                                         aria-expanded="false">
-                                                    <span class="badge bg-light-success fs-7 px-2">unsigned</span>
+                                                    <span class="badge bg-light-success fs-7 px-2">select</span>
 
                                                 </button>
                                                 <ul id="dropdown-menu"  class="dropdown-menu" aria-labelledby="downloadDropdown">

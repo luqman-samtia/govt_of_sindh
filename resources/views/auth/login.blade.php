@@ -18,9 +18,9 @@
         </div>
         <div class="bg-white rounded-15 shadow-md width-540 px-5 px-sm-7 py-10 mx-auto">
             <div class="text-center">
-                <h3 class="text-center px-10" style="padding-left:20px;padding-right:20px">ANTI-CORRUPTION ESTABLISHMENT GOVERNMENT OF SINDH</h3>
+                <h3 class="text-center px-10" style="padding-left:20px;padding-right:20px;color:#48B7A3">ANTI-CORRUPTION ESTABLISHMENT GOVERNMENT OF SINDH</h3>
             <a href="" class="text-center image mb-7 mb-sm-10 image-medium">
-                <img alt="Logo" class="text-center" src="{{asset('storage/qr-codes/download.jpeg') }}" class="text-center img-fluid object-contain">
+                <img alt="Logo" class="text-center" src="{{asset('storage/qr-codes/gos-logo-1.PNG') }}" class="text-center img-fluid object-contain">
             </a>
             </div>
             <h1 class="text-center mb-7">{{ __('messages.user.sign_in') }}</h1>
@@ -37,7 +37,7 @@
                         <label for="password" class="form-label">{{ __('messages.user.password').':' }}<span
                                     class="required"></span></label>
                         @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="link-info fs-6 text-decoration-none">
+                            <a href="{{ route('password.request') }}" class="link-info fs-6 text-decoration-none" style="color: #48B7A3;">
                                 {{ __('messages.user.forgot_your_password') }}
                             </a>
                         @endif
@@ -53,8 +53,8 @@
                     <input type="checkbox" class="form-check-input" id="remember_me" >
                     <label class="form-check-label" for="remember_me">{{ __('messages.user.remember_me') }}</label>
                 </div>
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-primary">{{ __('messages.user.login') }}</button>
+                <div class="d-grid" style="color: #48B7A3;">
+                    <button type="submit" class="btn btn-primary" style="background: #48B7A3;border:none;">{{ __('messages.user.login') }}</button>
                 </div>
                 {{-- <div class="d-flex align-items-center mb-10 mt-4">
                     <span class="text-gray-700 me-2">{{ __('messages.user.new_here') }}</span>

@@ -118,7 +118,7 @@
                 <button id="dropdown-toggle" class="btn btn-sm px-2 text-primary fs-3 py-2 dropdown-toggle"
                         type="button" id="downloadDropdown" data-bs-toggle="dropdown"
                         aria-expanded="false">
-                    <span class="badge bg-light-danger fs-7 px-2">signed</span>
+                    <span class="badge bg-light-danger fs-7 px-2">select</span>
 
                 </button>
                 <ul id="dropdown-menu" class="dropdown-menu" aria-labelledby="downloadDropdown">

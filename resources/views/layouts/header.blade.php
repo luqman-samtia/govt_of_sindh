@@ -137,7 +137,7 @@
         </li>
         <li class="px-xxl-3 px-2">
             <div class="dropdown custom-dropdown d-flex align-items-center py-4">
-                <button  class="btn dropdown-toggle hide-arrow p-0 position-relative" type="button"
+                {{-- <button  class="btn dropdown-toggle hide-arrow p-0 position-relative" type="button"
                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <i style="color: #48B7A3 !important;" class="fa-solid fa-bell text-primary fs-2"></i>
                     @if (count(getNotification()) != 0)
@@ -148,7 +148,7 @@
                             <span class="visually-hidden">unread messages</span>
                         </span>
                     @endif
-                </button>
+                </button> --}}
                 <div class="dropdown-menu py-0 my-2" aria-labelledby="dropdownMenuButton1">
                     <div class="text-start border-bottom py-4 px-7">
                         <h3 class="text-gray-900 mb-0">{{ __('messages.notification.notifications') }}</h3>

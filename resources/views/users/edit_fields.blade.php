@@ -74,35 +74,41 @@
     <div class="col-md-6 mb-5">
         <div class="fv-row">
             <div>
-                {{ Form::label('password',__('messages.client.password').':' ,['class' => 'form-label mb-3 ']) }}
+                {{ Form::label('password',__('messages.client.password').':' ,['class' => 'form-label mb-3 required']) }}
                 <div class="position-relative">
                     <input class="form-control form-control-solid"
-                           type="password" placeholder="{{__('messages.client.password')}}" name="password"
+                           type="password"  placeholder="{{__('messages.client.password')}}" name="password"
                            autocomplete="off"
-                           aria-label="Password" data-toggle="password" >
-                    <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600">
-                            <i class="bi bi-eye-slash-fill"></i>
+                           id="password"
+                           aria-label="Password" data-toggle="password" required>
+                    <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600" id="togglePassword2" >
+                        <i class="bi bi-eye-slash-fill" id="toggleIcon2"></i>
                     </span>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="col-md-6 mb-5">
         <div class="fv-row">
             <div>
-                {{ Form::label('password_confirmation',__('messages.client.confirm_password').':' ,['class' => 'form-label mb-3 ']) }}
+                {{ Form::label('password_confirmation', __('messages.client.confirm_password') . ':', ['class' => 'form-label mb-3 required']) }}
                 <div class="position-relative">
                     <input class="form-control form-control-solid"
                            type="password"
-                           placeholder="{{__('messages.client.confirm_password')}}" name="password_confirmation"
-                           autocomplete="off" aria-label="Password" data-toggle="password" >
-                    <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600">
-                           <i class="bi bi-eye-slash-fill"></i>
+                           id="password_confirmation"
+                           placeholder="{{ __('messages.client.confirm_password') }}"
+                           name="password_confirmation"
+                           autocomplete="off" aria-label="Password"
+                           required>
+                    <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600" id="togglePassword">
+                        <i class="bi bi-eye-slash-fill" id="toggleIcon"></i>
                     </span>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="mb-5" io-image-input="true">
         <label for="exampleInputImage" class="form-label">{{ __('messages.client.profile') }}:</label>
         <div class="d-block">
@@ -181,4 +187,23 @@
     if (window.location.pathname.includes('/edit')) {
     updateDistricts(); // This will prepopulate the district dropdown with the saved value
 }
+
+
+document.getElementById('togglePassword').addEventListener('click', function () {
+        const passwordField = document.getElementById('password_confirmation');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        toggleIcon.classList.toggle('bi-eye');
+        toggleIcon.classList.toggle('bi-eye-slash-fill');
+    });
+
+    document.getElementById('togglePassword2').addEventListener('click', function () {
+        const passwordField = document.getElementById('password');
+        const toggleIcon = document.getElementById('toggleIcon2');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        toggleIcon.classList.toggle('bi-eye');
+        toggleIcon.classList.toggle('bi-eye-slash-fill');
+    });
 </script>

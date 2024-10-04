@@ -111,7 +111,9 @@
                                         <h3 class="mb-0">{{ __('Total Draft Orders') }}</h3>
                                     </div>
                                     <div class="card-header pb-0 px-10">
-                                        <a href="{{route('super.admin.total.draft.letters')}}" class="btn btn-danger mb-0">{{ __('Draft Letters') }}-{{count($orders_draft)}}</a>
+                                        <a href="{{route('super.admin.total.draft.orders')}}" class="btn btn-danger mb-0">{{ __('Draft Orders') }}-{{count($letters)}}</a>
+
+                                        <a style="margin-left:5px;" href="{{route('super.admin.total.draft.letters')}}" class="btn btn-danger mb-0">{{ __('Draft Letters') }}-{{count($orders_draft)}}</a>
                                     </div>
                                 </div>
                                 <div class="ms-auto">

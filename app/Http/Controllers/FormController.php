@@ -929,7 +929,7 @@ public function downloadDocOrder(Order $letter)
     ]);
 
     // Content cell (right side)
-    $cell2 = $table->addCell(8000,[ 'text-align' => 'center']); // Adjust width as needed
+    $cell2 = $table->addCell(9000,[ 'text-align' => 'center']); // Adjust width as needed
     $headerStyle = [
         'name' => 'Times New Roman',
         'bold' => true,
@@ -1047,12 +1047,12 @@ foreach ($paragraphs as $paragraph) {
     ];
 
     // Add content to the signing authority cell with center alignment
-    $signCell = $signatureTable->addCell(5000);
+    $signCell = $signatureTable->addCell(6000);
     foreach ($letter->signingAuthorities as $authority) {
         $signCell->addText($authority->name, ['bold' => true], $centerAlignStyle); // Name with bold and center alignment
         $signCell->addText($authority->designation, [], $centerAlignStyle); // Designation with center alignment
         $signCell->addText("For {$authority->department}", [], $centerAlignStyle); // Department with center alignment
-        $signCell->addText($authority->contact, [], $centerAlignStyle); // Phone number with center alignment
+        $signCell->addText($authority->other, [], $centerAlignStyle); // Phone number with center alignment
         $signCell->addTextBreak(); // Line break
     }
        // for date and letter no
@@ -1062,7 +1062,7 @@ foreach ($paragraphs as $paragraph) {
 
         $headerTable->addRow();
         $cell1 = $headerTable->addCell(5000); // Adjust the width as needed
-        $cell2 = $headerTable->addCell(5000, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::END]);
+        $cell2 = $headerTable->addCell(6000, ['alignment' => \PhpOffice\PhpWord\SimpleType\Jc::CENTER]);
 
         // Add letter_no in the left cell
         $headerStyle = [
