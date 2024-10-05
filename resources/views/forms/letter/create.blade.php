@@ -11,17 +11,8 @@
     <div class="container-fluid">
         <div class="d-flex flex-column ">
             @include('flash::message')
-            @if(session('message'))
-            <h6 class="alert alert-success">
-                {{ session('message') }}
-            </h6>
-                    @endif
-                    @if(session('error'))
-            <h6 class="alert alert-danger">
-                {{ session('error') }}
-            </h6>
-                    @endif
-            @if ($errors->any())
+
+            {{-- @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
@@ -29,11 +20,11 @@
             @endforeach
         </ul>
     </div>
-@endif
-            <form action="{{ route('letters.store') }}" method="POST">
+@endif --}}
+            <form id="draftForm" action="{{ route('letters.store') }}" method="POST">
                 @csrf
                 <div class="row" style="display:flex;flex-direction:row;align-items:center; justify-content:right;">
-                   
+
                     <div class="col-lg-3 col-md-3 col-sm-4">
                         <div class="mb-5">
                             {{-- <label for="letter_no" class="form-label required mb-3">Letter No</label> --}}
@@ -83,17 +74,17 @@
 
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" name="designation[0][designation]" required>
+                        <input type="text" id="designation" class="form-control form-control-solid" placeholder="Designation" name="designation[0][designation]" >
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="department"  class="form-control form-control-solid" placeholder="Department" name="designation[0][department]" required>
+                        <input type="text" id="department"  class="form-control form-control-solid" placeholder="Department" name="designation[0][department]" >
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="address" class="form-control form-control-solid" placeholder="Address" name="designation[0][address]" required>
+                        <input type="text" id="address" class="form-control form-control-solid" placeholder="Address" name="designation[0][address]" >
                     </div>
                 </div>
                 <div class="col-lg-2">
@@ -120,7 +111,7 @@
                     <div class="col-lg-10 mt-5">
                         <div class="mb-5 text-center">
                             {{-- <label for="subject" class="form-label required mb-3">Subject</label> --}}
-                            <input type="text" id="subject" class="form-control form-control-solid" placeholder="Subject" name="subject" required>
+                            <input type="text" id="subject" class="form-control form-control-solid" placeholder="Subject" name="subject" >
                         </div>
                     </div>
 
@@ -131,8 +122,8 @@
                     <div class="mb-5">
                         {{-- <label for="draft_para" class="form-label required mb-3">Draft Section</label> --}}
                         <textarea id="editor" cols="20" rows="5" class="form-control form-control-solid ckeditor" placeholder="Draft Para" name="draft_para" ></textarea>
-                        
-                        
+
+
                     </div>
                 </div>
                 <hr>
@@ -193,7 +184,7 @@
              <div class="row" id="fielddd-0">
                 <div class="col-lg-6">
                        <div class="mb-5">
-                        <input type="text" id="copy_forwarded" class="form-control form-control-solid" placeholder="Copy of Forwarded" name="forwarded_copies[0][copy_forwarded]" required>
+                        <input type="text" id="copy_forwarded" class="form-control form-control-solid" placeholder="Copy of Forwarded" name="forwarded_copies[0][copy_forwarded]" >
                     </div>
                 </div>
 
@@ -202,7 +193,7 @@
 
                 <hr>
                 <div class="col-md-12" style="text-align: center;">
-                    <button id="gos_bg_color"  type="submit" name="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save As Draft</button>
+                    <button id="gos_bg_color" onclick="createLetter(event)"  type="submit" name="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save As Draft</button>
                     <button id="gos_bg_color" type="reset" name="reset"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Reset</button>
                     {{-- <button  type="submit" name="submit"     class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save & Submit</button> --}}
                     {{-- <a href="{{ route('forms') }}"
@@ -226,34 +217,44 @@
     </script>
 @endif --}}
 <script>
-   
+ CKEDITOR.replace('editor');
     var fieldCounter = 0;
     var fieldCounterss = 0;
-    
 
-    
-  
-        
-        // Wait for the content to be inserted, then initialize CKEditor
-        if ($('#editor').length) {
-            CKEDITOR.replace('editor', {
-                height: 100 // Adjust height as needed
+    function createLetter(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get the data from CKEditor
+    let draftParaContent = CKEDITOR.instances.editor.getData(); // Get the content from CKEditor
+
+    // Create a new FormData object
+    let formData = $('#draftForm').serializeArray(); // Serialize the form
+    formData.push({ name: 'draft_para', value: draftParaContent }); // Add the CKEditor content
+
+    // Perform AJAX request to submit the form data
+    $.ajax({
+        url: $('#draftForm').attr('action'), // Use the form's action attribute
+        type: 'POST',
+        data: $.param(formData), // Convert FormData back to a query string
+        success: function(response) {
+            // Redirect with the letter ID
+            let letterId = response.letter_id;
+            window.location.href = "/admin/forms/letter-form/" + letterId + "/edit"; // Construct URL with letter ID
+        },
+        error: function(xhr, status, error) {
+            // Handle error
+            let errorMsg = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred.';
+            Swal.fire({
+                title: 'Error!',
+                text: errorMsg,
+                icon: 'error',
+                confirmButtonText: 'Ok'
             });
         }
+    });
+}
 
-        // Reload the page after a brief delay to ensure CKEditor is loaded
-      
 
-//     function refreshCreateLetter() {
-//     // Add a timestamp or random number to the URL to force a refresh
-//     const url = window.location.href.split('?')[0]; // Get the base URL
-//     window.location.href = url + '?refresh=' + new Date().getTime(); // Reload the page with a timestamp
-// }
-
-// $(document).ready(function() {
-    // Initialize CKEditor on page load
-    
-// });
     function addRecipient(){
         // document.getElementById('add-field').addEventListener('click', function() {
             fieldCounter++;
@@ -356,4 +357,17 @@
 if (performance.navigation.type != performance.navigation.TYPE_RELOAD) {
         location.reload();
     }
+
+     // Check for success message
+     @if (session('message'))
+            toastr.success("{{ session('message') }}");
+        @endif
+
+        // Check for error message
+        @if (session('error'))
+            toastr.error("{{ session('error') }}");
+        @endif
+
+
+
 </script>

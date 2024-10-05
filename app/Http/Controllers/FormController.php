@@ -272,7 +272,9 @@ class FormController extends Controller
         // 'copy_forwarded' => 'required',
         // 'forwarded_copy' => 'boolean',
         ]);
-
+        // if ($validator->fails()) {
+        //     return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        // }
         // Store the letter
          // Get the last inserted letter to increment the letter number
     // $lastLetter = Letter::latest('id')->first();
@@ -350,7 +352,12 @@ class FormController extends Controller
         }
         DB::commit();
         $message = $isSubmitted ? 'Letter submitted successfully!' : 'Letter saved as draft.';
-        return redirect()->route('forms.letter.edit',$letter->id)->with('message', $message);
+        // return redirect()->route('forms.letter.edit',$letter->id)->with('message', $message);
+        return response()->json([
+            'success' => true,
+            'message' => 'Draft saved successfully',
+            'letter_id' => $letter->id
+        ]);
 
     }
     public function letter_edit(Letter $letter){
@@ -504,8 +511,10 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 
 
             DB::commit();
-            $message = $isSubmitted ? 'Letter submitted & Updated successfully!' : 'Letter saved as draft & Updated.';
-            return redirect()->back()->with('message', $message);
+            // $message = $isSubmitted ? 'Letter submitted & Updated successfully!' : 'Letter saved as draft and Updated.';
+            // return redirect()->back()->with('message', 'Letter saved as draft and Updated.');
+                return response()->json(['success' => true, 'message' => 'Letter saved as draft and Updated.']);
+
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Error updating letter: ' . $e->getMessage());
@@ -644,6 +653,8 @@ if ($letter->is_submitted == 1 && file_exists($filePath)) {
     // session()->flash('redirect_url', URL::previous());
     // Return PDF for download
     return $pdf->download($fileName);
+
+
 
 
 
@@ -1175,8 +1186,8 @@ public function uploadSignedLetter(Request $request, Letter $letter)
         $letter->save();
         return redirect()->route('admin.dashboard')->with(['message' => 'Signed letter uploaded & submitted successfully']);
         } else {
-            return redirect()->back()->with(['error' => 'Uploaded letter does not match the original letter'], 400);
-        }
+        return response()->json(['message' => 'Uploaded letter does not match the original letter'], 400);
+    }
     }
 
     return redirect()->back()->with(['error' => 'No file uploaded'], 400);

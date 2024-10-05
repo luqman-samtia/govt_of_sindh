@@ -6,12 +6,26 @@
 @section('content')
 <!-- Bootstrap CSS -->
 <!-- Bootstrap 4 CSS -->
-
+<!-- Include SweetAlert -->
+{{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script> --}}
     <div class="container-fluid">
         <div class="d-flex flex-column ">
             @include('flash::message')
-           
-     @if ($errors->any())
+
+            {{-- @if (session()->has('message'))
+            <script>
+                Swal.fire({
+                    title: 'Success!',
+                    text: '{{ session('message') }}',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                });
+
+            </script>
+        @endif --}}
+
+     {{-- @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
         @foreach ($errors->all() as $error)
@@ -19,13 +33,13 @@
         @endforeach
         </ul>
     </div>
-@endif
-            <form action="{{  route('forms.letter.update', $letter) }}" method="POST" >
+@endif --}}
+            <form id="draftForm" action="{{  route('forms.letter.update', $letter) }}" method="POST" >
                 @csrf
                 @method('PUT')
 
                 <div class="row " style="display:flex;flex-direction:row;align-items:center; justify-content:right;">
-                   
+
                     <div class="col-lg-3 col-md-3 col-sm-4">
                         <div class="mb-5">
                             {{-- <label for="letter_no" class="form-label required mb-3">Letter No</label> --}}
@@ -41,7 +55,7 @@
                 </div>
 
             <div class="row">
-               
+
                 <div class="col-lg-2">
                     <div>
                         <h4>To,</h4>
@@ -68,12 +82,12 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="department-{{$index}}"  class="form-control form-control-solid" placeholder="Department" value="{{ $toLetter->department }}" name="designation[{{$index}}][department]" required>
+                        <input type="text" id="department-{{$index}}"  class="form-control form-control-solid" placeholder="Department" value="{{ $toLetter->department }}" name="designation[{{$index}}][department]" >
                     </div>
                 </div>
                 <div class="col-lg-2">
                     <div class="mb-5">
-                        <input type="text" id="address-{{$index}}" class="form-control form-control-solid" placeholder="Address" value="{{ $toLetter->address }}" name="designation[{{$index}}][address]" required>
+                        <input type="text" id="address-{{$index}}" class="form-control form-control-solid" placeholder="Address" value="{{ $toLetter->address }}" name="designation[{{$index}}][address]" >
                     </div>
                 </div>
                 <div class="col-lg-2">
@@ -97,7 +111,7 @@
                         <input type="text" id="subject" class="form-control form-control-solid" placeholder="Subject" value="{{$letter->subject}}" name="subject" required>
                     </div>
                 </div>
-                
+
                </div>
                 <hr>
                 <div class="col-lg-12">
@@ -107,7 +121,7 @@
                     </div>
                 </div>
                 <hr>
-                 
+
                 <div id="dynamic-fieldds">
                     @foreach ($letter->signingAuthorities as $index => $signing_authority)
 
@@ -195,8 +209,8 @@
 {{--  --}}
                 <div class="col-md-12" style="text-align: center;">
                     <a id="gos_bg_color" href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
-                    <a href=""  id="gos_bg_color" type="button" onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
-                    <button id="gos_bg_color" type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
+                    <a style="background:#48B7A3;" href=""  id="gos_bg_color_code" type="button" onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
+                    <button id="gos_bg_color_code" onclick="updateLetter(event)" type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
                     <button id="gos_bg_color"  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
 
                 </div>
@@ -214,12 +228,14 @@
                                       link.href = window.URL.createObjectURL(blob);
                                       link.download = 'letter-' + '{{ $letter->letter_no }}' + '.pdf';
                                       link.click();
-                                    
-                                    window.location.href = "{{ route('forms.letter.edit', $letter->id) }}";
+
+                                    // window.location.href = "{{ route('forms.letter.edit', $letter->id) }}";
+                                    event.preventDefault();
                                   }
                               };
                               xhr.send();
                           }
+
                           function downloadDOC(url) {
                               var xhr = new XMLHttpRequest();
                               xhr.open('GET', url, true);
@@ -231,14 +247,9 @@
                                       link.href = window.URL.createObjectURL(blob);
                                       link.download = 'letter-' + '{{ $letter->letter_no }}' + '.docx';
                                       link.click();
-                                    //   fetch('/forms/letter-form/{{$letter->id}}/edit')
-                                    //   .then(response => response.text())
-                                    //   .then(formUrl => {
-                                    //       window.location.href = formUrl;
-                                    //   });
-                                    //   window.location.href = '{{ URL::previous() }}'; // Redirect back to previous page
-                                    //   window.location.href = "{{ route('forms.letter.edit',$letter->id) }}";
-                                    window.location.href = url;
+
+                                    // window.location.href = url;
+                                    event.preventDefault();
                                   }
                               };
                               xhr.send();
@@ -246,7 +257,7 @@
             </script>
         </form>
         <hr>
-        <form action="{{ route('letter.upload', $letter->id) }}" method="POST" enctype="multipart/form-data" style="margin-top: 10px;">
+        <form id="UploadLetter" action="{{ route('letter.upload', $letter->id) }}" method="POST" enctype="multipart/form-data" style="margin-top: 10px;">
             @csrf
 
         <div class="col-md-12 col-lg-12">
@@ -257,19 +268,73 @@
         <div class="col-lg-4">
             <div class="">
 
-                <input type="file" id="signed_letter" name="signed_letter" class="form-control form-control-solid" accept=".pdf">
+                <input type="file"  id="signed_letter" name="signed_letter" class="form-control form-control-solid" accept=".pdf">
             </div>
 
         </div>
         {{-- <div class="col-md-3"> --}}
-            <button id="gos_bg_color" style="width:150px; margin-left:5px;" type="submit" class="btn btn-primary text-center">Submit Letter</button>
+            <button onclick="createLetter(event)"  id="gos_bg_color" style="width:150px; margin-left:5px;" type="submit" class="btn btn-primary text-center">Submit Letter</button>
         {{-- </div> --}}
     </div>
     </form>
         </div>
     </div>
 
-            {{-- letter preview modal --}}
+           <script>
+function createLetter(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    let formData = new FormData($('#UploadLetter')[0]); // Create a new FormData object
+
+    // Perform AJAX request to submit the form data
+    $.ajax({
+        url: $('#UploadLetter').attr('action'), // Use the form's action attribute
+        type: 'POST',
+        data: formData, // Send the FormData object
+        processData: false, // Prevent jQuery from processing the data
+        contentType: false, // Prevent jQuery from setting the content type
+        success: function(response) {
+            // Redirect with the letter ID
+            let letterId = response.letter_id;
+            window.location.href = "/admin/dashboard/"; // Construct URL with letter ID
+        },
+        error: function(xhr, status, error) {
+    // Handle error
+    let errorMsg = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred.';
+    if (xhr.responseJSON && xhr.responseJSON.errors) {
+        // Display validation errors
+        let errors = xhr.responseJSON.errors;
+        let errorMessages = [];
+        for (let field in errors) {
+            errorMessages.push(errors[field][0]);
+        }
+        Swal.fire({
+            title: 'Error!',
+            text: errorMessages.join('<br>'),
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+    } else if (xhr.status === 400) {
+        // Display custom error message
+        Swal.fire({
+            title: 'Error!',
+            text: 'Uploaded letter does not match the original letter',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+    } else {
+        Swal.fire({
+            title: 'Error!',
+            text: errorMsg,
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+    }
+}
+    });
+}
+
+           </script>
 
 
 
@@ -281,37 +346,37 @@
 <!-- A friendly reminder to run on a server, remove this during the integration. -->
 
 <script>
-   
+        // Check if SweetAlert2 is available
+
     // CKEDITOR.replace( 'draft_para' );
-  
-   
+
+    function updateLetter(event) {
+        event.preventDefault();
+    var formData = new FormData($('#draftForm')[0]);
+    $.ajax({
+        url: $('#draftForm').attr('action'),
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            Swal.fire({
+                title: 'Success!',
+                text: response.message,
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            });
+            // window.location.href = window.location.href;
+            return false;
+        }
+    });
+}
+
 
     var fieldCounter = {{ count($letter->designations) ? count($letter->designations) - 1 : -1 }};
     var fieldCounterss = {{ count($letter->forwardedCopies) ? count($letter->forwardedCopies) - 1 : -1 }};
 
-//  CKEDITOR.replace('draft_para');
-   
-    // letter preview
-//     function loadLetterPreview(letterId) {
-//     // Correct the URL to the preview route using Laravel's route helper in Blade
-//     var previewUrl = '{{ route('letter.preview', ':id') }}';
-//     previewUrl = previewUrl.replace(':id', letterId);
 
-//     // Fetch the letter content via AJAX
-//     fetch(previewUrl)
-//         .then(response => response.text())
-//         .then(htmlContent => {
-//             // Insert the content into the modal
-//             document.getElementById('letterPreviewContent').innerHTML = htmlContent;
-//             // Show the modal
-//             $('#letterPreviewModal').modal('show');
-//         })
-//         .catch(error => {
-//             console.error('Error fetching letter preview:', error);
-//             // Fallback if there is an error
-//             document.getElementById('letterPreviewContent').innerHTML = '<p>Unable to load the letter preview.</p>';
-//         });
-// }
 
 function loadLetterPreview(letterId) {
     var previewUrl = '{{ route('letter.preview', ':id') }}';
@@ -340,18 +405,6 @@ function loadLetterPreview(letterId) {
             document.getElementById('letterPreviewContent').innerHTML = '<p>Unable to load the letter preview.</p>';
         });
 }
-
-
-
-    // end letter preview
-    //     document.getElementById('add-field').addEventListener('click', (function(counter) {
-        //     return function() {
-            //         addRecipient(counter);
-            //     };
-            // })(fieldCounter);
-            // })
-
-            // Set the initial fieldCounter to the number of existing designations
 
 
             function addRecipient() {
@@ -463,31 +516,36 @@ function removeRecipient(id) {
     }
 
     // Check for success message
-    @if (session('message'))
-            toastr.success("{{ session('message') }}");
-        @endif
+    // @if (session('message'))
+    //         toastr.success("{{ session('message') }}");
+    //     @endif
 
-        // Check for error message
-        @if (session('error'))
-            toastr.error("{{ session('error') }}");
-        @endif
+    //     // Check for error message
+    //     @if (session('error'))
+    //         toastr.error("{{ session('error') }}");
+    //     @endif
 
 
-        document.addEventListener("DOMContentLoaded", function (event) {
-        var scrollpos = sessionStorage.getItem('scrollpos');
-        if (scrollpos) {
-            window.scrollTo(0, scrollpos);
-            sessionStorage.removeItem('scrollpos');
-        }
-    });
 
-    window.addEventListener("beforeunload", function (e) {
-        sessionStorage.setItem('scrollpos', window.scrollY);
-    });
 
-    window.onload = function() {
-    // Remove auto-focus on the first input by setting the focus elsewhere
-    document.activeElement.blur();
-};
+
+
+
+
 
 </script>
+{{-- @if (session('message'))
+<script>
+    $(document).ready(function() {
+        toastr.success("{{ session('message') }}", 'Success');
+    });
+</script>
+@endif
+
+@if (session('error'))
+<script>
+    $(document).ready(function() {
+        toastr.error("{{ session('error') }}", 'Error');
+    });
+</script>
+@endif --}}

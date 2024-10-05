@@ -38,6 +38,35 @@
         @endif
     });
 
+    // @if ($errors->any())
+    //     @foreach ($errors->all() as $error)
+    //         toastr.error("{{ $error }}", "Error", {
+    //             closeButton: true,
+    //             progressBar: true,
+    //             positionClass: "toast-top-right",
+    //             timeOut: 5000,
+    //         });
+    //     @endforeach
+    // @endif
+
+
+
+    @if ($errors->any())
+        let errorMessages = '';
+        @foreach ($errors->all() as $error)
+            errorMessages += '<p>{{ $error }}</p>';
+        @endforeach
+
+        Swal.fire({
+            title: 'Validation Error!',
+            html: errorMessages,
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            customClass: {
+                popup: 'swal-wide' // Optional: You can define custom styles
+            }
+        });
+    @endif
 
 
 </script>
