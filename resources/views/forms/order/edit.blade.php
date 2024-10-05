@@ -198,7 +198,7 @@
                                         var blob = new Blob([xhr.response], {type: 'application/pdf'});
                                         var link = document.createElement('a');
                                         link.href = window.URL.createObjectURL(blob);
-                                        link.download = 'order-' + '{{ $letter->letter_no }}' + '.pdf';
+                                        link.download = 'order_' + '{{ $letter->letter_no }}' + '.pdf';
                                         link.click();
                                         Swal.fire({
                                         title: 'Download Successful!',

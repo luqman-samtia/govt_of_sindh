@@ -237,7 +237,7 @@
                                     var blob = new Blob([xhr.response], {type: 'application/pdf'});
                                     var link = document.createElement('a');
                                     link.href = window.URL.createObjectURL(blob);
-                                    link.download = 'letter-' + '{{ $letter->letter_no }}' + '.pdf';
+                                    link.download = 'letter_' + '{{ $letter->letter_no }}' + '.pdf';
                                     link.click();
                                     Swal.fire({
                                         title: 'Download Successful!',
@@ -272,7 +272,7 @@
                                             var blob = new Blob([xhr.response], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
                                             var link = document.createElement('a');
                                             link.href = window.URL.createObjectURL(blob);
-                                            link.download = 'letter-' + '{{ $letter->letter_no }}' + '.docx';
+                                            link.download = 'letter_' + '{{ $letter->letter_no }}' + '.docx';
                                             link.click();
                                             Swal.fire({
                                                 title: 'Download Successful!',
