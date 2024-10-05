@@ -31,7 +31,7 @@
         </ul>
     </div>
 @endif
-            <form action="{{ route('orders.store') }}" method="POST">
+            <form id="draftForm" action="{{ route('orders.store') }}" method="POST">
                 @csrf
                 <div class="row" style="display:flex;flex-direction:row;align-items:center; justify-content:right;">
 
@@ -161,7 +161,7 @@
                     </div>
                     <hr>
                 <div class="col-md-12" style="text-align: center;">
-                    <button id="gos_bg_color"  type="submit" name="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save As Draft</button>
+                    <button id="gos_bg_color" onclick="createLetter(event)"  type="submit" name="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Save As Draft</button>
                     <button id="gos_bg_color" type="reset" name="reset"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Reset</button>
 
                 </div>
@@ -179,6 +179,46 @@
 
     var fieldCounter = 0;
     var fieldCounterss = 0;
+
+
+    function createLetter(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get the data from CKEditor
+    let draftParaContent = CKEDITOR.instances.editor.getData(); // Get the content from CKEditor
+
+    // Create a new FormData object
+    let formData = $('#draftForm').serializeArray(); // Serialize the form
+    formData.push({ name: 'draft_para', value: draftParaContent }); // Add the CKEditor content
+
+    // Perform AJAX request to submit the form data
+    $.ajax({
+        url: $('#draftForm').attr('action'), // Use the form's action attribute
+        type: 'POST',
+        data: $.param(formData), // Convert FormData back to a query string
+        success: function(response) {
+            // Redirect with the letter ID
+            Swal.fire({
+        title: 'Success!',
+        text: 'Order save as draft and submitted successfully',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+    });
+            let letterId = response.letter_id;
+            window.location.href = "/admin/forms/order-form/" + letterId + "/edit"; // Construct URL with letter ID
+        },
+        error: function(xhr, status, error) {
+            // Handle error
+            let errorMsg = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred.';
+            Swal.fire({
+                title: 'Error!',
+                text: errorMsg,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        }
+    });
+}
 
 
         // Wait for the content to be inserted, then initialize CKEditor

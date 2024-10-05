@@ -281,7 +281,7 @@
     </div>
 
            <script>
-function createLetter(event) {
+ function createLetter(event) {
     event.preventDefault(); // Prevent default form submission
 
     let formData = new FormData($('#UploadLetter')[0]); // Create a new FormData object
@@ -295,8 +295,15 @@ function createLetter(event) {
         contentType: false, // Prevent jQuery from setting the content type
         success: function(response) {
             // Redirect with the letter ID
+             // Display success message
+    Swal.fire({
+        title: 'Success!',
+        text: 'Signed letter uploaded & submitted successfully',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+    });
             let letterId = response.letter_id;
-            window.location.href = "/admin/dashboard/"; // Construct URL with letter ID
+            window.location.href = "/admin/dashboard?success=true"; // Construct URL with letter ID
         },
         error: function(xhr, status, error) {
     // Handle error

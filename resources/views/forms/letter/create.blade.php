@@ -221,6 +221,8 @@
     var fieldCounter = 0;
     var fieldCounterss = 0;
 
+
+
     function createLetter(event) {
     event.preventDefault(); // Prevent default form submission
 
@@ -238,6 +240,12 @@
         data: $.param(formData), // Convert FormData back to a query string
         success: function(response) {
             // Redirect with the letter ID
+            Swal.fire({
+        title: 'Success!',
+        text: 'Letter save as draft and submitted successfully',
+        icon: 'success',
+        confirmButtonText: 'Ok'
+    });
             let letterId = response.letter_id;
             window.location.href = "/admin/forms/letter-form/" + letterId + "/edit"; // Construct URL with letter ID
         },

@@ -173,7 +173,12 @@ class OrderController extends Controller
         }
         DB::commit();
         $message = $isSubmitted ? 'Order submitted successfully!' : 'Order saved as draft.';
-        return redirect()->route('forms.order.edit',$letter->id)->with('message', $message);
+        // return redirect()->route('forms.order.edit',$letter->id)->with('message', $message);
+        return response()->json([
+            'success' => true,
+            'message' => 'Draft Order saved successfully',
+            'letter_id' => $letter->id
+        ]);
 
     }
     public function order_edit(Order $letter){
@@ -382,7 +387,9 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
 
             DB::commit();
             $message = $isSubmitted ? 'Order submitted & Updated successfully!' : 'Order saved as draft & Updated.';
-            return redirect()->back()->with('message', $message);
+            // return redirect()->back()->with('message', $message);
+            return response()->json(['success' => true, 'message' => 'Order saved as draft and Updated.']);
+
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Error updating letter: ' . $e->getMessage());
@@ -402,11 +409,11 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
     public function uploadSignedOrder(Request $request, Order $letter)
 {
     $request->validate([
-        'signed_letter' => 'required|file|mimes:pdf|max:10240', // 10MB max
+        'signed_order' => 'required|file|mimes:pdf|max:10240', // 10MB max
     ]);
     // app/public/
-    if ($request->hasFile('signed_letter')) {
-        $file = $request->file('signed_letter');
+    if ($request->hasFile('signed_order')) {
+        $file = $request->file('signed_order');
         $letter_no = $letter->letter_no;
         if (strpos($letter_no, '/') !== false) {
             // Replace all slashes with underscores
@@ -426,7 +433,9 @@ $letter->forwardedCopies()->whereNotIn('id', $existingCopyIds)->delete();
         $letter->save();
         return redirect()->route('admin.dashboard')->with(['message' => 'Signed order uploaded & submitted successfully']);
         } else {
-            return redirect()->back()->with(['error' => 'Uploaded order does not match the original order'], 400);
+            // return redirect()->back()->with(['error' => 'Uploaded order does not match the original order'], 400);
+        return response()->json(['message' => 'Uploaded order does not match the original letter'], 400);
+
         }
     }
 

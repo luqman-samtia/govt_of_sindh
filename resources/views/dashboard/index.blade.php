@@ -15,6 +15,34 @@
             {{ session('error') }}
         </h6>
                 @endif --}}
+
+@if (session()->has('message') || request()->query('success'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: '{{ session()->get('message') ?? "Signed Letter uploaded and submitted successfully" }}',
+            icon: 'success',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000
+        });
+    </script>
+@endif
+
+@if (session()->has('message') || request()->query('error'))
+    <script>
+        Swal.fire({
+            title: 'Success!',
+            text: '{{ session()->get('message') ?? "Signed Order uploaded and submitted successfully" }}',
+            icon: 'success',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000
+        });
+    </script>
+@endif
         <div class="d-flex flex-column">
             <div class="row">
                 <div class="col-12">

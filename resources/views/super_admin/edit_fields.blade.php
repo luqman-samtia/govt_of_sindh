@@ -36,7 +36,7 @@
                            type="password"  placeholder="{{__('messages.client.password')}}" name="password"
                            autocomplete="off"
                            id="password"
-                           aria-label="Password" data-toggle="password" required>
+                           aria-label="Password" data-toggle="password" >
                     <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600" id="togglePassword2" >
                         <i class="bi bi-eye-slash-fill" id="toggleIcon2"></i>
                     </span>
@@ -56,7 +56,7 @@
                            placeholder="{{ __('messages.client.confirm_password') }}"
                            name="password_confirmation"
                            autocomplete="off" aria-label="Password"
-                           required>
+                           >
                     <span class="position-absolute d-flex align-items-center top-0 bottom-0 end-0 me-4 input-icon input-password-hide cursor-pointer text-gray-600" id="togglePassword">
                         <i class="bi bi-eye-slash-fill" id="toggleIcon"></i>
                     </span>

@@ -20,7 +20,7 @@
         </ul>
     </div>
 @endif
-            <form action="{{  route('forms.order.update', $letter) }}" method="POST" >
+            <form id="draftForm" action="{{  route('forms.order.update', $letter) }}" method="POST" >
                 @csrf
                 @method('PUT')
 
@@ -149,7 +149,7 @@
                 <div class="col-md-12" style="text-align: center;">
                     <a id="gos_bg_color" href="" onclick="downloadPdf('{{ route('Order.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
                     <a href=""  id="gos_bg_color" type="button" onclick="downloadDOC('{{route('order.download.doc',$letter->id)}}')"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
-                    <button id="gos_bg_color" type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
+                    <button id="gos_bg_color" onclick="updateLetter(event)" type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
                     <button id="gos_bg_color"  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
 
                 </div>
@@ -160,7 +160,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="letterPreviewModalLabel">Letter Preview</h5>
+                <h5 class="modal-title" id="letterPreviewModalLabel">Order Preview</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -186,7 +186,7 @@
                                       var blob = new Blob([xhr.response], {type: 'application/pdf'});
                                       var link = document.createElement('a');
                                       link.href = window.URL.createObjectURL(blob);
-                                      link.download = 'order_' + '{{ $letter->letter_no }}' + '.pdf';
+                                      link.download = 'order-' + '{{ $letter->letter_no }}' + '.pdf';
                                       link.click();
 
                                     window.location.href = "{{ route('forms.order.edit', $letter->id) }}";
@@ -220,7 +220,7 @@
             </script>
         </form>
         <hr>
-        <form action="{{ route('order.upload', $letter->id) }}" method="POST" enctype="multipart/form-data" style="margin-top: 10px;">
+        <form id="UploadLetter" action="{{ route('order.upload', $letter->id) }}" method="POST" enctype="multipart/form-data" style="margin-top: 10px;">
             @csrf
 
         <div class="col-md-12 col-lg-12">
@@ -231,12 +231,12 @@
         <div class="col-lg-4">
             <div class="">
 
-                <input type="file" id="signed_letter" name="signed_letter" class="form-control form-control-solid" accept=".pdf">
+                <input type="file" id="signed_letter" name="signed_order" class="form-control form-control-solid" accept=".pdf">
             </div>
 
         </div>
         {{-- <div class="col-md-3"> --}}
-            <button id="gos_bg_color" style="width:150px; margin-left:5px;" type="submit" class="btn btn-primary text-center">Submit Order</button>
+            <button id="gos_bg_color" onclick="createLetter(event)" style="width:150px; margin-left:5px;" type="submit" class="btn btn-primary text-center">Submit Order</button>
         {{-- </div> --}}
     </div>
     </form>
@@ -245,7 +245,68 @@
 
             {{-- letter preview modal --}}
 
+            <script>
+                function createLetter(event) {
+                   event.preventDefault(); // Prevent default form submission
 
+                   let formData = new FormData($('#UploadLetter')[0]); // Create a new FormData object
+
+                   // Perform AJAX request to submit the form data
+                   $.ajax({
+                       url: $('#UploadLetter').attr('action'), // Use the form's action attribute
+                       type: 'POST',
+                       data: formData, // Send the FormData object
+                       processData: false, // Prevent jQuery from processing the data
+                       contentType: false, // Prevent jQuery from setting the content type
+                       success: function(response) {
+                           // Redirect with the letter ID
+                            // Display success message
+                   Swal.fire({
+                       title: 'Success!',
+                       text: 'Signed Order uploaded & submitted successfully',
+                       icon: 'success',
+                       confirmButtonText: 'Ok'
+                   });
+                           let letterId = response.letter_id;
+                           window.location.href = "/admin/dashboard?error=true"; // Construct URL with letter ID
+                       },
+                       error: function(xhr, status, error) {
+                   // Handle error
+                   let errorMsg = xhr.responseJSON ? xhr.responseJSON.message : 'An error occurred.';
+                   if (xhr.responseJSON && xhr.responseJSON.errors) {
+                       // Display validation errors
+                       let errors = xhr.responseJSON.errors;
+                       let errorMessages = [];
+                       for (let field in errors) {
+                           errorMessages.push(errors[field][0]);
+                       }
+                       Swal.fire({
+                           title: 'Error!',
+                           text: errorMessages.join('<br>'),
+                           icon: 'error',
+                           confirmButtonText: 'Ok'
+                       });
+                   } else if (xhr.status === 400) {
+                       // Display custom error message
+                       Swal.fire({
+                           title: 'Error!',
+                           text: 'Uploaded Order does not match the original order',
+                           icon: 'error',
+                           confirmButtonText: 'Ok'
+                       });
+                   } else {
+                       Swal.fire({
+                           title: 'Error!',
+                           text: errorMsg,
+                           icon: 'error',
+                           confirmButtonText: 'Ok'
+                       });
+                   }
+               }
+                   });
+               }
+
+                          </script>
 
 @endsection
 
@@ -258,6 +319,27 @@
 
     // CKEDITOR.replace( 'draft_para' );
 
+    function updateLetter(event) {
+        event.preventDefault();
+    var formData = new FormData($('#draftForm')[0]);
+    $.ajax({
+        url: $('#draftForm').attr('action'),
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            Swal.fire({
+                title: 'Success!',
+                text: response.message,
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            });
+            // window.location.href = window.location.href;
+            return false;
+        }
+    });
+}
 
 
     var fieldCounter = {{ count($letter->designations) ? count($letter->designations) - 1 : -1 }};
@@ -447,21 +529,8 @@ function removeRecipient(id) {
         @endif
 
 
-        document.addEventListener("DOMContentLoaded", function (event) {
-        var scrollpos = sessionStorage.getItem('scrollpos');
-        if (scrollpos) {
-            window.scrollTo(0, scrollpos);
-            sessionStorage.removeItem('scrollpos');
-        }
-    });
 
-    window.addEventListener("beforeunload", function (e) {
-        sessionStorage.setItem('scrollpos', window.scrollY);
-    });
 
-    window.onload = function() {
-    // Remove auto-focus on the first input by setting the focus elsewhere
-    document.activeElement.blur();
-};
+
 
 </script>

@@ -355,7 +355,7 @@ class FormController extends Controller
         // return redirect()->route('forms.letter.edit',$letter->id)->with('message', $message);
         return response()->json([
             'success' => true,
-            'message' => 'Draft saved successfully',
+            'message' => 'Draft Letter saved successfully',
             'letter_id' => $letter->id
         ]);
 
