@@ -208,8 +208,8 @@
 </div>
 {{--  --}}
                 <div class="col-md-12" style="text-align: center;">
-                    <a id="gos_bg_color" href="" onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
-                    <a style="background:#48B7A3;" href=""  id="gos_bg_color_code" type="button" onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
+                    <a id="gos_bg_color"  onclick="downloadPdf('{{ route('Form.download.pdf', $letter->id) }}')" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0" data-bs-original-title="Pdf file Download" title="Pdf File Download" data-bs-toggle="tooltip" id="download-btn">PDF Download</a>
+                    <a style="background:#48B7A3;"   id="gos_bg_color_code" type="button" onclick="downloadDOC('{{route('letter.download.doc',$letter->id)}}')"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">DOC Download</a>
                     <button id="gos_bg_color_code" onclick="updateLetter(event)" type="submit" name="action" value="save_as_draft"  class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Update Draft</button>
                     <button id="gos_bg_color"  type="button"  data-toggle="modal" data-target="#letterPreviewModal" onclick="loadLetterPreview({{ $letter->id }})" class="btn btn-primary mx-1 ms-ms-3 mb-3 mb-sm-0">Print Preview</button>
 
@@ -218,42 +218,74 @@
             <script>
                 CKEDITOR.replace('editor')
                 function downloadPdf(url) {
-                              var xhr = new XMLHttpRequest();
-                              xhr.open('GET', url, true);
-                              xhr.responseType = 'blob';
-                              xhr.onload = function() {
-                                  if (xhr.status === 200) {
-                                      var blob = new Blob([xhr.response], {type: 'application/pdf'});
-                                      var link = document.createElement('a');
-                                      link.href = window.URL.createObjectURL(blob);
-                                      link.download = 'letter-' + '{{ $letter->letter_no }}' + '.pdf';
-                                      link.click();
-
-                                    // window.location.href = "{{ route('forms.letter.edit', $letter->id) }}";
-                                    event.preventDefault();
-                                  }
-                              };
-                              xhr.send();
-                          }
+                    event.preventDefault();
+                    // Show custom modal popup
+                    Swal.fire({
+                        title: 'Download PDF?',
+                        text: 'Are you sure you want to download the PDF file?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, download!',
+                        cancelButtonText: 'No, cancel!'
+                    }).then((result) => {
+                        if (result.value) {
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('GET', url, true);
+                            xhr.responseType = 'blob';
+                            xhr.onload = function() {
+                                if (xhr.status === 200) {
+                                    var blob = new Blob([xhr.response], {type: 'application/pdf'});
+                                    var link = document.createElement('a');
+                                    link.href = window.URL.createObjectURL(blob);
+                                    link.download = 'letter-' + '{{ $letter->letter_no }}' + '.pdf';
+                                    link.click();
+                                    Swal.fire({
+                                        title: 'Download Successful!',
+                                        text: 'Your PDF file has been downloaded successfully.',
+                                        icon: 'success',
+                                        confirmButtonText: 'Ok'
+                                    });
+                                }
+                            };
+                            xhr.send();
+                        }
+                    });
+                }
 
                           function downloadDOC(url) {
-                              var xhr = new XMLHttpRequest();
-                              xhr.open('GET', url, true);
-                              xhr.responseType = 'blob';
-                              xhr.onload = function() {
-                                  if (xhr.status === 200) {
-                                      var blob = new Blob([xhr.response], {type: 'application/pdf'});
-                                      var link = document.createElement('a');
-                                      link.href = window.URL.createObjectURL(blob);
-                                      link.download = 'letter-' + '{{ $letter->letter_no }}' + '.docx';
-                                      link.click();
-
-                                    // window.location.href = url;
-                                    event.preventDefault();
-                                  }
-                              };
-                              xhr.send();
-                          }
+                            event.preventDefault();
+                            // Show custom modal popup
+                            Swal.fire({
+                                title: 'Download DOCX?',
+                                text: 'Are you sure you want to download the DOCX file?',
+                                icon: 'question',
+                                showCancelButton: true,
+                                confirmButtonText: 'Yes, download!',
+                                cancelButtonText: 'No, cancel!'
+                            }).then((result) => {
+                                if (result.value) {
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open('GET', url, true);
+                                    xhr.responseType = 'blob';
+                                    xhr.onload = function() {
+                                        if (xhr.status === 200) {
+                                            var blob = new Blob([xhr.response], {type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+                                            var link = document.createElement('a');
+                                            link.href = window.URL.createObjectURL(blob);
+                                            link.download = 'letter-' + '{{ $letter->letter_no }}' + '.docx';
+                                            link.click();
+                                            Swal.fire({
+                                                title: 'Download Successful!',
+                                                text: 'Your DOCX file has been downloaded successfully.',
+                                                icon: 'success',
+                                                confirmButtonText: 'Ok'
+                                            });
+                                        }
+                                    };
+                                    xhr.send();
+                                }
+                            });
+                        }
             </script>
         </form>
         <hr>
