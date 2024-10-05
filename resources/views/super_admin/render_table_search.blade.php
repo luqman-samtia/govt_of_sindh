@@ -122,8 +122,8 @@
 
                 </button>
                 <ul id="dropdown-menu" class="dropdown-menu" aria-labelledby="downloadDropdown">
-                    <li><a class="dropdown-item badge bg-light-danger fs-7 px-2" href="#" onclick="signedFile('{{ $letter->id }}', 'pdf')">PDF</a></li>
-                    <li><a class="dropdown-item badge bg-light-danger fs-7 px-2" href="#" onclick="signedFile('{{ $letter->id }}', 'doc')">DOC</a></li>
+                    <li><a class="dropdown-item badge bg-light-danger fs-7 px-2"  onclick="signedFile('{{ $letter->id }}', 'pdf')">PDF</a></li>
+                    <li><a class="dropdown-item badge bg-light-danger fs-7 px-2"  onclick="signedFile('{{ $letter->id }}', 'doc')">DOC</a></li>
                 </ul>
             </div>
 

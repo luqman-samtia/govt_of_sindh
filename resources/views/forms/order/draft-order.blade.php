@@ -223,8 +223,8 @@
 
                                                 </button>
                                                 <ul id="dropdown-menu"  class="dropdown-menu" aria-labelledby="downloadDropdown">
-                                                    <li><a class="dropdown-item badge bg-light-success fs-7 px-2" href="#" onclick="downloadFile('{{ $letter->id }}', 'pdf')">PDF</a></li>
-                                                    <li><a class="dropdown-item badge bg-light-success fs-7 px-2" href="#" onclick="downloadFile('{{ $letter->id }}', 'doc')">DOC</a></li>
+                                                    <li><a class="dropdown-item badge bg-light-success fs-7 px-2"  onclick="downloadFile('{{ $letter->id }}', 'pdf')">PDF</a></li>
+                                                    <li><a class="dropdown-item badge bg-light-success fs-7 px-2"  onclick="downloadFile('{{ $letter->id }}', 'doc')">DOC</a></li>
                                                 </ul>
                                             </div>
 
