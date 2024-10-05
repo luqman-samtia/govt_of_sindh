@@ -206,6 +206,10 @@ body{
     background: #48B7A3;
     border: none;
 }
+.swal2-styled{
+    background: #48B7A3;
+    border: none;
+}
         </style>
 </head>
 <body class="main-body">
