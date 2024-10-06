@@ -348,7 +348,10 @@
     // CKEDITOR.replace( 'draft_para' );
 
     function updateLetter(event) {
-        event.preventDefault();
+    event.preventDefault();
+    for (instance in CKEDITOR.instances) {
+        CKEDITOR.instances[instance].updateElement();
+    }
     var formData = new FormData($('#draftForm')[0]);
     $.ajax({
         url: $('#draftForm').attr('action'),
@@ -368,7 +371,6 @@
         }
     });
 }
-
 
     var fieldCounter = {{ count($letter->designations) ? count($letter->designations) - 1 : -1 }};
     var fieldCounterss = {{ count($letter->forwardedCopies) ? count($letter->forwardedCopies) - 1 : -1 }};

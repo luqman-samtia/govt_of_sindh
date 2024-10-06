@@ -86,8 +86,8 @@
     <table>
         <tr>
 
-           <td style="">
-            <p style="font-weight: 700;text-align:start;text-decoration:underline;">O R D E R</p>
+           <td style="margin-top:10px !important;">
+            <p style="font-weight: 700;text-align:start;text-decoration:underline;margin-bottom:0px !important; padding-bottom:0px !important;margin-top:20px !important;">O R D E R</p>
             </td>
 
 
@@ -95,7 +95,7 @@
     </table>
 
 
-                <div class="" style="margin: 0 auto; text-align: justify;text-indent:5em;" >
+                <div class="" style="margin: 0px 0px !important;padding:0px 0px !important; text-align: justify;text-indent:5em;" >
                     <p style="text-indent:5em;" >{!! $letter->draft_para !!}</p>
                 </div>
 
@@ -112,7 +112,7 @@
                     <p style="text-align: center;"><strong>{{$Authority->name}}</strong></p>
                     <p  style="text-align: center;">{{$Authority->designation}}</p>
                     <p  style="text-align: center;">For {{ $Authority->department}}</p>
-                    <p  style="text-align: center;">0301-2255945</p>
+                    <p  style="text-align: center;">{{ $Authority->other}}</p>
                 </p>
                 @endforeach
             </td>

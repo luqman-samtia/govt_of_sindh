@@ -135,8 +135,8 @@
 
     {{-- <div style="">page-break-inside:avoid; page-break-before: avoid;--}}
 
-                <div class="" style="margin: 0 auto; text-align: justify;text-indent:7em;" >
-                    <p style="text-indent:7em;" >{!! $letter->draft_para !!}</p>
+                <div class="" style="margin: 0px 0px !important;padding:0px 0px !important; text-align: justify;text-indent:7em;" >
+                    <p style="text-indent:7em;margin:0px 0px !important;padding:0px 0px !important;" >{!! $letter->draft_para !!}</p>
                 </div>
 
 
@@ -152,7 +152,7 @@
                     <p><strong>{{$Authority->name}}</strong></p>
                     <p>{{$Authority->designation}}</p>
                     <p>For {{ $Authority->department}}</p>
-                    <p>0301-2255945</p>
+                    <p>{{$Authority->other}}</p>
                 </p>
                 @endforeach
             </td>

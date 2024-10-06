@@ -216,27 +216,21 @@ class FormController extends Controller
     public function letter_create(Letter $letter, User $user){
         $user = auth()->user();
 
-    // $lastLetter = Letter::latest('id')->first();
+        $prefix = $user->letter_no; // Assuming this field exists in the user table
 
-    $prefix = $user->letter_no; // Assuming this field exists in the user table
-
-    // Fetch the latest letter for this user based on their prefix
-    $lastLetter = Letter::where('letter_no', 'LIKE', "{$prefix}%")
+        $lastLetter = Letter::where('letter_no', 'LIKE', "{$prefix}%")
                         ->where('user_id', $user->id)
                         ->latest('letter_no')
                         ->first();
 
-    // Initialize the next number based on the last letter number
-    if ($lastLetter && str_contains($lastLetter->letter_no, $prefix)) {
-        // Extract the number part from the last letter's number
-        $lastNumber = (int) str_replace($prefix, '', $lastLetter->letter_no);
-        $nextNumber = $lastNumber + 1; // Increment the number
-    } else {
-        $nextNumber = 1; // Start with 1 if no previous letters
-    }
+        if ($lastLetter && str_contains($lastLetter->letter_no, $prefix)) {
+            $lastNumber = (int) substr($lastLetter->letter_no, strlen($prefix));
+            $nextNumber = $lastNumber + 1; // Increment the number
+        } else {
+            $nextNumber = 1; // Start with 1 if no previous letters
+        }
 
-    // Generate the new letter number for this user
-    $newLetterNo = $prefix . $nextNumber;
+        $newLetterNo = $prefix . str_pad($nextNumber, 2, '0', STR_PAD_LEFT);
 
         if (!$user->address || !$user->date || !$user->tel) {
             // Redirect to profile update page if profile is incomplete
@@ -279,25 +273,22 @@ class FormController extends Controller
          // Get the last inserted letter to increment the letter number
     // $lastLetter = Letter::latest('id')->first();
     $user = auth()->user();
-    $prefix = $user->letter_no; // Assuming this field exists in the user table
 
-    // Fetch the latest letter for this user based on their prefix
-    $lastLetter = Letter::where('letter_no', 'LIKE', "{$prefix}%")
-                        ->where('user_id', $user->id)
-                        ->latest('letter_no')
-                        ->first();
+$prefix = $user->letter_no; // Assuming this field exists in the user table
 
-    // Initialize the next number based on the last letter number
-    if ($lastLetter && str_contains($lastLetter->letter_no, $prefix)) {
-        // Extract the number part from the last letter's number
-        $lastNumber = (int) str_replace($prefix, '', $lastLetter->letter_no);
-        $nextNumber = $lastNumber + 1; // Increment the number
-    } else {
-        $nextNumber = 1; // Start with 1 if no previous letters
-    }
+$lastLetter = Letter::where('letter_no', 'LIKE', "{$prefix}%")
+                ->where('user_id', $user->id)
+                ->latest('letter_no')
+                ->first();
 
-    // Generate the new letter number for this user
-    $newLetterNo = $prefix . $nextNumber;
+if ($lastLetter && str_contains($lastLetter->letter_no, $prefix)) {
+    $lastNumber = (int) substr($lastLetter->letter_no, strlen($prefix));
+    $nextNumber = $lastNumber + 1; // Increment the number
+} else {
+    $nextNumber = 1; // Start with 1 if no previous letters
+}
+
+$newLetterNo = $prefix . str_pad($nextNumber, 2, '0', STR_PAD_LEFT);
 
 
         $isSubmitted = $request->input('action') === 'submit' ? 1 : 0;
