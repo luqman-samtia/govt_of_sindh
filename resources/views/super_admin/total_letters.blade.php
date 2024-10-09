@@ -143,8 +143,9 @@
 
                                             </div>
                                     </div>
-                    </div>
+                              </div>
                     {{-- End Search and filter  --}}
+
             <div class="table-responsive mt-5"  id="lettersTable" >
 
                 @include('super_admin.render_table_search', ['letters' => $letters])

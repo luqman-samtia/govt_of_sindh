@@ -213,24 +213,30 @@ class FormController extends Controller
         $letters = Letter::where('user_id',Auth::user()->id)->get();
         return view('forms.index' ,compact('letters'));
     }
-    public function letter_create(Letter $letter, User $user){
+    public function letter_create(Letter $letter){
         $user = auth()->user();
 
-        $prefix = $user->letter_no; // Assuming this field exists in the user table
+    // $lastLetter = Letter::latest('id')->first();
 
-        $lastLetter = Letter::where('letter_no', 'LIKE', "{$prefix}%")
+    $prefix = $user->letter_no; // Assuming this field exists in the user table
+
+    // Fetch the latest letter for this user based on their prefix
+    $lastLetter = Letter::where('letter_no', 'LIKE', "{$prefix}%")
                         ->where('user_id', $user->id)
                         ->latest('letter_no')
                         ->first();
 
-        if ($lastLetter && str_contains($lastLetter->letter_no, $prefix)) {
-            $lastNumber = (int) substr($lastLetter->letter_no, strlen($prefix));
-            $nextNumber = $lastNumber + 1; // Increment the number
-        } else {
-            $nextNumber = 1; // Start with 1 if no previous letters
-        }
+    // Initialize the next number based on the last letter number
+    if ($lastLetter && str_contains($lastLetter->letter_no, $prefix)) {
+        // Extract the number part from the last letter's number
+        $lastNumber = (int) str_replace($prefix, '', $lastLetter->letter_no);
+        $nextNumber = $lastNumber + 1; // Increment the number
+    } else {
+        $nextNumber = 1; // Start with 1 if no previous letters
+    }
 
-        $newLetterNo = $prefix . str_pad($nextNumber, 2, '0', STR_PAD_LEFT);
+    // Generate the new letter number for this user
+    $newLetterNo = $prefix . $nextNumber;
 
         if (!$user->address || !$user->date || !$user->tel) {
             // Redirect to profile update page if profile is incomplete
@@ -274,21 +280,27 @@ class FormController extends Controller
     // $lastLetter = Letter::latest('id')->first();
     $user = auth()->user();
 
-$prefix = $user->letter_no; // Assuming this field exists in the user table
+    // $lastLetter = Letter::latest('id')->first();
 
-$lastLetter = Letter::where('letter_no', 'LIKE', "{$prefix}%")
-                ->where('user_id', $user->id)
-                ->latest('letter_no')
-                ->first();
+    $prefix = $user->letter_no; // Assuming this field exists in the user table
 
-if ($lastLetter && str_contains($lastLetter->letter_no, $prefix)) {
-    $lastNumber = (int) substr($lastLetter->letter_no, strlen($prefix));
-    $nextNumber = $lastNumber + 1; // Increment the number
-} else {
-    $nextNumber = 1; // Start with 1 if no previous letters
-}
+    // Fetch the latest letter for this user based on their prefix
+    $lastLetter = Letter::where('letter_no', 'LIKE', "{$prefix}%")
+                        ->where('user_id', $user->id)
+                        ->latest('letter_no')
+                        ->first();
 
-$newLetterNo = $prefix . str_pad($nextNumber, 2, '0', STR_PAD_LEFT);
+    // Initialize the next number based on the last letter number
+    if ($lastLetter && str_contains($lastLetter->letter_no, $prefix)) {
+        // Extract the number part from the last letter's number
+        $lastNumber = (int) str_replace($prefix, '', $lastLetter->letter_no);
+        $nextNumber = $lastNumber + 1; // Increment the number
+    } else {
+        $nextNumber = 1; // Start with 1 if no previous letters
+    }
+
+    // Generate the new letter number for this user
+    $newLetterNo = $prefix . $nextNumber;
 
 
         $isSubmitted = $request->input('action') === 'submit' ? 1 : 0;
@@ -1249,8 +1261,168 @@ public function letter_search(Request $request)
 
     return view('super_admin.total_letters', compact('letters','data','users_form','totalLetters','draft'));
 }
-public function order_search(Request $request)
+// Single Letter Search
+ public function single_letter_search(Request $request)
 {
+    $user_id = Auth::user()->id;
+    $totalLetters = Letter::count();
+        $users_form = Letter::withCount('user')->get();
+        // $letters = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $draft = Letter::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+    $query_search = $request->input('query');
+    $designation_search = $request->input('designation');
+    $district_search = $request->input('district');
+
+    $letters = Letter::with(['user', 'designations'])  // Eager load 'user' and 'designations'
+    ->where('is_submitted', 1)
+    ->where('user_id', Auth::id())
+    ->where(function($query) use ($query_search, $designation_search, $district_search) {
+        if ($query_search) {
+            $query->where('letter_no', 'LIKE', "%{$query_search}%")
+                ->orWhereHas('user', function($q) use ($query_search) {
+                    $q->where('first_name', 'LIKE', "%{$query_search}%");
+                });
+        }
+            if ($designation_search) {
+                $query->whereHas('designations', function($q) use ($designation_search) {
+                    $q->where('designation', 'LIKE', "%{$designation_search}%");
+                });
+            }
+            if ($district_search) {
+                $query->whereHas('user', function($q) use ($district_search) {
+                    $q->where('district', 'LIKE', "%{$district_search}%");
+                });
+            }
+        })
+        ->orderBy('id', 'desc')
+        ->get();
+
+                    //  if ($request->ajax()) {
+                    //     return response()->json([
+                    //         'html' => view('super_admin.total_letters', compact('letters','data','users_form','totalLetters','draft'))->render() // Render only the table
+                    //     ]);
+                    // }
+                    if ($request->ajax()) {
+
+                        return view('forms.letter.single_letter_search', compact('letters'))->render();
+
+                    }
+
+
+     return view('forms.letter.single', compact('letters','data','users_form','totalLetters','draft'));
+}
+ public function single_draft_search(Request $request)
+{
+    $user_id = Auth::user()->id;
+    $totalLetters = Letter::count();
+        $users_form = Letter::withCount('user')->get();
+        // $letters = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $draft = Letter::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+    $query_search = $request->input('query');
+    $designation_search = $request->input('designation');
+    $district_search = $request->input('district');
+
+    $letters = Letter::with(['user', 'designations'])  // Eager load 'user' and 'designations'
+    ->where('is_submitted', 0)
+    ->where('user_id', Auth::id())
+    ->where(function($query) use ($query_search, $designation_search, $district_search) {
+        if ($query_search) {
+            $query->where('letter_no', 'LIKE', "%{$query_search}%")
+                ->orWhereHas('user', function($q) use ($query_search) {
+                    $q->where('first_name', 'LIKE', "%{$query_search}%");
+                });
+        }
+            if ($designation_search) {
+                $query->whereHas('designations', function($q) use ($designation_search) {
+                    $q->where('designation', 'LIKE', "%{$designation_search}%");
+                });
+            }
+            if ($district_search) {
+                $query->whereHas('user', function($q) use ($district_search) {
+                    $q->where('district', 'LIKE', "%{$district_search}%");
+                });
+            }
+        })
+        ->orderBy('id', 'desc')
+        ->get();
+
+                    //  if ($request->ajax()) {
+                    //     return response()->json([
+                    //         'html' => view('super_admin.total_letters', compact('letters','data','users_form','totalLetters','draft'))->render() // Render only the table
+                    //     ]);
+                    // }
+                    if ($request->ajax()) {
+
+                        return view('forms.letter.single_draft_search', compact('letters'))->render();
+
+                    }
+
+
+     return view('forms.letter.single_draft', compact('letters','data','users_form','totalLetters','draft'));
+}
+ public function single_order_search(Request $request)
+{
+    $user_id = Auth::user()->id;
+    $totalLetters = Order::count();
+        $users_form = Order::withCount('user')->get();
+        // $letters = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $draft = Order::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+    $query_search = $request->input('query');
+    $designation_search = $request->input('designation');
+    $district_search = $request->input('district');
+
+    $letters = Order::with(['user', 'designations'])  // Eager load 'user' and 'designations'
+    ->where('is_submitted', 1)
+    ->where('user_id', Auth::id())
+    ->where(function($query) use ($query_search, $designation_search, $district_search) {
+        if ($query_search) {
+            $query->where('letter_no', 'LIKE', "%{$query_search}%")
+                ->orWhereHas('user', function($q) use ($query_search) {
+                    $q->where('first_name', 'LIKE', "%{$query_search}%");
+                });
+        }
+            if ($designation_search) {
+                $query->whereHas('designations', function($q) use ($designation_search) {
+                    $q->where('designation', 'LIKE', "%{$designation_search}%");
+                });
+            }
+            if ($district_search) {
+                $query->whereHas('user', function($q) use ($district_search) {
+                    $q->where('district', 'LIKE', "%{$district_search}%");
+                });
+            }
+        })
+        ->orderBy('id', 'desc')
+        ->get();
+
+                    //  if ($request->ajax()) {
+                    //     return response()->json([
+                    //         'html' => view('super_admin.total_letters', compact('letters','data','users_form','totalLetters','draft'))->render() // Render only the table
+                    //     ]);
+                    // }
+                    if ($request->ajax()) {
+
+                        return view('forms.order.single_order_search', compact('letters'))->render();
+
+                    }
+
+
+     return view('forms.order.single-order', compact('letters','data','users_form','totalLetters','draft'));
+    }
+     public function order_search(Request $request)
+    {
     $totalLetters = Order::count();
         $users_form = Order::withCount('user')->get();
         // $letters = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
@@ -1298,6 +1470,58 @@ public function order_search(Request $request)
 
 
     return view('super_admin.total_orders', compact('letters','data','users_form','totalLetters','draft'));
+}
+     public function single_draft_search_order(Request $request)
+    {
+    $totalLetters = Order::count();
+        $users_form = Order::withCount('user')->get();
+        // $letters = Letter::with('user')->where('is_submitted',1)->orderBy('id', 'desc')->get();
+        $draft = Order::where('is_submitted',0)->get();
+        $query = User::whereHas('roles', function ($q) {
+            $q->where('name', Role::ROLE_ADMIN);
+        })->with('roles')->select('users.*');
+        $data['users'] = $query->count();
+    $query_search = $request->input('query');
+    $designation_search = $request->input('designation');
+    $district_search = $request->input('district');
+
+    $letters = Order::with(['user', 'designations'])  // Eager load 'user' and 'designations'
+    ->where('is_submitted', 0)
+    ->where('user_id', Auth::id())
+    ->where(function($query) use ($query_search, $designation_search, $district_search) {
+        if ($query_search) {
+            $query->where('letter_no', 'LIKE', "%{$query_search}%")
+                ->orWhereHas('user', function($q) use ($query_search) {
+                    $q->where('first_name', 'LIKE', "%{$query_search}%");
+                });
+        }
+            if ($designation_search) {
+                $query->whereHas('designations', function($q) use ($designation_search) {
+                    $q->where('designation', 'LIKE', "%{$designation_search}%");
+                });
+            }
+            if ($district_search) {
+                $query->whereHas('user', function($q) use ($district_search) {
+                    $q->where('district', 'LIKE', "%{$district_search}%");
+                });
+            }
+        })
+        ->orderBy('id', 'desc')
+        ->get();
+
+                    //  if ($request->ajax()) {
+                    //     return response()->json([
+                    //         'html' => view('super_admin.total_letters', compact('letters','data','users_form','totalLetters','draft'))->render() // Render only the table
+                    //     ]);
+                    // }
+                    if ($request->ajax()) {
+
+                        return view('forms.order.draft_order_search', compact('letters'))->render();
+
+                    }
+
+
+    return view('forms.order.draft-order', compact('letters','data','users_form','totalLetters','draft'));
 }
 
 public function draft_search(Request $request)

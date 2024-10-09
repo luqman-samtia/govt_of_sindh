@@ -163,7 +163,11 @@ Route::prefix('admin')->middleware(['auth', 'xss', 'role:admin', 'check_subscrip
         // Route::get('/letters/{letter}/download-signed', [FormController::class, 'downloadSignedLetter'])->name('letters.download_signed');
         Route::get('pdf-download-redirect', [FormController::class,'downloadPdfRedirect'])->name('pdf.download.redirect');
 
-
+        // Search Route
+        Route::get('single/letters/search', [FormController::class, 'single_letter_search'])->name('single.letters.search');
+        Route::get('single/orders/search', [FormController::class, 'single_order_search'])->name('single.orders.search');
+        Route::get('signle/drafts/search', [FormController::class, 'single_draft_search'])->name('single.drafts.search');
+        Route::get('single/drafts/search/order', [FormController::class, 'single_draft_search_order'])->name('single.drafts.search.order');
 
         // Order Routes >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         Route::get('forms/order-form', [OrderController::class, 'order_create'])->name('forms.order.form.create');
